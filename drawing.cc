@@ -74,7 +74,7 @@ void update_gui() {
   }
 
   SDL_RenderPresent(renderer);
-  SDL_Delay(100);
+  SDL_Delay(10);
 }
 
 void destroy_gui() {

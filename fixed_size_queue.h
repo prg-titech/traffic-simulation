@@ -52,6 +52,12 @@ class fixed_size_queue {
 
   int capacity() { return capacity_ - 1; }
 
+  T get(int index) {
+    assert(index >= 0);
+    assert(index < capacity_);
+    return buffer_[(start_ + index) % capacity_];
+  }
+
   class iterator {
    public:
     typedef T value_type;

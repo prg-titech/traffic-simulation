@@ -24,7 +24,7 @@ void init_network() {
   i1->connect_one_way(i2, 5);
   i2->connect_one_way(i3, 5);
   i3->connect_one_way(i4, 5);
-  i4->connect_one_way(i1, 1);
+  i4->connect_one_way(i1, 0);
   b.build();
 
   num_cells = b.num_cells();

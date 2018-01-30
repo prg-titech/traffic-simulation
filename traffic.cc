@@ -28,6 +28,7 @@ void Car::step_move() {
   Cell* next_cell = position_;
   for (int i = 0; i < velocity_; ++i) {
     next_cell = path_.pop();
+    assert(velocity_ <= next_cell->max_velocity());
   }
 
   position_->release();
@@ -51,39 +52,42 @@ void Car::step_accelerate() {
 }
 
 void Car::step_constraint_velocity() {
-  int distance = 1;
   auto path_iter = path_.begin();
-  bool is_done = false;
+  int distance = 1;
 
-  while (distance < velocity_) {
+  while (distance <= velocity_) {
+    // Invariant: Movement of up to `distance - 1` many cells at `velocity_`
+    //            is allowed.
+    // Now check if next cell can be entered.
     Cell* next_cell = *path_iter;
 
     // Avoid collision.
     if (!next_cell->is_free()) {
-      velocity_ = distance - 1;
-      is_done = true;
+      // Cannot enter cell.
+      --distance;
+      velocity_ = distance;
+      break;
     } // else: Can enter next cell.
 
-    if (next_cell->max_velocity() < velocity_) {
+    if (velocity_ > next_cell->max_velocity()) {
       // Car is too fast for this cell.
-      if (next_cell->max_velocity() < distance - 1) {
-        // Drive to the beginning of the cell with the current velocity,
-        // but do not enter it.
-        velocity_ = distance - 1;
-        is_done = true;
-      } else {
-        // Apply speed limit (and possibly enter cell).
+      if (next_cell->max_velocity() > distance - 1) {
+        // Even if we slow down, we would still make progress.
         velocity_ = next_cell->max_velocity();
+      } else {
+        // Do not enter the next cell.
+        --distance;
+        velocity_ = distance;
+        break;
       }
     }
 
-    if (is_done) {
-      break;
-    } else {
-      ++distance;
-      ++path_iter;
-    }
+    ++distance;
+    ++path_iter;
   }
+
+  --distance;
+  assert(distance <= velocity_);
 }
 
 void Car::step_extend_path() {
@@ -105,7 +109,8 @@ void Car::step_extend_path() {
 }
 
 void Car::step_slow_down() {
-  if (rand() < 0.5 && velocity_ > 0) {
+  float rand_float = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  if (rand_float < 0.5 && velocity_ > 0) {
     --velocity_;
   }
 }
