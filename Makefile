@@ -1,5 +1,5 @@
 CPPFLAGS=-std=c++11
-LDFLAGS=-lgraph
+LDFLAGS=-lSDL2 -lSDL2_gfx
 OBJS=drawing.o simple_network_builder.o simulation.o traffic.o
 
 %.o: %.cc

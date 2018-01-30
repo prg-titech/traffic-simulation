@@ -3,7 +3,11 @@
 
 class Cell;
 
-void init_gui();
+void init_gui(int num_cells);
+
+void update_gui();
+
+void destroy_gui();
 
 void draw_cell(Cell* cell);
 

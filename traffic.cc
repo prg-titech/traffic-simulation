@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "drawing.h"
 #include "traffic.h"
 
@@ -43,6 +45,9 @@ void Car::step_accelerate() {
   if (velocity_ < max_velocity_) {
     ++velocity_;
   }
+
+  assert(velocity_ <= max_velocity_);
+  assert(velocity_ <= path_.capacity());
 }
 
 void Car::step_constraint_velocity() {
@@ -75,13 +80,15 @@ void Car::step_constraint_velocity() {
     if (is_done) {
       break;
     } else {
-      distance++;
+      ++distance;
       ++path_iter;
     }
   }
 }
 
 void Car::step_extend_path() {
+  assert(path_.capacity() >= velocity_);
+
   int num_steps = velocity_ - path_.size();
   Cell* position = position_;
 
@@ -93,6 +100,8 @@ void Car::step_extend_path() {
     position = next_step(position);
     path_.push(position);
   }
+
+  assert(path_.size() >= velocity_);
 }
 
 void Car::step_slow_down() {

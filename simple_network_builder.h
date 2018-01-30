@@ -19,11 +19,9 @@ class Intersection {
     assert(y >= 0);
   }
 
-  ~Intersection();
+  void connect_one_way(Intersection* other, int max_velocity);
 
-  void connect_one_way(Intersection* other);
-
-  void connect_two_way(Intersection* other);
+  void connect_two_way(Intersection* other, int max_velocity);
 
   void connect_incoming(Street* street);
 
@@ -51,7 +49,8 @@ class Intersection {
 
 class Street {
  public:
-  Street(SimpleNetworkBuilder* builder, Intersection* from, Intersection* to);
+  Street(SimpleNetworkBuilder* builder, Intersection* from, Intersection* to,
+         int max_velocity);
 
   Cell* first_cell() { return first_cell_; }
   Cell* last_cell() { return last_cell_; }
@@ -72,6 +71,10 @@ class SimpleNetworkBuilder {
     for (auto it = intersections_.begin(); it != intersections_.end(); ++it) {
       delete *it;
     }
+
+    for (auto it = streets_.begin(); it != streets_.end(); ++it) {
+      delete *it;
+    }
   }
 
   Intersection* build_intersection(int x, int y) {
@@ -82,17 +85,17 @@ class SimpleNetworkBuilder {
 
   int cell_size() { return cell_size_; }
 
-  Cell* build_cell(int x, int y) {
+  Cell* build_cell(int x, int y, int max_velocity) {
     assert(x >= 0);
     assert(y >= 0);
 
-    auto* cell = new Cell(/*max_velocity=*/ 5, x, y);
+    auto* cell = new Cell(max_velocity, x, y);
     cells_.push_back(cell);
     return cell;
   }
 
-  void build_street(Intersection* from, Intersection* to) {
-    new Street(this, from, to);
+  Street* build_street(Intersection* from, Intersection* to, int max_velocity) {
+    streets_.push_back(new Street(this, from, to, max_velocity));
   }
 
   void build() {
@@ -114,6 +117,9 @@ class SimpleNetworkBuilder {
   std::vector<Intersection*> intersections_;
 
   std::vector<Cell*> cells_;
+
+  std::vector<Street*> streets_;
+
 };
 
 }
