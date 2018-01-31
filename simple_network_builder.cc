@@ -4,8 +4,8 @@
 
 namespace builder {
 
-void Intersection::connect_one_way(Intersection* other, int max_velocity) {
-  builder_->build_street(this, other, max_velocity);
+Street* Intersection::connect_one_way(Intersection* other, int max_velocity) {
+  return builder_->build_street(this, other, max_velocity);
 }
 
 void Intersection::connect_two_way(Intersection* other, int max_velocity) {
@@ -30,6 +30,8 @@ void Intersection::build() {
     for (auto in = incoming_streets_.begin();
          in != incoming_streets_.end(); ++in) {
       (*in)->last_cell()->connect_to((*out)->first_cell());
+      (*in)->last_cell()->set_max_velocity(max_velocity_);
+      (*out)->first_cell()->set_max_velocity(max_velocity_);
     }
   }
 }

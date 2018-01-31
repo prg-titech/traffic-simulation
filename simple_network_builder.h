@@ -13,13 +13,13 @@ class Street;
 
 class Intersection {
  public:
-  Intersection(SimpleNetworkBuilder* builder, int x, int y)
-      : builder_(builder), x_(x), y_(y) {
+  Intersection(SimpleNetworkBuilder* builder, int max_velocity, int x, int y)
+      : builder_(builder), max_velocity_(max_velocity), x_(x), y_(y) {
     assert(x >= 0);
     assert(y >= 0);
   }
 
-  void connect_one_way(Intersection* other, int max_velocity);
+  Street* connect_one_way(Intersection* other, int max_velocity);
 
   void connect_two_way(Intersection* other, int max_velocity);
 
@@ -45,6 +45,8 @@ class Intersection {
 
   // Incoming streets.
   std::vector<Street*> incoming_streets_;
+
+  int max_velocity_;
 };
 
 class Street {
@@ -77,8 +79,8 @@ class SimpleNetworkBuilder {
     }
   }
 
-  Intersection* build_intersection(int x, int y) {
-    auto* i = new Intersection(this, x, y);
+  Intersection* build_intersection(int max_velocity, int x, int y) {
+    auto* i = new Intersection(this, max_velocity, x, y);
     intersections_.push_back(i);
     return i;
   }
@@ -95,7 +97,9 @@ class SimpleNetworkBuilder {
   }
 
   Street* build_street(Intersection* from, Intersection* to, int max_velocity) {
-    streets_.push_back(new Street(this, from, to, max_velocity));
+    auto* street = new Street(this, from, to, max_velocity);
+    streets_.push_back(street);
+    return street;
   }
 
   void build() {

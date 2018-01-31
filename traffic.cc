@@ -114,3 +114,35 @@ void Car::step_slow_down() {
     --velocity_;
   }
 }
+
+
+void SharedSignalGroup::signal_go() {
+  for (auto it = cells_.begin(); it < cells_.end(); ++it) {
+    (*it)->remove_controller_max_velocity();
+  }
+}
+
+
+void SharedSignalGroup::signal_stop() {
+  for (auto it = cells_.begin(); it < cells_.end(); ++it) {
+    (*it)->set_controller_max_velocity(0);
+  }
+}
+
+
+void TrafficLight::step() {
+  timer_ = (timer_ + 1) % phase_time_;
+
+  if (timer_ == 0) {
+    signal_groups_[phase_]->signal_stop();
+    phase_ = (phase_ + 1) % signal_groups_.size();
+    signal_groups_[phase_]->signal_go();
+  }
+}
+
+
+void TrafficLight::initialize() {
+  for (auto it = signal_groups_.begin(); it != signal_groups_.end(); ++it) {
+    (*it)->signal_stop();
+  }
+}

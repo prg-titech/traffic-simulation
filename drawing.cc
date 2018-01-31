@@ -5,8 +5,9 @@
 #include "traffic.h"
 
 #define WIDTH 1500
-#define HEIGHT 1000
+#define HEIGHT 1500
 #define SCALE 1.5
+
 
 Cell** free_cells;
 int num_free_cells;
@@ -74,7 +75,7 @@ void update_gui() {
   }
 
   SDL_RenderPresent(renderer);
-  SDL_Delay(10);
+  SDL_Delay(100);
 }
 
 void destroy_gui() {

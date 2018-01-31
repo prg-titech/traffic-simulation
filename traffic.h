@@ -14,7 +14,8 @@
 class Cell {
  public:
   Cell(int max_velocity, int x, int y)
-      : is_free_(true), max_velocity_(max_velocity), x_(x), y_(y) {
+      : is_free_(true), max_velocity_(max_velocity),
+        controller_max_velocity_(max_velocity), x_(x), y_(y) {
     assert(x >= 0);
     assert(y >= 0);
   }
@@ -24,7 +25,11 @@ class Cell {
   }
 
   int max_velocity() const {
-    return max_velocity_;
+    if (controller_max_velocity_ < max_velocity_) {
+      return controller_max_velocity_;
+    } else {
+      return max_velocity_;
+    }
   }
 
   void draw();
@@ -49,9 +54,22 @@ class Cell {
   int x() { return x_; }
   int y() { return y_; }
 
+  void set_max_velocity(int velocity) {
+    max_velocity_ = controller_max_velocity_ = velocity;
+  }
+
+  void set_controller_max_velocity(int velocity) {
+    controller_max_velocity_ = velocity;
+  }
+
+  void remove_controller_max_velocity() {
+    controller_max_velocity_ = max_velocity_;
+  }
+
  private:
   bool is_free_;
   int max_velocity_;
+  int controller_max_velocity_;
 
   std::vector<Cell*> neighbors_;
 
@@ -96,6 +114,46 @@ class Car {
   fixed_size_queue<Cell*> path_;
 
   Cell* position_;
+};
+
+
+class SharedSignalGroup {
+ public:
+  SharedSignalGroup(std::initializer_list<Cell*> cells) : cells_(cells) {}
+
+  // Set traffic lights to green.
+  void signal_go();
+
+  // Set traffic lights to red.
+  void signal_stop();
+
+ private:
+  std::vector<Cell*> cells_;
+};
+
+
+class TrafficController {};
+
+class TrafficLight : public TrafficController {
+ public:
+  TrafficLight(int phase_time,
+               std::initializer_list<SharedSignalGroup*> signal_groups)
+      : phase_time_(phase_time), signal_groups_(signal_groups) {}
+
+  void step();
+
+  // Set all lights to red.
+  void initialize();
+
+ private:
+  int timer_;
+  const int phase_time_;
+
+  // Index into groups_. The specified signal group has a green light.
+  int phase_ = 0;
+
+  // Cells which are set to "green" at the same time.
+  std::vector<SharedSignalGroup*> signal_groups_;
 };
 
 #endif  // TRAFFIC_H
