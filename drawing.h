@@ -3,7 +3,7 @@
 
 class Cell;
 
-void init_gui(int num_cells);
+void init_gui(int num_cells, int size_x, int size_y, double scale_factor);
 
 void update_gui();
 

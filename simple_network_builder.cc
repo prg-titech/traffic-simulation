@@ -4,13 +4,16 @@
 
 namespace builder {
 
-Street* Intersection::connect_one_way(Intersection* other, int max_velocity) {
+Street* Intersection::connect_one_way(Intersection* other,
+                                      double max_velocity) {
   return builder_->build_street(this, other, max_velocity);
 }
 
-void Intersection::connect_two_way(Intersection* other, int max_velocity) {
-  this->connect_one_way(other, max_velocity);
-  other->connect_one_way(this, max_velocity);
+TwoWayStreet* Intersection::connect_two_way(Intersection* other,
+                                            double max_velocity) {
+  auto* first = this->connect_one_way(other, max_velocity);
+  auto* second = other->connect_one_way(this, max_velocity);
+  return new TwoWayStreet(first, second);
 }
 
 // Add an incoming street to this intersection.
@@ -24,6 +27,20 @@ void Intersection::connect_outgoing(Street* street) {
 }
 
 void Intersection::build() {
+  if (outgoing_streets_.size() == 0 && incoming_streets_.size() == 0) {
+    printf("Warning: Detected intersection without any edges.\n");
+    return;
+  }
+
+  if (outgoing_streets_.size() == 0) {
+    printf("Warning: Intersection has no outgoing edge! Sending to first incoming edge.\n");
+    outgoing_streets_.push_back(incoming_streets_[0]);
+  }
+
+  if (incoming_streets_.size() == 0) {
+    printf("Warning: Intersection has no incoming edge.\n");
+  }
+
   // Simple case: Connect every incoming street to every outgoing street.
   for (auto out = outgoing_streets_.begin();
        out != outgoing_streets_.end(); ++out) {
@@ -37,7 +54,11 @@ void Intersection::build() {
 }
 
 Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
-               Intersection* to, int max_velocity) {
+               Intersection* to, double max_velocity) {
+  if (from != to) {
+    printf("Warning: Detected self-loop during street construction.\n");
+  }
+
   // STEP 1: Create street.
   double dx = to->x() - from->x();
   double dy = to->y() - from->y();

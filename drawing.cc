@@ -4,10 +4,6 @@
 #include "drawing.h"
 #include "traffic.h"
 
-#define WIDTH 1500
-#define HEIGHT 1500
-#define SCALE 1.5
-
 
 Cell** free_cells;
 int num_free_cells;
@@ -18,8 +14,11 @@ int num_occupied_cells;
 SDL_Window* window;
 SDL_Renderer* renderer;
 
+double scale_factor_;
 
-void init_gui(int num_cells) {
+void init_gui(int num_cells, int size_x, int size_y, double scale_factor) {
+  scale_factor_ = scale_factor;
+
   num_free_cells = 0;
   free_cells = new Cell*[num_cells];
 
@@ -32,7 +31,7 @@ void init_gui(int num_cells) {
   }
 
   window = SDL_CreateWindow("SDL2_gfx test", 100, 100,
-                            WIDTH, HEIGHT, SDL_WINDOW_OPENGL); 
+                            size_x, size_y, SDL_WINDOW_OPENGL); 
   if (window == NULL) { 
     printf("SDL_CreateWindow Error: %s", SDL_GetError());
     SDL_Quit();
@@ -63,14 +62,14 @@ void update_gui() {
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 
   for (; num_free_cells > 0; --num_free_cells) {
-    filledCircleRGBA(renderer, free_cells[num_free_cells - 1]->x()*SCALE,
-                     free_cells[num_free_cells - 1]->y()*SCALE, 3,
+    filledCircleRGBA(renderer, free_cells[num_free_cells - 1]->x()*scale_factor_,
+                     free_cells[num_free_cells - 1]->y()*scale_factor_, 3,
                      255, 255, 255, 255);
   }
 
   for (; num_occupied_cells > 0; --num_occupied_cells) {
-    filledCircleRGBA(renderer, occupied_cells[num_occupied_cells - 1]->x()*SCALE,
-                     occupied_cells[num_occupied_cells - 1]->y()*SCALE, 3,
+    filledCircleRGBA(renderer, occupied_cells[num_occupied_cells - 1]->x()*scale_factor_,
+                     occupied_cells[num_occupied_cells - 1]->y()*scale_factor_, 3,
                      255, 0, 0, 255);
   }
 

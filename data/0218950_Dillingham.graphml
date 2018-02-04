@@ -1,0 +1,3934 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key attr.name="key" attr.type="long" for="edge" id="d12" />
+  <key attr.name="geometry" attr.type="string" for="edge" id="d11" />
+  <key attr.name="osmid" attr.type="string" for="edge" id="d10" />
+  <key attr.name="length" attr.type="string" for="edge" id="d9" />
+  <key attr.name="name" attr.type="string" for="edge" id="d8" />
+  <key attr.name="oneway" attr.type="string" for="edge" id="d7" />
+  <key attr.name="highway" attr.type="string" for="edge" id="d6" />
+  <key attr.name="x" attr.type="string" for="node" id="d5" />
+  <key attr.name="y" attr.type="string" for="node" id="d4" />
+  <key attr.name="osmid" attr.type="string" for="node" id="d3" />
+  <key attr.name="streets_per_node" attr.type="string" for="graph" id="d2" />
+  <key attr.name="name" attr.type="string" for="graph" id="d1" />
+  <key attr.name="crs" attr.type="string" for="graph" id="d0" />
+  <graph edgedefault="directed">
+    <data key="d0">{'init': 'epsg:4326'}</data>
+    <data key="d1">02_AK_0218950_Dillingham</data>
+    <data key="d2">{65568811: 3, 4451440066: 3, 65568598: 1, 65564937: 3, 65568522: 4, 65568267: 3, 65567984: 1, 65567502: 3, 65568783: 3, 65564760: 3, 65570834: 1, 65568558: 1, 65564950: 3, 65570328: 1, 65564953: 1, 65568538: 3, 65570331: 3, 65570332: 1, 65570593: 3, 65568542: 3, 65564959: 1, 65571360: 3, 65571617: 3, 65568546: 3, 65571875: 1, 65567269: 3, 65567548: 3, 65569067: 3, 65564716: 3, 65568813: 3, 65569070: 3, 65571375: 1, 65564720: 3, 65569329: 3, 65569330: 1, 65568819: 3, 65568821: 3, 4450375222: 1, 65568055: 3, 65568825: 3, 65568826: 1, 65566267: 3, 65564988: 3, 65568829: 1, 65569077: 3, 65570912: 3, 65566731: 3, 65569590: 3, 65569094: 3, 65568540: 3, 65566024: 3, 65568841: 1, 65567818: 1, 4451440205: 1, 4450375248: 1, 65569104: 3, 65564754: 3, 65568255: 3, 65568596: 3, 4450375253: 3, 65569366: 1, 65569112: 3, 65564761: 3, 65569114: 3, 65569338: 1, 65564767: 3, 65565024: 3, 65565026: 1, 4450375421: 1, 65571428: 1, 65565029: 3, 65565032: 1, 4451440060: 1, 65565927: 3, 65572460: 1, 65571440: 1, 65572465: 1, 65572212: 1, 65569912: 1, 4450375033: 1, 65571423: 1, 65568314: 3, 4450373758: 1, 65569153: 1, 65564802: 1, 65568387: 3, 65565316: 1, 65568534: 3, 65568393: 3, 65569164: 1, 65564813: 3, 65572238: 1, 4450374799: 3, 65568389: 4, 4450375057: 1, 65567374: 3, 65568151: 1, 65568154: 3, 65568495: 3, 65569181: 1, 65571742: 1, 65569136: 3, 65569442: 3, 4450214820: 1, 65568492: 3, 65564838: 3, 65568753: 3, 65568498: 3, 65567516: 1, 65571755: 1, 65569010: 3, 4450214830: 1, 65569437: 3, 65568328: 1, 65572274: 1, 65564853: 1, 65568438: 3, 65565111: 1, 4451440056: 1, 65564857: 3, 4451440058: 1, 65564859: 3, 65568188: 3, 4451440062: 1, 65568703: 3, 65569984: 1, 65572289: 1, 65564866: 3, 4451440067: 3, 4451440068: 3, 4451440069: 1, 65564833: 3, 4451440075: 3, 65568972: 3, 4451440078: 3, 4451440082: 3, 65569059: 3, 4451440085: 3, 65568434: 1, 65564939: 1, 65564890: 4, 65570953: 1, 65570642: 1, 65572061: 1, 4450374878: 3, 65568549: 3, 65567712: 3, 65567824: 1, 65568995: 3, 4450214842: 3, 65568801: 1, 65572583: 1, 65568233: 1, 65567979: 3, 65568236: 3, 65566261: 3, 65570031: 3, 65564829: 1, 4451440113: 3, 4451440114: 3, 4451440112: 1, 4451440096: 1, 65567719: 1, 65569017: 3, 4451440123: 1, 65570557: 1, 65564885: 4}</data>
+    <node id="65569067">
+      <data key="d3">65569067</data>
+      <data key="d4">59.0527642</data>
+      <data key="d5">-158.5700165</data>
+    </node>
+    <node id="65568598">
+      <data key="d3">65568598</data>
+      <data key="d4">59.0542614</data>
+      <data key="d5">-158.5670657</data>
+    </node>
+    <node id="65564937">
+      <data key="d3">65564937</data>
+      <data key="d4">59.0441779</data>
+      <data key="d5">-158.5003738</data>
+    </node>
+    <node id="65568522">
+      <data key="d3">65568522</data>
+      <data key="d4">59.0411032</data>
+      <data key="d5">-158.5028309</data>
+    </node>
+    <node id="65568267">
+      <data key="d3">65568267</data>
+      <data key="d4">59.0508079</data>
+      <data key="d5">-158.4926523</data>
+    </node>
+    <node id="65567502">
+      <data key="d3">65567502</data>
+      <data key="d4">59.030015</data>
+      <data key="d5">-158.522435</data>
+    </node>
+    <node id="65568783">
+      <data key="d3">65568783</data>
+      <data key="d4">59.0473379</data>
+      <data key="d5">-158.5440051</data>
+    </node>
+    <node id="65564760">
+      <data key="d3">65564760</data>
+      <data key="d4">59.0394889</data>
+      <data key="d5">-158.4633424</data>
+    </node>
+    <node id="65570834">
+      <data key="d3">65570834</data>
+      <data key="d4">59.031982</data>
+      <data key="d5">-158.515742</data>
+    </node>
+    <node id="65569070">
+      <data key="d3">65569070</data>
+      <data key="d4">59.0504033</data>
+      <data key="d5">-158.5701033</data>
+    </node>
+    <node id="65564950">
+      <data key="d3">65564950</data>
+      <data key="d4">59.0803649</data>
+      <data key="d5">-158.5870972</data>
+    </node>
+    <node id="65570328">
+      <data key="d3">65570328</data>
+      <data key="d4">59.0398219</data>
+      <data key="d5">-158.5206615</data>
+    </node>
+    <node id="65564953">
+      <data key="d3">65564953</data>
+      <data key="d4">59.0803007</data>
+      <data key="d5">-158.5890911</data>
+    </node>
+    <node id="65568538">
+      <data key="d3">65568538</data>
+      <data key="d4">59.0435929</data>
+      <data key="d5">-158.4971797</data>
+    </node>
+    <node id="65570331">
+      <data key="d3">65570331</data>
+      <data key="d4">59.0474521</data>
+      <data key="d5">-158.4565235</data>
+    </node>
+    <node id="65570332">
+      <data key="d3">65570332</data>
+      <data key="d4">59.0477724</data>
+      <data key="d5">-158.4550189</data>
+    </node>
+    <node id="65568542">
+      <data key="d3">65568542</data>
+      <data key="d4">59.0436424</data>
+      <data key="d5">-158.4955876</data>
+    </node>
+    <node id="65564959">
+      <data key="d3">65564959</data>
+      <data key="d4">59.0648297</data>
+      <data key="d5">-158.5855283</data>
+    </node>
+    <node id="65571360">
+      <data key="d3">65571360</data>
+      <data key="d4">59.0483411</data>
+      <data key="d5">-158.4570192</data>
+    </node>
+    <node id="65571617">
+      <data key="d3">65571617</data>
+      <data key="d4">59.0472636</data>
+      <data key="d5">-158.5519193</data>
+    </node>
+    <node id="65568546">
+      <data key="d3">65568546</data>
+      <data key="d4">59.0436478</data>
+      <data key="d5">-158.4942134</data>
+    </node>
+    <node id="65571875">
+      <data key="d3">65571875</data>
+      <data key="d4">59.037583</data>
+      <data key="d5">-158.55089</data>
+    </node>
+    <node id="65567269">
+      <data key="d3">65567269</data>
+      <data key="d4">59.0464484</data>
+      <data key="d5">-158.5658752</data>
+    </node>
+    <node id="65567516">
+      <data key="d3">65567516</data>
+      <data key="d4">59.029436</data>
+      <data key="d5">-158.517788</data>
+    </node>
+    <node id="65569181">
+      <data key="d3">65569181</data>
+      <data key="d4">59.069459</data>
+      <data key="d5">-158.587144</data>
+    </node>
+    <node id="65568811">
+      <data key="d3">65568811</data>
+      <data key="d4">59.0488485</data>
+      <data key="d5">-158.5548631</data>
+    </node>
+    <node id="65564716">
+      <data key="d3">65564716</data>
+      <data key="d4">59.0397905</data>
+      <data key="d5">-158.4680179</data>
+    </node>
+    <node id="65568813">
+      <data key="d3">65568813</data>
+      <data key="d4">59.0493406</data>
+      <data key="d5">-158.5541332</data>
+    </node>
+    <node id="65568558">
+      <data key="d3">65568558</data>
+      <data key="d4">59.0429751</data>
+      <data key="d5">-158.4851631</data>
+    </node>
+    <node id="65571375">
+      <data key="d3">65571375</data>
+      <data key="d4">59.0496595</data>
+      <data key="d5">-158.457426</data>
+    </node>
+    <node id="65564720">
+      <data key="d3">65564720</data>
+      <data key="d4">59.0393928</data>
+      <data key="d5">-158.4670758</data>
+    </node>
+    <node id="65569329">
+      <data key="d3">65569329</data>
+      <data key="d4">59.047152</data>
+      <data key="d5">-158.542047</data>
+    </node>
+    <node id="65569330">
+      <data key="d3">65569330</data>
+      <data key="d4">59.047963</data>
+      <data key="d5">-158.541782</data>
+    </node>
+    <node id="65568819">
+      <data key="d3">65568819</data>
+      <data key="d4">59.0515788</data>
+      <data key="d5">-158.5584187</data>
+    </node>
+    <node id="65568821">
+      <data key="d3">65568821</data>
+      <data key="d4">59.0811354</data>
+      <data key="d5">-158.5755428</data>
+    </node>
+    <node id="4450375222">
+      <data key="d3">4450375222</data>
+      <data key="d4">59.0506074</data>
+      <data key="d5">-158.5852479</data>
+    </node>
+    <node id="65568055">
+      <data key="d3">65568055</data>
+      <data key="d4">59.0683326</data>
+      <data key="d5">-158.4453622</data>
+    </node>
+    <node id="65568825">
+      <data key="d3">65568825</data>
+      <data key="d4">59.0807474</data>
+      <data key="d5">-158.5873493</data>
+    </node>
+    <node id="65568826">
+      <data key="d3">65568826</data>
+      <data key="d4">59.0792507</data>
+      <data key="d5">-158.5756202</data>
+    </node>
+    <node id="65566267">
+      <data key="d3">65566267</data>
+      <data key="d4">59.0384702</data>
+      <data key="d5">-158.5253512</data>
+    </node>
+    <node id="65564988">
+      <data key="d3">65564988</data>
+      <data key="d4">59.0423824</data>
+      <data key="d5">-158.4823775</data>
+    </node>
+    <node id="65568829">
+      <data key="d3">65568829</data>
+      <data key="d4">59.0839721</data>
+      <data key="d5">-158.5756072</data>
+    </node>
+    <node id="65569077">
+      <data key="d3">65569077</data>
+      <data key="d4">59.0488283</data>
+      <data key="d5">-158.5691089</data>
+    </node>
+    <node id="65570912">
+      <data key="d3">65570912</data>
+      <data key="d4">59.0514269</data>
+      <data key="d5">-158.5666418</data>
+    </node>
+    <node id="65566731">
+      <data key="d3">65566731</data>
+      <data key="d4">59.0074637</data>
+      <data key="d5">-158.5400222</data>
+    </node>
+    <node id="65569590">
+      <data key="d3">65569590</data>
+      <data key="d4">59.0495403</data>
+      <data key="d5">-158.4871865</data>
+    </node>
+    <node id="65569094">
+      <data key="d3">65569094</data>
+      <data key="d4">59.0447375</data>
+      <data key="d5">-158.5557604</data>
+    </node>
+    <node id="65566024">
+      <data key="d3">65566024</data>
+      <data key="d4">59.0483356</data>
+      <data key="d5">-158.5686399</data>
+    </node>
+    <node id="65568841">
+      <data key="d3">65568841</data>
+      <data key="d4">59.0432995</data>
+      <data key="d5">-158.5028004</data>
+    </node>
+    <node id="65567818">
+      <data key="d3">65567818</data>
+      <data key="d4">59.0444921</data>
+      <data key="d5">-158.5127794</data>
+    </node>
+    <node id="4451440205">
+      <data key="d3">4451440205</data>
+      <data key="d4">59.0652793</data>
+      <data key="d5">-158.4485198</data>
+    </node>
+    <node id="4450375248">
+      <data key="d3">4450375248</data>
+      <data key="d4">59.0516309</data>
+      <data key="d5">-158.564155</data>
+    </node>
+    <node id="65572274">
+      <data key="d3">65572274</data>
+      <data key="d4">59.0728266</data>
+      <data key="d5">-158.5859593</data>
+    </node>
+    <node id="65567824">
+      <data key="d3">65567824</data>
+      <data key="d4">59.0424542</data>
+      <data key="d5">-158.4930525</data>
+    </node>
+    <node id="65564754">
+      <data key="d3">65564754</data>
+      <data key="d4">59.0388588</data>
+      <data key="d5">-158.4658395</data>
+    </node>
+    <node id="65568596">
+      <data key="d3">65568596</data>
+      <data key="d4">59.0542745</data>
+      <data key="d5">-158.57126</data>
+    </node>
+    <node id="4450375253">
+      <data key="d3">4450375253</data>
+      <data key="d4">59.0520846</data>
+      <data key="d5">-158.5649685</data>
+    </node>
+    <node id="65569366">
+      <data key="d3">65569366</data>
+      <data key="d4">59.0491965</data>
+      <data key="d5">-158.5082414</data>
+    </node>
+    <node id="65569112">
+      <data key="d3">65569112</data>
+      <data key="d4">59.0415981</data>
+      <data key="d5">-158.5487788</data>
+    </node>
+    <node id="65564761">
+      <data key="d3">65564761</data>
+      <data key="d4">59.0400881</data>
+      <data key="d5">-158.4597701</data>
+    </node>
+    <node id="65569114">
+      <data key="d3">65569114</data>
+      <data key="d4">59.0414833</data>
+      <data key="d5">-158.5480021</data>
+    </node>
+    <node id="65569338">
+      <data key="d3">65569338</data>
+      <data key="d4">59.042335</data>
+      <data key="d5">-158.4941398</data>
+    </node>
+    <node id="65564767">
+      <data key="d3">65564767</data>
+      <data key="d4">59.0400645</data>
+      <data key="d5">-158.4580615</data>
+    </node>
+    <node id="65565024">
+      <data key="d3">65565024</data>
+      <data key="d4">59.0501911</data>
+      <data key="d5">-158.5611644</data>
+    </node>
+    <node id="65565026">
+      <data key="d3">65565026</data>
+      <data key="d4">59.0510449</data>
+      <data key="d5">-158.5629366</data>
+    </node>
+    <node id="65571428">
+      <data key="d3">65571428</data>
+      <data key="d4">59.0486006</data>
+      <data key="d5">-158.4554713</data>
+    </node>
+    <node id="65565029">
+      <data key="d3">65565029</data>
+      <data key="d4">59.0450292</data>
+      <data key="d5">-158.5013598</data>
+    </node>
+    <node id="65565032">
+      <data key="d3">65565032</data>
+      <data key="d4">59.0446756</data>
+      <data key="d5">-158.5028233</data>
+    </node>
+    <node id="65568188">
+      <data key="d3">65568188</data>
+      <data key="d4">59.030418</data>
+      <data key="d5">-158.522624</data>
+    </node>
+    <node id="65564866">
+      <data key="d3">65564866</data>
+      <data key="d4">59.0405643</data>
+      <data key="d5">-158.4633901</data>
+    </node>
+    <node id="65572583">
+      <data key="d3">65572583</data>
+      <data key="d4">59.050382</data>
+      <data key="d5">-158.5653543</data>
+    </node>
+    <node id="65572460">
+      <data key="d3">65572460</data>
+      <data key="d4">59.0398369</data>
+      <data key="d5">-158.519438</data>
+    </node>
+    <node id="65569136">
+      <data key="d3">65569136</data>
+      <data key="d4">59.0371634</data>
+      <data key="d5">-158.5320004</data>
+    </node>
+    <node id="65572465">
+      <data key="d3">65572465</data>
+      <data key="d4">59.052249</data>
+      <data key="d5">-158.5572911</data>
+    </node>
+    <node id="65572212">
+      <data key="d3">65572212</data>
+      <data key="d4">59.0395829</data>
+      <data key="d5">-158.5026532</data>
+    </node>
+    <node id="65566261">
+      <data key="d3">65566261</data>
+      <data key="d4">59.0392818</data>
+      <data key="d5">-158.5267093</data>
+    </node>
+    <node id="4451440123">
+      <data key="d3">4451440123</data>
+      <data key="d4">59.0425682</data>
+      <data key="d5">-158.4666997</data>
+    </node>
+    <node id="65569912">
+      <data key="d3">65569912</data>
+      <data key="d4">59.0554635</data>
+      <data key="d5">-158.5688304</data>
+    </node>
+    <node id="4450375033">
+      <data key="d3">4450375033</data>
+      <data key="d4">59.0451771</data>
+      <data key="d5">-158.5732101</data>
+    </node>
+    <node id="65571423">
+      <data key="d3">65571423</data>
+      <data key="d4">59.038231</data>
+      <data key="d5">-158.465058</data>
+    </node>
+    <node id="4450373758">
+      <data key="d3">4450373758</data>
+      <data key="d4">59.0366946</data>
+      <data key="d5">-158.4824013</data>
+    </node>
+    <node id="65571440">
+      <data key="d3">65571440</data>
+      <data key="d4">59.0443492</data>
+      <data key="d5">-158.4631511</data>
+    </node>
+    <node id="65569153">
+      <data key="d3">65569153</data>
+      <data key="d4">59.0400458</data>
+      <data key="d5">-158.5124908</data>
+    </node>
+    <node id="65564802">
+      <data key="d3">65564802</data>
+      <data key="d4">59.0401086</data>
+      <data key="d5">-158.4544393</data>
+    </node>
+    <node id="65568387">
+      <data key="d3">65568387</data>
+      <data key="d4">59.0434661</data>
+      <data key="d5">-158.4629836</data>
+    </node>
+    <node id="65565316">
+      <data key="d3">65565316</data>
+      <data key="d4">59.0508105</data>
+      <data key="d5">-158.5538727</data>
+    </node>
+    <node id="65568534">
+      <data key="d3">65568534</data>
+      <data key="d4">59.0435551</data>
+      <data key="d5">-158.4979116</data>
+    </node>
+    <node id="65568393">
+      <data key="d3">65568393</data>
+      <data key="d4">59.0416859</data>
+      <data key="d5">-158.457985</data>
+    </node>
+    <node id="65569164">
+      <data key="d3">65569164</data>
+      <data key="d4">59.0393849</data>
+      <data key="d5">-158.5541817</data>
+    </node>
+    <node id="65564813">
+      <data key="d3">65564813</data>
+      <data key="d4">59.070917</data>
+      <data key="d5">-158.5825527</data>
+    </node>
+    <node id="65572238">
+      <data key="d3">65572238</data>
+      <data key="d4">59.046948</data>
+      <data key="d5">-158.540072</data>
+    </node>
+    <node id="4450374799">
+      <data key="d3">4450374799</data>
+      <data key="d4">59.0380475</data>
+      <data key="d5">-158.4756028</data>
+    </node>
+    <node id="65568389">
+      <data key="d3">65568389</data>
+      <data key="d4">59.0425682</data>
+      <data key="d5">-158.4605653</data>
+    </node>
+    <node id="4450375057">
+      <data key="d3">4450375057</data>
+      <data key="d4">59.0467939</data>
+      <data key="d5">-158.5737251</data>
+    </node>
+    <node id="4451440067">
+      <data key="d3">4451440067</data>
+      <data key="d4">59.0392875</data>
+      <data key="d5">-158.4583848</data>
+    </node>
+    <node id="65567374">
+      <data key="d3">65567374</data>
+      <data key="d4">59.0404108</data>
+      <data key="d5">-158.4760749</data>
+    </node>
+    <node id="65568151">
+      <data key="d3">65568151</data>
+      <data key="d4">59.0828908</data>
+      <data key="d5">-158.5817974</data>
+    </node>
+    <node id="65568154">
+      <data key="d3">65568154</data>
+      <data key="d4">59.0830937</data>
+      <data key="d5">-158.5884024</data>
+    </node>
+    <node id="65570031">
+      <data key="d3">65570031</data>
+      <data key="d4">59.0396681</data>
+      <data key="d5">-158.4633484</data>
+    </node>
+    <node id="65569437">
+      <data key="d3">65569437</data>
+      <data key="d4">59.0404392</data>
+      <data key="d5">-158.5206987</data>
+    </node>
+    <node id="65571742">
+      <data key="d3">65571742</data>
+      <data key="d4">59.0441317</data>
+      <data key="d5">-158.4974114</data>
+    </node>
+    <node id="65564833">
+      <data key="d3">65564833</data>
+      <data key="d4">59.0655536</data>
+      <data key="d5">-158.5826424</data>
+    </node>
+    <node id="65569442">
+      <data key="d3">65569442</data>
+      <data key="d4">59.0405493</data>
+      <data key="d5">-158.5193392</data>
+    </node>
+    <node id="4450214820">
+      <data key="d3">4450214820</data>
+      <data key="d4">59.0411546</data>
+      <data key="d5">-158.4702514</data>
+    </node>
+    <node id="65564838">
+      <data key="d3">65564838</data>
+      <data key="d4">59.0655768</data>
+      <data key="d5">-158.5849133</data>
+    </node>
+    <node id="4451440113">
+      <data key="d3">4451440113</data>
+      <data key="d4">59.0419252</data>
+      <data key="d5">-158.4691369</data>
+    </node>
+    <node id="65568540">
+      <data key="d3">65568540</data>
+      <data key="d4">59.0436327</data>
+      <data key="d5">-158.4958954</data>
+    </node>
+    <node id="4451440085">
+      <data key="d3">4451440085</data>
+      <data key="d4">59.0401626</data>
+      <data key="d5">-158.46594</data>
+    </node>
+    <node id="65571755">
+      <data key="d3">65571755</data>
+      <data key="d4">59.0416896</data>
+      <data key="d5">-158.5060111</data>
+    </node>
+    <node id="4451440114">
+      <data key="d3">4451440114</data>
+      <data key="d4">59.042004</data>
+      <data key="d5">-158.5012105</data>
+    </node>
+    <node id="4450214830">
+      <data key="d3">4450214830</data>
+      <data key="d4">59.0436655</data>
+      <data key="d5">-158.4888189</data>
+    </node>
+    <node id="65564829">
+      <data key="d3">65564829</data>
+      <data key="d4">59.0709451</data>
+      <data key="d5">-158.5861328</data>
+    </node>
+    <node id="65568328">
+      <data key="d3">65568328</data>
+      <data key="d4">59.0685934</data>
+      <data key="d5">-158.4442516</data>
+    </node>
+    <node id="65568434">
+      <data key="d3">65568434</data>
+      <data key="d4">59.0015281</data>
+      <data key="d5">-158.5365707</data>
+    </node>
+    <node id="65564853">
+      <data key="d3">65564853</data>
+      <data key="d4">59.0406026</data>
+      <data key="d5">-158.4688638</data>
+    </node>
+    <node id="65568438">
+      <data key="d3">65568438</data>
+      <data key="d4">59.005459</data>
+      <data key="d5">-158.538692</data>
+    </node>
+    <node id="65565111">
+      <data key="d3">65565111</data>
+      <data key="d4">59.0433917</data>
+      <data key="d5">-158.4687961</data>
+    </node>
+    <node id="4451440056">
+      <data key="d3">4451440056</data>
+      <data key="d4">59.038035</data>
+      <data key="d5">-158.4626938</data>
+    </node>
+    <node id="65564857">
+      <data key="d3">65564857</data>
+      <data key="d4">59.0405938</data>
+      <data key="d5">-158.4660804</data>
+    </node>
+    <node id="4451440058">
+      <data key="d3">4451440058</data>
+      <data key="d4">59.0384886</data>
+      <data key="d5">-158.4680691</data>
+    </node>
+    <node id="65564859">
+      <data key="d3">65564859</data>
+      <data key="d4">59.0405914</data>
+      <data key="d5">-158.464121</data>
+    </node>
+    <node id="4451440060">
+      <data key="d3">4451440060</data>
+      <data key="d4">59.0387104</data>
+      <data key="d5">-158.4569463</data>
+    </node>
+    <node id="65570557">
+      <data key="d3">65570557</data>
+      <data key="d4">59.0453577</data>
+      <data key="d5">-158.4959144</data>
+    </node>
+    <node id="4451440062">
+      <data key="d3">4451440062</data>
+      <data key="d4">59.0388332</data>
+      <data key="d5">-158.4596347</data>
+    </node>
+    <node id="65568703">
+      <data key="d3">65568703</data>
+      <data key="d4">59.0404542</data>
+      <data key="d5">-158.5216316</data>
+    </node>
+    <node id="65569984">
+      <data key="d3">65569984</data>
+      <data key="d4">59.0415614</data>
+      <data key="d5">-158.4955416</data>
+    </node>
+    <node id="65572289">
+      <data key="d3">65572289</data>
+      <data key="d4">59.0660883</data>
+      <data key="d5">-158.5846715</data>
+    </node>
+    <node id="4451440066">
+      <data key="d3">4451440066</data>
+      <data key="d4">59.039287</data>
+      <data key="d5">-158.4584917</data>
+    </node>
+    <node id="65568314">
+      <data key="d3">65568314</data>
+      <data key="d4">59.0669069</data>
+      <data key="d5">-158.4532413</data>
+    </node>
+    <node id="4451440068">
+      <data key="d3">4451440068</data>
+      <data key="d4">59.0393001</data>
+      <data key="d5">-158.4594212</data>
+    </node>
+    <node id="4451440069">
+      <data key="d3">4451440069</data>
+      <data key="d4">59.0393066</data>
+      <data key="d5">-158.4545217</data>
+    </node>
+    <node id="65568236">
+      <data key="d3">65568236</data>
+      <data key="d4">59.0433592</data>
+      <data key="d5">-158.4990053</data>
+    </node>
+    <node id="65570593">
+      <data key="d3">65570593</data>
+      <data key="d4">59.0799423</data>
+      <data key="d5">-158.553241</data>
+    </node>
+    <node id="4451440075">
+      <data key="d3">4451440075</data>
+      <data key="d4">59.0397639</data>
+      <data key="d5">-158.4604513</data>
+    </node>
+    <node id="65568972">
+      <data key="d3">65568972</data>
+      <data key="d4">59.0420592</data>
+      <data key="d5">-158.4976056</data>
+    </node>
+    <node id="4451440078">
+      <data key="d3">4451440078</data>
+      <data key="d4">59.0398433</data>
+      <data key="d5">-158.4612094</data>
+    </node>
+    <node id="4451440082">
+      <data key="d3">4451440082</data>
+      <data key="d4">59.0400256</data>
+      <data key="d5">-158.458435</data>
+    </node>
+    <node id="65569059">
+      <data key="d3">65569059</data>
+      <data key="d4">59.0553323</data>
+      <data key="d5">-158.5752924</data>
+    </node>
+    <node id="65564885">
+      <data key="d3">65564885</data>
+      <data key="d4">59.0410201</data>
+      <data key="d5">-158.4595988</data>
+    </node>
+    <node id="65569010">
+      <data key="d3">65569010</data>
+      <data key="d4">59.073159</data>
+      <data key="d5">-158.584761</data>
+    </node>
+    <node id="65564939">
+      <data key="d3">65564939</data>
+      <data key="d4">59.0438045</data>
+      <data key="d5">-158.5015238</data>
+    </node>
+    <node id="65565927">
+      <data key="d3">65565927</data>
+      <data key="d4">59.040595</data>
+      <data key="d5">-158.5190946</data>
+    </node>
+    <node id="65564890">
+      <data key="d3">65564890</data>
+      <data key="d4">59.040995</data>
+      <data key="d5">-158.4579885</data>
+    </node>
+    <node id="65570953">
+      <data key="d3">65570953</data>
+      <data key="d4">59.044165</data>
+      <data key="d5">-158.4591609</data>
+    </node>
+    <node id="65572061">
+      <data key="d3">65572061</data>
+      <data key="d4">59.040844</data>
+      <data key="d5">-158.456869</data>
+    </node>
+    <node id="4450374878">
+      <data key="d3">4450374878</data>
+      <data key="d4">59.0412627</data>
+      <data key="d5">-158.4771361</data>
+    </node>
+    <node id="65568549">
+      <data key="d3">65568549</data>
+      <data key="d4">59.0436492</data>
+      <data key="d5">-158.4930695</data>
+    </node>
+    <node id="65567712">
+      <data key="d3">65567712</data>
+      <data key="d4">59.0416919</data>
+      <data key="d5">-158.5017396</data>
+    </node>
+    <node id="65569104">
+      <data key="d3">65569104</data>
+      <data key="d4">59.0422305</data>
+      <data key="d5">-158.5519108</data>
+    </node>
+    <node id="65568995">
+      <data key="d3">65568995</data>
+      <data key="d4">59.0864523</data>
+      <data key="d5">-158.5900631</data>
+    </node>
+    <node id="4450214842">
+      <data key="d3">4450214842</data>
+      <data key="d4">59.0561394</data>
+      <data key="d5">-158.4880223</data>
+    </node>
+    <node id="65568801">
+      <data key="d3">65568801</data>
+      <data key="d4">59.0482229</data>
+      <data key="d5">-158.5446031</data>
+    </node>
+    <node id="65567719">
+      <data key="d3">65567719</data>
+      <data key="d4">59.0427167</data>
+      <data key="d5">-158.503137</data>
+    </node>
+    <node id="65568233">
+      <data key="d3">65568233</data>
+      <data key="d4">59.026463</data>
+      <data key="d5">-158.524929</data>
+    </node>
+    <node id="65567979">
+      <data key="d3">65567979</data>
+      <data key="d4">59.02994</data>
+      <data key="d5">-158.522435</data>
+    </node>
+    <node id="65568492">
+      <data key="d3">65568492</data>
+      <data key="d4">59.0361786</data>
+      <data key="d5">-158.5292161</data>
+    </node>
+    <node id="65570642">
+      <data key="d3">65570642</data>
+      <data key="d4">59.035071</data>
+      <data key="d5">-158.536552</data>
+    </node>
+    <node id="65568495">
+      <data key="d3">65568495</data>
+      <data key="d4">59.0365747</data>
+      <data key="d5">-158.5287109</data>
+    </node>
+    <node id="65567984">
+      <data key="d3">65567984</data>
+      <data key="d4">59.02873</data>
+      <data key="d5">-158.519199</data>
+    </node>
+    <node id="65568753">
+      <data key="d3">65568753</data>
+      <data key="d4">59.0444136</data>
+      <data key="d5">-158.5391954</data>
+    </node>
+    <node id="65568498">
+      <data key="d3">65568498</data>
+      <data key="d4">59.0380516</data>
+      <data key="d5">-158.5269285</data>
+    </node>
+    <node id="4451440112">
+      <data key="d3">4451440112</data>
+      <data key="d4">59.0415379</data>
+      <data key="d5">-158.4962458</data>
+    </node>
+    <node id="4451440096">
+      <data key="d3">4451440096</data>
+      <data key="d4">59.0407817</data>
+      <data key="d5">-158.4948136</data>
+    </node>
+    <node id="65569017">
+      <data key="d3">65569017</data>
+      <data key="d4">59.0691833</data>
+      <data key="d5">-158.5820824</data>
+    </node>
+    <node id="65567548">
+      <data key="d3">65567548</data>
+      <data key="d4">59.0411539</data>
+      <data key="d5">-158.4746463</data>
+    </node>
+    <node id="4450375421">
+      <data key="d3">4450375421</data>
+      <data key="d4">59.0696035</data>
+      <data key="d5">-158.4398936</data>
+    </node>
+    <node id="65568255">
+      <data key="d3">65568255</data>
+      <data key="d4">59.0489541</data>
+      <data key="d5">-158.4983158</data>
+    </node>
+    <edge source="65569067" target="65568596">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">183.35833057711463</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5700165 59.0527642, -158.5704636 59.0535205, -158.57126 59.0542745)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569067" target="4450375253">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Diamond Willow Drive</data>
+      <data key="d9">316.8253192370918</data>
+      <data key="d10">8950251</data>
+      <data key="d11">LINESTRING (-158.5700165 59.0527642, -158.5668537 59.0527919, -158.5662471 59.0526792, -158.5655498 59.0524088, -158.5649685 59.0520846)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569067" target="65569070">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">263.16855957854204</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5700165 59.0527642, -158.5702061 59.0515674, -158.5701033 59.0504033)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568598" target="65568596">
+      <data key="d10">8949991</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Unicorn Lane</data>
+      <data key="d9">239.8992147749971</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564937" target="65564939">
+      <data key="d10">8949427</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">John Pearson Lane</data>
+      <data key="d9">77.806188715462</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564937" target="65568236">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">122.28363208704519</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.5003738 59.0441779, -158.4995309 59.0435299, -158.4990053 59.0433592)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564937" target="65565029">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">110.44344005389233</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.5003738 59.0441779, -158.5011234 59.0447688, -158.5013598 59.0450292)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568522" target="65567712">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">90.47836107526005</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568522" target="65566267">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">1714.2043486279026</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5028309 59.0411032, -158.5076339 59.0384099, -158.5121058 59.0357138, -158.5131385 59.0351556, -158.5138776 59.0350101, -158.5147264 59.0349458, -158.5157993 59.0351225, -158.5168507 59.0355199, -158.519445 59.03647, -158.5236326 59.0381852, -158.5244709 59.0384292, -158.5253512 59.0384702)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568522" target="65572212">
+      <data key="d10">8950480</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Larson Road</data>
+      <data key="d9">169.40269128846765</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568522" target="65571755">
+      <data key="d10">8950416</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Martin Street</data>
+      <data key="d9">193.29737302125537</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568267" target="4450214842">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">789.8072958920332</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4926523 59.0508079, -158.4916503 59.0513458, -158.4912438 59.0518121, -158.4911538 59.0521372, -158.4912728 59.0525193, -158.4915787 59.0531784, -158.4918193 59.0541857, -158.4919191 59.0547693, -158.4918382 59.0551851, -158.4916379 59.0554829, -158.4912524 59.0557698, -158.4903259 59.0561061, -158.4898755 59.0561362, -158.4880223 59.0561394)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568267" target="65569590">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kleepuk Hill Road</data>
+      <data key="d9">343.50939325720134</data>
+      <data key="d10">8950127</data>
+      <data key="d11">LINESTRING (-158.4926523 59.0508079, -158.4915755 59.0504816, -158.4871865 59.0495403)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568267" target="65568255">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">394.3750074717646</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4926523 59.0508079, -158.4944266 59.0498441, -158.4956639 59.0493849, -158.4965987 59.0491855, -158.4975077 59.0490747, -158.4980274 59.0490006, -158.4983158 59.0489541)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567502" target="65567516">
+      <data key="d10">8949822</data>
+      <data key="d6">residential</data>
+      <data key="d9">279.5426825608446</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.522435 59.030015, -158.520353 59.029773, -158.519661 59.029793, -158.518827 59.029548, -158.518442 59.029575, -158.517788 59.029436)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567502" target="65567979">
+      <data key="d10">8949955</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">8.341969146519123</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567502" target="65568188">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">46.371554922745986</data>
+      <data key="d10">8949955</data>
+      <data key="d11">LINESTRING (-158.522435 59.030015, -158.522435 59.030085, -158.522529 59.030251, -158.522624 59.030418)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568783" target="65568801">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">116.40227762147282</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5440051 59.0473379, -158.5439851 59.0474069, -158.5439671 59.0475069, -158.5439031 59.0477339, -158.5439191 59.0477789, -158.5439621 59.0479309, -158.5440421 59.0480019, -158.5440761 59.0480279, -158.5445061 59.0481939, -158.5446031 59.0482229)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568783" target="65568753">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">512.3199352172059</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5440051 59.0473379, -158.5440291 59.0472509, -158.5441461 59.0470299, -158.5443131 59.0465429, -158.5443181 59.0465319, -158.5441461 59.0461469, -158.5438231 59.0456939, -158.5435421 59.0453879, -158.5433041 59.0451489, -158.5429351 59.0449559, -158.5424801 59.0447639, -158.5391954 59.0444136)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568783" target="65569329">
+      <data key="d10">8950483</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Trumpeter Drive</data>
+      <data key="d9">113.90963284635002</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564760" target="65564754">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">163.84636863534496</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4633424 59.0394889, -158.4635339 59.0393191, -158.4638412 59.0392173, -158.4658395 59.0388588)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564760" target="4451440078">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">132.67838166756306</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4633424 59.0394889, -158.4616809 59.0398927, -158.4612094 59.0398433)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564760" target="65570031">
+      <data key="d10">8950195</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">2nd Avenue West</data>
+      <data key="d9">19.93470152464337</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570834" target="65568188">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Squaw Creek Road</data>
+      <data key="d9">480.0379696095797</data>
+      <data key="d10">8950293</data>
+      <data key="d11">LINESTRING (-158.515742 59.031982, -158.519809 59.030146, -158.520067 59.030065, -158.520534 59.030072, -158.521516 59.030177, -158.522349 59.030373, -158.522624 59.030418)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569070" target="65570912">
+      <data key="d10">8950304</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Black Spruce Drive</data>
+      <data key="d9">228.40010972514807</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569070" target="65569067">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">263.1685595784229</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5701033 59.0504033, -158.5702061 59.0515674, -158.5700165 59.0527642)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569070" target="65569077">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">184.446144646884</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5701033 59.0504033, -158.5698295 59.0498331, -158.5691089 59.0488283)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564950" target="65568825">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">44.917525296803504</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564950" target="65569010">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">839.4660394375667</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5870972 59.0803649, -158.5865667 59.079528, -158.5873392 59.0765398, -158.5872319 59.0760215, -158.584761 59.073159)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564950" target="65564953">
+      <data key="d10">8949428</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Salmonberry Circle</data>
+      <data key="d9">114.17893571010296</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570328" target="65569437">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Three Sister Road</data>
+      <data key="d9">70.58857109879033</data>
+      <data key="d10">8950226</data>
+      <data key="d11">LINESTRING (-158.5206615 59.0398219, -158.5207655 59.0399019, -158.5206987 59.0404392)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564953" target="65564950">
+      <data key="d10">8949428</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Salmonberry Circle</data>
+      <data key="d9">114.17893571010146</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568538" target="65568540">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">73.61210024260907</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568538" target="65568534">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">42.08490295674182</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568538" target="65571742">
+      <data key="d10">8950413</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Cedar Circle</data>
+      <data key="d9">61.37732928232888</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570331" target="65571360">
+      <data key="d10">8950357</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Tower Road</data>
+      <data key="d9">102.86594952898587</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570331" target="65568393">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Tower Road', 'East Street']</data>
+      <data key="d9">728.8587513208146</data>
+      <data key="d10">[8950357, 8950486]</data>
+      <data key="d11">LINESTRING (-158.4565235 59.0474521, -158.4552789 59.045172, -158.4558814 59.0440794, -158.4561389 59.0435689, -158.4562247 59.043086, -158.4564179 59.0422141, -158.4566883 59.0417448, -158.457985 59.0416859)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570331" target="65570332">
+      <data key="d10">8950227</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kokwok Circle</data>
+      <data key="d9">93.154400065006</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570332" target="65570331">
+      <data key="d10">8950227</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kokwok Circle</data>
+      <data key="d9">93.15440006518725</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568542" target="65569984">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Fairview Drive</data>
+      <data key="d9">231.47679998399184</data>
+      <data key="d10">8950189</data>
+      <data key="d11">LINESTRING (-158.4955876 59.0436424, -158.4955546 59.0421494, -158.4955416 59.0415614)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568542" target="65568546">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">78.62455658256252</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568542" target="65568540">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">17.643219085540828</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564959" target="65564838">
+      <data key="d10">8949430</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Salmonberry Circle</data>
+      <data key="d9">90.23103787961463</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571360" target="65570331">
+      <data key="d10">8950357</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Tower Road</data>
+      <data key="d9">102.86594952914768</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571360" target="65571428">
+      <data key="d10">8950371</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Okstokok Circle</data>
+      <data key="d9">93.13317454055795</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571360" target="65571375">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Tower Road</data>
+      <data key="d9">219.47725600719966</data>
+      <data key="d10">8950357</data>
+      <data key="d11">LINESTRING (-158.4570192 59.0483411, -158.457439 59.0488519, -158.45794 59.0490704, -158.458425 59.0492691, -158.4584885 59.0494376, -158.4581107 59.0495296, -158.457426 59.0496595)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571617" target="65570593">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Widgeon Lane', 'Emperor Road']</data>
+      <data key="d9">4407.6491637915715</data>
+      <data key="d10">[8950388, 8950135]</data>
+      <data key="d11">LINESTRING (-158.5519193 59.0472636, -158.5481171 59.049376, -158.549363 59.050553, -158.550016 59.051224, -158.5567486 59.054763, -158.5584357 59.0557036, -158.5591867 59.0564539, -158.5595729 59.0572814, -158.5596158 59.0598189, -158.5598733 59.0605801, -158.5607102 59.0613965, -158.5625985 59.0625769, -158.5633924 59.0633932, -158.5634997 59.0637131, -158.562856 59.0771794, -158.5626414 59.0776535, -158.5619547 59.0782489, -158.5609248 59.0786569, -158.5600235 59.0788002, -158.5588648 59.0788554, -158.5564187 59.0789215, -158.5553029 59.0789987, -158.5542729 59.0791862, -158.5538008 59.0794067, -158.553241 59.0799423)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571617" target="65568811">
+      <data key="d10">8950386</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Drive</data>
+      <data key="d9">243.79267538738736</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571617" target="65569094">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Drive</data>
+      <data key="d9">394.0791766626234</data>
+      <data key="d10">8950386</data>
+      <data key="d11">LINESTRING (-158.5519193 59.0472636, -158.5520743 59.0461461, -158.5537695 59.0451638, -158.5557604 59.0447375)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568546" target="65569338">
+      <data key="d10">8950091</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Brannon Road</data>
+      <data key="d9">146.0785347430858</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568546" target="65568549">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">65.44626086271352</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568546" target="65568542">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">78.62455658256171</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571875" target="65569112">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Arctic Avenue</data>
+      <data key="d9">462.76208720087834</data>
+      <data key="d10">8950434</data>
+      <data key="d11">LINESTRING (-158.55089 59.037583, -158.550584 59.038308, -158.5487788 59.0415981)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567269" target="65566024">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">262.82171398419007</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5658752 59.0464484, -158.5673121 59.0474317, -158.5686399 59.0483356)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567269" target="4450375033">
+      <data key="d10">8949784</data>
+      <data key="d6">residential</data>
+      <data key="d9">540.0910067125194</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5658752 59.0464484, -158.5686539 59.0447089, -158.568966 59.044513, -158.5693263 59.0444652, -158.5703026 59.0446914, -158.5709678 59.0447632, -158.5717617 59.0448018, -158.5723304 59.0448791, -158.5727166 59.0449674, -158.5732101 59.0451771)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567269" target="65569094">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">611.9439184405035</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5658752 59.0464484, -158.5644447 59.046071, -158.5612153 59.0455059, -158.5574388 59.0450976, -158.5557604 59.0447375)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567516" target="65567502">
+      <data key="d10">8949822</data>
+      <data key="d6">residential</data>
+      <data key="d9">279.54268256076404</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.517788 59.029436, -158.518442 59.029575, -158.518827 59.029548, -158.519661 59.029793, -158.520353 59.029773, -158.522435 59.030015)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569181" target="65569017">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Crowberry Lane</data>
+      <data key="d9">291.9856155022645</data>
+      <data key="d10">8950066</data>
+      <data key="d11">LINESTRING (-158.587144 59.069459, -158.584886 59.069444, -158.5820824 59.0691833)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568811" target="65565024">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">500.60938623612185</data>
+      <data key="d10">8950023</data>
+      <data key="d11">LINESTRING (-158.5548631 59.0488485, -158.5566109 59.0479583, -158.5611644 59.0501911)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568811" target="65571617">
+      <data key="d10">8950386</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Drive</data>
+      <data key="d9">243.79267538737813</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568811" target="65568813">
+      <data key="d10">8950023</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">68.84178399157462</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564716" target="65564720">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">69.7327302925231</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564716" target="4451440058">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Denny Way</data>
+      <data key="d9">151.4072079883381</data>
+      <data key="d10">8950399</data>
+      <data key="d11">LINESTRING (-158.4680179 59.0397905, -158.4681128 59.039626, -158.4680879 59.0394872, -158.4678367 59.0388118, -158.4680691 59.0386502, -158.4680691 59.0384886)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564716" target="65567548">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Kanakanak Road', 'Main Street East']</data>
+      <data key="d9">441.8130390568981</data>
+      <data key="d10">[8949408, 447963649]</data>
+      <data key="d11">LINESTRING (-158.4680179 59.0397905, -158.470485 59.0409359, -158.4713809 59.0412212, -158.4720091 59.0413311, -158.4726736 59.0413536, -158.4743976 59.0412034, -158.4746463 59.0411539)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568813" target="65568819">
+      <data key="d10">8950024</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">349.38108343877406</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568813" target="65568811">
+      <data key="d10">8950023</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">68.84178399161821</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568813" target="65565316">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Mallard Lane</data>
+      <data key="d9">227.35951040954444</data>
+      <data key="d10">[8950200, 8949486]</data>
+      <data key="d11">LINESTRING (-158.5541332 59.0493406, -158.5526417 59.0499805, -158.5527547 59.0500805, -158.5530517 59.0502635, -158.5538077 59.0507605, -158.5538727 59.0508105)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568558" target="65564988">
+      <data key="d10">447963649</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">172.4734246129164</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571375" target="65571360">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Tower Road</data>
+      <data key="d9">219.4772560072572</data>
+      <data key="d10">8950357</data>
+      <data key="d11">LINESTRING (-158.457426 59.0496595, -158.4581107 59.0495296, -158.4584885 59.0494376, -158.458425 59.0492691, -158.45794 59.0490704, -158.457439 59.0488519, -158.4570192 59.0483411)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564720" target="65564754">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">92.36967878478593</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564720" target="65564716">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">69.73273029249656</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564720" target="4451440085">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">North 3rd Street</data>
+      <data key="d9">108.27656088376796</data>
+      <data key="d10">8950487</data>
+      <data key="d11">LINESTRING (-158.4670758 59.0393928, -158.4666495 59.039778, -158.46594 59.0401626)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569329" target="65569330">
+      <data key="d10">8950087</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Canada Court</data>
+      <data key="d9">91.46949529218843</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569329" target="65572238">
+      <data key="d10">8950483</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Trumpeter Drive</data>
+      <data key="d9">115.24056204459436</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569329" target="65568783">
+      <data key="d10">8950483</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Trumpeter Drive</data>
+      <data key="d9">113.90963284641005</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569330" target="65569329">
+      <data key="d10">8950087</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Canada Court</data>
+      <data key="d9">91.46949529211555</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568819" target="65565024">
+      <data key="d10">8950024</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">220.20536004762155</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568819" target="65572465">
+      <data key="d10">8950519</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Teal Lane</data>
+      <data key="d9">98.57369673787478</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568819" target="65568813">
+      <data key="d10">8950024</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">349.3810834384922</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568821" target="65568825">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aspen Road</data>
+      <data key="d9">682.0482221409706</data>
+      <data key="d10">8950027</data>
+      <data key="d11">LINESTRING (-158.5755428 59.0811354, -158.5852792 59.0811267, -158.5873493 59.0807474)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568821" target="65568826">
+      <data key="d10">8950028</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Spruce Street</data>
+      <data key="d9">209.67479155272125</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568821" target="65568829">
+      <data key="d10">8950028</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Spruce Street</data>
+      <data key="d9">315.536982552653</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375222" target="65569077">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Shannon Lake Road</data>
+      <data key="d9">1091.2228461000184</data>
+      <data key="d10">8950167</data>
+      <data key="d11">LINESTRING (-158.5852479 59.0506074, -158.5849582 59.0509715, -158.5845398 59.051275, -158.5839497 59.0513798, -158.5831021 59.0513081, -158.5820614 59.0513136, -158.5802053 59.0517274, -158.5794221 59.0518653, -158.5789286 59.0517826, -158.5755544 59.0501825, -158.5746639 59.0498238, -158.5742616 59.0497162, -158.5734998 59.049548, -158.5729138 59.0493529, -158.572303 59.0491345, -158.5691089 59.0488283)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568055" target="65568328">
+      <data key="d10">8949963</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">69.80735772325052</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568055" target="65568314">
+      <data key="d10">8949963</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">477.56921076676014</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568055" target="4450375421">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Yako Road</data>
+      <data key="d9">566.3425423390305</data>
+      <data key="d10">8949932</data>
+      <data key="d11">LINESTRING (-158.4453622 59.0683326, -158.4447136 59.0681411, -158.4438194 59.0677077, -158.4433322 59.0674982, -158.4431176 59.0674651, -158.4429245 59.0675699, -158.4424203 59.0680166, -158.4417658 59.0684247, -158.4412937 59.0685901, -158.4409397 59.0686342, -158.4405534 59.0685515, -158.4401994 59.0684578, -158.4399741 59.0684523, -158.4397381 59.0685074, -158.4397166 59.0686729, -158.4397112 59.068819, -158.4399955 59.0690382, -158.4403764 59.0693001, -158.4398936 59.0696035)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568825" target="65568154">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">271.43390768015576</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5873493 59.0807474, -158.5880258 59.0814354, -158.5884024 59.0830937)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568825" target="65568821">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aspen Road</data>
+      <data key="d9">682.0482221410209</data>
+      <data key="d10">8950027</data>
+      <data key="d11">LINESTRING (-158.5873493 59.0807474, -158.5852792 59.0811267, -158.5755428 59.0811354)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568825" target="65564950">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">44.91752529690289</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568826" target="65568821">
+      <data key="d10">8950028</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Spruce Street</data>
+      <data key="d9">209.67479155290488</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566267" target="65568498">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">103.8149802544162</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5253512 59.0384702, -158.525609 59.0384521, -158.526048 59.0383795, -158.5264378 59.0382699, -158.5269285 59.0380516)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566267" target="65568522">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">1714.204348627439</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5253512 59.0384702, -158.5244709 59.0384292, -158.5236326 59.0381852, -158.519445 59.03647, -158.5168507 59.0355199, -158.5157993 59.0351225, -158.5147264 59.0349458, -158.5138776 59.0350101, -158.5131385 59.0351556, -158.5121058 59.0357138, -158.5076339 59.0384099, -158.5028309 59.0411032)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566267" target="65566261">
+      <data key="d10">8949633</data>
+      <data key="d6">residential</data>
+      <data key="d9">119.7560347239351</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5253512 59.0384702, -158.5257243 59.0387736, -158.5267093 59.0392818)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564988" target="4450374878">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">324.768178874094</data>
+      <data key="d10">447963649</data>
+      <data key="d11">LINESTRING (-158.4823775 59.0423824, -158.478784 59.0415907, -158.4771361 59.0412627)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564988" target="4450373758">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">North Pacific Court</data>
+      <data key="d9">678.3819328791985</data>
+      <data key="d10">8949440</data>
+      <data key="d11">LINESTRING (-158.4823775 59.0423824, -158.4824515 59.0421844, -158.4823476 59.0418498, -158.482117 59.041571, -158.4816878 59.0413834, -158.4813606 59.0411323, -158.4811245 59.0408453, -158.4807276 59.0396062, -158.4807705 59.0394461, -158.4818219 59.0384443, -158.4821438 59.038, -158.4823959 59.0374784, -158.4824281 59.037161, -158.4824013 59.0366946)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564988" target="65568558">
+      <data key="d10">447963649</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">172.47342461294681</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568829" target="65568821">
+      <data key="d10">8950028</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Spruce Street</data>
+      <data key="d9">315.5369825522657</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569077" target="65566024">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">61.01613962413955</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569077" target="4450375222">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Shannon Lake Road</data>
+      <data key="d9">1091.2228460994568</data>
+      <data key="d10">8950167</data>
+      <data key="d11">LINESTRING (-158.5691089 59.0488283, -158.572303 59.0491345, -158.5729138 59.0493529, -158.5734998 59.049548, -158.5742616 59.0497162, -158.5746639 59.0498238, -158.5755544 59.0501825, -158.5789286 59.0517826, -158.5794221 59.0518653, -158.5802053 59.0517274, -158.5820614 59.0513136, -158.5831021 59.0513081, -158.5839497 59.0513798, -158.5845398 59.051275, -158.5849582 59.0509715, -158.5852479 59.0506074)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569077" target="65569070">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">184.44614464751194</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5691089 59.0488283, -158.5698295 59.0498331, -158.5701033 59.0504033)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570912" target="4450375253">
+      <data key="d10">447976968</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d9">120.46677517984865</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570912" target="65569070">
+      <data key="d10">8950304</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Black Spruce Drive</data>
+      <data key="d9">228.40010972501702</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570912" target="65572583">
+      <data key="d10">8950530</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Circle</data>
+      <data key="d9">137.58976219999627</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566731" target="65568492">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">3406.6870307209956</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5400222 59.0074637, -158.5417443 59.0104804, -158.541773 59.014565, -158.5397075 59.0214045, -158.5383754 59.0240256, -158.5378068 59.0259195, -158.5375386 59.026814, -158.537067 59.027807, -158.5355616 59.0300142, -158.5355216 59.0306291, -158.5358005 59.0315235, -158.5359185 59.0322467, -158.5357361 59.0326166, -158.5353606 59.0329616, -158.5332041 59.0343113, -158.5306617 59.0352318, -158.5300534 59.035505, -158.5292161 59.0361786)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566731" target="65568438">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">235.6320519766862</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566731" target="65568438">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Chuthmok Road</data>
+      <data key="d9">537.3357862585483</data>
+      <data key="d10">[8949712, 8950390]</data>
+      <data key="d11">LINESTRING (-158.5400222 59.0074637, -158.538233 59.006312, -158.536329 59.005996, -158.535468 59.005623, -158.535495 59.005525, -158.538692 59.005459)</data>
+      <data key="d12">1</data>
+    </edge>
+    <edge source="65569590" target="65568267">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kleepuk Hill Road</data>
+      <data key="d9">343.5093932574801</data>
+      <data key="d10">8950127</data>
+      <data key="d11">LINESTRING (-158.4871865 59.0495403, -158.4915755 59.0504816, -158.4926523 59.0508079)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569590" target="65569590">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kleepuk Hill Road</data>
+      <data key="d9">190.4803954937845</data>
+      <data key="d10">8950125</data>
+      <data key="d11">LINESTRING (-158.4871865 59.0495403, -158.4867424 59.0494547, -158.4864378 59.0493622, -158.4863349 59.0492522, -158.4864817 59.0490717, -158.4866541 59.0489473, -158.4870675 59.0490124, -158.487276 59.0490901, -158.487328 59.0491769, -158.4871865 59.0495403)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569590" target="65569590">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kleepuk Hill Road</data>
+      <data key="d9">190.48039549390032</data>
+      <data key="d10">8950125</data>
+      <data key="d11">LINESTRING (-158.4871865 59.0495403, -158.487328 59.0491769, -158.487276 59.0490901, -158.4870675 59.0490124, -158.4866541 59.0489473, -158.4864817 59.0490717, -158.4863349 59.0492522, -158.4864378 59.0493622, -158.4867424 59.0494547, -158.4871865 59.0495403)</data>
+      <data key="d12">1</data>
+    </edge>
+    <edge source="65569094" target="65569104">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">363.86311591740304</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5557604 59.0447375, -158.5546814 59.0443553, -158.5537909 59.043969, -158.5531687 59.0433178, -158.552482 59.0425948, -158.5519108 59.0422305)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569094" target="65571617">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Drive</data>
+      <data key="d9">394.07917666243884</data>
+      <data key="d10">8950386</data>
+      <data key="d11">LINESTRING (-158.5557604 59.0447375, -158.5537695 59.0451638, -158.5520743 59.0461461, -158.5519193 59.0472636)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569094" target="65567269">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">611.9439184404513</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5557604 59.0447375, -158.5574388 59.0450976, -158.5612153 59.0455059, -158.5644447 59.046071, -158.5658752 59.0464484)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566024" target="4450375057">
+      <data key="d10">8949587</data>
+      <data key="d6">residential</data>
+      <data key="d9">339.85716739795856</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5686399 59.0483356, -158.571895 59.0471606, -158.5737251 59.0467939)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566024" target="65569077">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">61.01613962399114</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566024" target="65567269">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">262.8217139840516</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5686399 59.0483356, -158.5673121 59.0474317, -158.5658752 59.0464484)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568841" target="4451440114">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Sutherland Road</data>
+      <data key="d9">170.46369917304824</data>
+      <data key="d10">8950032</data>
+      <data key="d11">LINESTRING (-158.5028004 59.0432995, -158.5018955 59.042525, -158.5012105 59.042004)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567818" target="65565927">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">571.574922160357</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5127794 59.0444921, -158.5145143 59.0428235, -158.5154007 59.0423726, -158.5181382 59.0409788, -158.5190946 59.040595)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440205" target="65568314">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Maqi Circle</data>
+      <data key="d9">355.6991479899264</data>
+      <data key="d10">8950074</data>
+      <data key="d11">LINESTRING (-158.4485198 59.0652793, -158.4487397 59.0652664, -158.4490224 59.0652729, -158.4492045 59.0653374, -158.4494809 59.0654343, -158.4499206 59.0654117, -158.4507435 59.0654537, -158.4514533 59.0656216, -158.4520374 59.065896, -158.4525902 59.06629, -158.4529518 59.0665471, -158.4532413 59.0669069)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375248" target="4450375253">
+      <data key="d10">8950251</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Diamond Willow Drive</data>
+      <data key="d9">68.64221230715653</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572274" target="65569010">
+      <data key="d10">8950494</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Mossberry Circle</data>
+      <data key="d9">77.84047160340837</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567824" target="65568549">
+      <data key="d10">8950479</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">New Windmill Road</data>
+      <data key="d9">132.91893380123676</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564754" target="65564720">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">92.36967878470257</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564754" target="65564760">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">163.8463686355395</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4658395 59.0388588, -158.4638412 59.0392173, -158.4635339 59.0393191, -158.4633424 59.0394889)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564754" target="65571423">
+      <data key="d10">8950369</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue West</data>
+      <data key="d9">82.91977091333302</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568596" target="65569067">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">183.3583305771819</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.57126 59.0542745, -158.5704636 59.0535205, -158.5700165 59.0527642)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568596" target="65569059">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">260.3123414121256</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.57126 59.0542745, -158.5731243 59.0548998, -158.5752924 59.0553323)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568596" target="65568598">
+      <data key="d10">8949991</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Unicorn Lane</data>
+      <data key="d9">239.89921477499934</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375253" target="65570912">
+      <data key="d10">447976968</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d9">120.46677517962053</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375253" target="4450375248">
+      <data key="d10">8950251</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Diamond Willow Drive</data>
+      <data key="d9">68.6422123072992</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375253" target="65569067">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Diamond Willow Drive</data>
+      <data key="d9">316.8253192373825</data>
+      <data key="d10">8950251</data>
+      <data key="d11">LINESTRING (-158.5649685 59.0520846, -158.5655498 59.0524088, -158.5662471 59.0526792, -158.5668537 59.0527919, -158.5700165 59.0527642)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569366" target="65568255">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">1399.8838703410443</data>
+      <data key="d10">8950104</data>
+      <data key="d11">LINESTRING (-158.5082414 59.0491965, -158.5078569 59.0494679, -158.5073185 59.0496709, -158.5069207 59.0497826, -158.5065197 59.0498179, -158.5056428 59.0498439, -158.5050988 59.0498509, -158.5041799 59.049801, -158.5020934 59.0497668, -158.5017847 59.0498688, -158.5012729 59.0500639, -158.5006829 59.0506619, -158.4987171 59.0527141, -158.4984081 59.053031, -158.4981615 59.0532301, -158.4979883 59.0532727, -158.497723 59.0532637, -158.4968902 59.0530736, -158.4966572 59.0529567, -158.4966431 59.0528041, -158.4969705 59.0525027, -158.4981183 59.0513052, -158.4985746 59.0507934, -158.4986487 59.050425, -158.4985358 59.049908, -158.498438 59.0495482, -158.4983158 59.0489541)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569112" target="65569104">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">192.51094045902988</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569112" target="65569114">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">46.238169123222065</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569112" target="65571875">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Arctic Avenue</data>
+      <data key="d9">462.7620872011355</data>
+      <data key="d10">8950434</data>
+      <data key="d11">LINESTRING (-158.5487788 59.0415981, -158.550584 59.038308, -158.55089 59.037583)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564761" target="4451440082">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">76.72887910961643</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4597701 59.0400881, -158.4590026 59.04006, -158.458435 59.0400256)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564761" target="4451440075">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">53.09952452232757</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564761" target="65564885">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">105.3959478944657</data>
+      <data key="d10">447963648</data>
+      <data key="d11">LINESTRING (-158.4597701 59.0400881, -158.4596662 59.040268, -158.459528 59.0407106, -158.4595988 59.0410201)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569114" target="65569112">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">46.2381691231556</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569114" target="65568753">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Lupine Drive</data>
+      <data key="d9">614.577612139638</data>
+      <data key="d10">8950083</data>
+      <data key="d11">LINESTRING (-158.5480021 59.0414833, -158.547853 59.0417975, -158.5473 59.0420785, -158.5456614 59.0423404, -158.54327 59.0431331, -158.5391954 59.0444136)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569114" target="65569136">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">1066.9318916746179</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5480021 59.0414833, -158.5465946 59.0412666, -158.5431944 59.0408434, -158.5420662 59.0404052, -158.5367661 59.0378872, -158.5358859 59.0377408, -158.5351119 59.0376634, -158.5334275 59.0375664, -158.5327428 59.0374357, -158.5320004 59.0371634)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569338" target="65568546">
+      <data key="d10">8950091</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Brannon Road</data>
+      <data key="d9">146.07853474288342</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564767" target="4451440082">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">22.147785174677463</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4580615 59.0400645, -158.4582654 59.0400256, -158.458435 59.0400256)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564767" target="65564890">
+      <data key="d10">8950063</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">103.58028352962498</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564767" target="65564802">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">207.31683721666724</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565024" target="65568819">
+      <data key="d10">8950024</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">220.20536004752765</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565024" target="65565026">
+      <data key="d10">8949442</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kingfisher Lane</data>
+      <data key="d9">138.9054804152686</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565024" target="65568811">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nerka Loop</data>
+      <data key="d9">500.60938623593347</data>
+      <data key="d10">8950023</data>
+      <data key="d11">LINESTRING (-158.5611644 59.0501911, -158.5566109 59.0479583, -158.5548631 59.0488485)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565026" target="65565024">
+      <data key="d10">8949442</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kingfisher Lane</data>
+      <data key="d9">138.90548041515476</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571428" target="65571360">
+      <data key="d10">8950371</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Okstokok Circle</data>
+      <data key="d9">93.13317454049015</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565029" target="65565032">
+      <data key="d10">8949443</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Pleier Road</data>
+      <data key="d9">92.50552114274856</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565029" target="65564937">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">110.44344005363739</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.5013598 59.0450292, -158.5011234 59.0447688, -158.5003738 59.0441779)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565029" target="65568255">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">530.3364637975699</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.5013598 59.0450292, -158.501372 59.0452234, -158.501417 59.0473474, -158.501369 59.0476524, -158.501011 59.0480044, -158.500531 59.0483894, -158.499789 59.0486894, -158.49907 59.0488404, -158.4983158 59.0489541)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565032" target="65565029">
+      <data key="d10">8949443</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Pleier Road</data>
+      <data key="d9">92.50552114279151</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568188" target="65570834">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Squaw Creek Road</data>
+      <data key="d9">480.0379696096188</data>
+      <data key="d10">8950293</data>
+      <data key="d11">LINESTRING (-158.522624 59.030418, -158.522349 59.030373, -158.521516 59.030177, -158.520534 59.030072, -158.520067 59.030065, -158.519809 59.030146, -158.515742 59.031982)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568188" target="65567502">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">46.37155492258028</data>
+      <data key="d10">8949955</data>
+      <data key="d11">LINESTRING (-158.522624 59.030418, -158.522529 59.030251, -158.522435 59.030085, -158.522435 59.030015)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568188" target="65568495">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Squaw Creek Road</data>
+      <data key="d9">854.5474131174194</data>
+      <data key="d10">8950293</data>
+      <data key="d11">LINESTRING (-158.522624 59.030418, -158.522816 59.030449, -158.52355 59.030873, -158.524073 59.031386, -158.5240461 59.0334278, -158.5237866 59.0339324, -158.5237792 59.0342244, -158.5238812 59.034485, -158.5242948 59.0346739, -158.5256963 59.0351648, -158.5265376 59.0358841, -158.5287109 59.0365747)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564866" target="65564859">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">41.929282287372985</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564866" target="65564885">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">229.79896043063778</data>
+      <data key="d10">8949418</data>
+      <data key="d11">LINESTRING (-158.4633901 59.0405643, -158.4625869 59.040826, -158.4618145 59.0410081, -158.4595988 59.0410201)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564866" target="65570031">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">2nd Avenue West</data>
+      <data key="d9">99.71402039089733</data>
+      <data key="d10">8950195</data>
+      <data key="d11">LINESTRING (-158.4633901 59.0405643, -158.463357 59.0400273, -158.4633484 59.0396681)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572583" target="65570912">
+      <data key="d10">8950530</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Circle</data>
+      <data key="d9">137.58976220015097</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572460" target="65569442">
+      <data key="d10">8950518</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">McGill Road</data>
+      <data key="d9">79.43899356451132</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569136" target="65569114">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">1066.9318916745888</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5320004 59.0371634, -158.5327428 59.0374357, -158.5334275 59.0375664, -158.5351119 59.0376634, -158.5358859 59.0377408, -158.5367661 59.0378872, -158.5420662 59.0404052, -158.5431944 59.0408434, -158.5465946 59.0412666, -158.5480021 59.0414833)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569136" target="65568492">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">193.3503432488018</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569136" target="65570642">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nina Way</data>
+      <data key="d9">387.13615362850123</data>
+      <data key="d10">8950262</data>
+      <data key="d11">LINESTRING (-158.5320004 59.0371634, -158.533133 59.036617, -158.533615 59.036795, -158.533976 59.036778, -158.534206 59.036744, -158.534436 59.036635, -158.534813 59.036383, -158.536552 59.035071)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572465" target="65568819">
+      <data key="d10">8950519</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Teal Lane</data>
+      <data key="d9">98.57369673775212</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572212" target="65568522">
+      <data key="d10">8950480</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Larson Road</data>
+      <data key="d9">169.4026912883317</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566261" target="65568498">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">140.59793111216152</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5267093 59.0392818, -158.5269358 59.0390157, -158.5270037 59.0388868, -158.527025 59.0387532, -158.527044 59.0384687, -158.5269285 59.0380516)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566261" target="65566267">
+      <data key="d10">8949633</data>
+      <data key="d6">residential</data>
+      <data key="d9">119.75603472418547</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5267093 59.0392818, -158.5257243 59.0387736, -158.5253512 59.0384702)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65566261" target="65568703">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">336.6846986202502</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5267093 59.0392818, -158.5265093 59.0395221, -158.5259836 59.0398284, -158.5254579 59.0400354, -158.5249 59.040143, -158.5216316 59.0404542)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440123" target="4451440113">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">E Street West</data>
+      <data key="d9">169.10961935695798</data>
+      <data key="d10">448096671</data>
+      <data key="d11">LINESTRING (-158.4666997 59.0425682, -158.4667814 59.0423485, -158.4669321 59.0422677, -158.4691369 59.0419252)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569912" target="65569059">
+      <data key="d10">8950171</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Agulawok Drive</data>
+      <data key="d9">369.8726927747893</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375033" target="65567269">
+      <data key="d10">8949784</data>
+      <data key="d6">residential</data>
+      <data key="d9">540.0910067121365</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5732101 59.0451771, -158.5727166 59.0449674, -158.5723304 59.0448791, -158.5717617 59.0448018, -158.5709678 59.0447632, -158.5703026 59.0446914, -158.5693263 59.0444652, -158.568966 59.044513, -158.5686539 59.0447089, -158.5658752 59.0464484)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571423" target="65564754">
+      <data key="d10">8950369</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue West</data>
+      <data key="d9">82.91977091345878</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450373758" target="65564988">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">North Pacific Court</data>
+      <data key="d9">678.3819328794482</data>
+      <data key="d10">8949440</data>
+      <data key="d11">LINESTRING (-158.4824013 59.0366946, -158.4824281 59.037161, -158.4823959 59.0374784, -158.4821438 59.038, -158.4818219 59.0384443, -158.4807705 59.0394461, -158.4807276 59.0396062, -158.4811245 59.0408453, -158.4813606 59.0411323, -158.4816878 59.0413834, -158.482117 59.041571, -158.4823476 59.0418498, -158.4824515 59.0421844, -158.4823775 59.0423824)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571440" target="65568387">
+      <data key="d10">8950375</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">West 2nd Avenue</data>
+      <data key="d9">98.6902830975952</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569153" target="65565927">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Spur Road</data>
+      <data key="d9">392.71012942144006</data>
+      <data key="d10">8950060</data>
+      <data key="d11">LINESTRING (-158.5124908 59.0400458, -158.513675 59.039991, -158.516429 59.0400389, -158.5185566 59.0403662, -158.5190946 59.040595)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564802" target="65564767">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">207.31683721667346</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568387" target="65571440">
+      <data key="d10">8950375</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">West 2nd Avenue</data>
+      <data key="d9">98.69028309786117</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568387" target="65564859">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Seward Street', 'East Street West']</data>
+      <data key="d9">373.2355706629867</data>
+      <data key="d10">[8950081, 8949973]</data>
+      <data key="d11">LINESTRING (-158.4629836 59.0434661, -158.4637456 59.0434475, -158.4642839 59.0431379, -158.464121 59.0405914)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568387" target="65568389">
+      <data key="d10">8949973</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">East Street West</data>
+      <data key="d9">170.63937163655444</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565316" target="65568813">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Mallard Lane</data>
+      <data key="d9">227.35951040944872</data>
+      <data key="d10">[8950200, 8949486]</data>
+      <data key="d11">LINESTRING (-158.5538727 59.0508105, -158.5538077 59.0507605, -158.5530517 59.0502635, -158.5527547 59.0500805, -158.5526417 59.0499805, -158.5541332 59.0493406)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568534" target="65568972">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Lane</data>
+      <data key="d9">169.0751670534982</data>
+      <data key="d10">8950040</data>
+      <data key="d11">LINESTRING (-158.4979116 59.0435551, -158.4978161 59.0425589, -158.4977847 59.0422358, -158.4976056 59.0420592)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568534" target="65568538">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">42.08490295675104</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568534" target="65568236">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">66.25946364366098</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568393" target="65564890">
+      <data key="d10">8950063</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">76.84648072380442</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568393" target="65570331">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Tower Road', 'East Street']</data>
+      <data key="d9">728.8587513205296</data>
+      <data key="d10">[8950357, 8950486]</data>
+      <data key="d11">LINESTRING (-158.457985 59.0416859, -158.4566883 59.0417448, -158.4564179 59.0422141, -158.4562247 59.043086, -158.4561389 59.0435689, -158.4558814 59.0440794, -158.4552789 59.045172, -158.4565235 59.0474521)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568393" target="65568389">
+      <data key="d10">8949973</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">East Street West</data>
+      <data key="d9">177.27413815212083</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569164" target="65569104">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Bea Avenue</data>
+      <data key="d9">344.08810854946665</data>
+      <data key="d10">8950062</data>
+      <data key="d11">LINESTRING (-158.5541817 59.0393849, -158.5525249 59.041789, -158.5519108 59.0422305)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564813" target="65569017">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">196.2469342238247</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5825527 59.070917, -158.5822108 59.0703972, -158.5820824 59.0691833)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564813" target="65569010">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">279.5020527234922</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564813" target="65564829">
+      <data key="d10">8949412</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Raspberry Circle</data>
+      <data key="d9">204.68988889903875</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572238" target="65569329">
+      <data key="d10">8950483</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Trumpeter Drive</data>
+      <data key="d9">115.24056204460547</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374799" target="65567374">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">264.67605027685084</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4756028 59.0380475, -158.4756072 59.0381608, -158.4757521 59.0385333, -158.4758916 59.0389915, -158.476016 59.0397784, -158.4760749 59.0404108)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374799" target="4450374799">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">243.76821036180897</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4756028 59.0380475, -158.4755965 59.0378875, -158.4756555 59.0377192, -158.4758862 59.0375232, -158.4762241 59.0374515, -158.4767123 59.0374377, -158.4769913 59.0374956, -158.4770932 59.0375391, -158.4770288 59.0376088, -158.4767123 59.0377026, -158.4761973 59.0377744, -158.4759372 59.0378344, -158.4757387 59.0379055, -158.4756028 59.0380475)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374799" target="4450374799">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">243.7682103615247</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4756028 59.0380475, -158.4757387 59.0379055, -158.4759372 59.0378344, -158.4761973 59.0377744, -158.4767123 59.0377026, -158.4770288 59.0376088, -158.4770932 59.0375391, -158.4769913 59.0374956, -158.4767123 59.0374377, -158.4762241 59.0374515, -158.4758862 59.0375232, -158.4756555 59.0377192, -158.4755965 59.0378875, -158.4756028 59.0380475)</data>
+      <data key="d12">1</data>
+    </edge>
+    <edge source="65568389" target="65570953">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">237.31790328122474</data>
+      <data key="d10">8950313</data>
+      <data key="d11">LINESTRING (-158.4605653 59.0425682, -158.4605359 59.043286, -158.4605329 59.043911, -158.4603619 59.044038, -158.4599789 59.044116, -158.4596629 59.044147, -158.4591609 59.044165)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568389" target="65568387">
+      <data key="d10">8949973</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">East Street West</data>
+      <data key="d9">170.63937163644212</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568389" target="65564885">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">185.1478347217013</data>
+      <data key="d10">8950313</data>
+      <data key="d11">LINESTRING (-158.4605653 59.0425682, -158.4604519 59.0418056, -158.4595988 59.0410201)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568389" target="65568393">
+      <data key="d10">8949973</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">East Street West</data>
+      <data key="d9">177.27413815202763</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375057" target="65566024">
+      <data key="d10">8949587</data>
+      <data key="d6">residential</data>
+      <data key="d9">339.85716739796385</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.5737251 59.0467939, -158.571895 59.0471606, -158.5686399 59.0483356)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440067" target="4451440066">
+      <data key="d10">448096670</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">6.1171102969341105</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440067" target="4451440060">
+      <data key="d10">448096667</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">B Street East</data>
+      <data key="d9">104.38142804653606</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440067" target="4451440069">
+      <data key="d10">448096670</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">221.0581544019207</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567374" target="65567548">
+      <data key="d10">8949799</data>
+      <data key="d6">residential</data>
+      <data key="d9">144.40619930483882</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.4760749 59.0404108, -158.4752741 59.0404252, -158.4749313 59.0404955, -158.4746685 59.040719, -158.4746463 59.0411539)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567374" target="4450374878">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">148.02114124704855</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4760749 59.0404108, -158.4772541 59.0405976, -158.4773399 59.0406831, -158.4773882 59.0407825, -158.4771361 59.0412627)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567374" target="4450374799">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">264.67605027672414</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4760749 59.0404108, -158.476016 59.0397784, -158.4758916 59.0389915, -158.4757521 59.0385333, -158.4756072 59.0381608, -158.4756028 59.0380475)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568151" target="65568154">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alder Street</data>
+      <data key="d9">388.2304679367952</data>
+      <data key="d10">8949941</data>
+      <data key="d11">LINESTRING (-158.5817974 59.0828908, -158.585923 59.0829348, -158.587146 59.0832545, -158.5884024 59.0830937)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568154" target="65568825">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">271.4339076798341</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5884024 59.0830937, -158.5880258 59.0814354, -158.5873493 59.0807474)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568154" target="65568995">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">391.13586391735237</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5884024 59.0830937, -158.5889118 59.0852227, -158.589206 59.0856909, -158.5900631 59.0864523)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568154" target="65568151">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alder Street</data>
+      <data key="d9">388.23046793672745</data>
+      <data key="d10">8949941</data>
+      <data key="d11">LINESTRING (-158.5884024 59.0830937, -158.587146 59.0832545, -158.585923 59.0829348, -158.5817974 59.0828908)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570031" target="65564760">
+      <data key="d10">8950195</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">2nd Avenue West</data>
+      <data key="d9">19.934701525049782</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570031" target="65564866">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">2nd Avenue West</data>
+      <data key="d9">99.71402039044989</data>
+      <data key="d10">8950195</data>
+      <data key="d11">LINESTRING (-158.4633484 59.0396681, -158.463357 59.0400273, -158.4633901 59.0405643)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570031" target="4451440085">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alaska Street</data>
+      <data key="d9">162.62671896921168</data>
+      <data key="d10">8950295</data>
+      <data key="d11">LINESTRING (-158.4633484 59.0396681, -158.4648153 59.0397667, -158.46594 59.0401626)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569437" target="65570328">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Three Sister Road</data>
+      <data key="d9">70.58857109920419</data>
+      <data key="d10">8950226</data>
+      <data key="d11">LINESTRING (-158.5206987 59.0404392, -158.5207655 59.0399019, -158.5206615 59.0398219)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569437" target="65569442">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">79.07043193911085</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5206987 59.0404392, -158.5199969 59.0404635, -158.5193392 59.0405493)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569437" target="65568703">
+      <data key="d10">8950109</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">53.405148966823496</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571742" target="65568538">
+      <data key="d10">8950413</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Cedar Circle</data>
+      <data key="d9">61.37732928243298</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564833" target="65569017">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">406.15806520771423</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5826424 59.0655536, -158.5820606 59.0675848, -158.5820824 59.0691833)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564833" target="65569059">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">1493.169325710304</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5826424 59.0655536, -158.5838263 59.06464, -158.5853284 59.0629853, -158.5854357 59.0624227, -158.5849207 59.0618711, -158.5839122 59.0615181, -158.5820668 59.0610548, -158.5787839 59.060565, -158.5780542 59.0601722, -158.5776465 59.0594772, -158.5775643 59.0583305, -158.5775446 59.0570072, -158.5772871 59.0563231, -158.576579 59.0558046, -158.5752924 59.0553323)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564833" target="65564838">
+      <data key="d10">8949414</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Blueberry Street</data>
+      <data key="d9">129.86802354518488</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569442" target="65572460">
+      <data key="d10">8950518</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">McGill Road</data>
+      <data key="d9">79.43899356460871</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569442" target="65569437">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">79.07043193912048</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5193392 59.0405493, -158.5199969 59.0404635, -158.5206987 59.0404392)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569442" target="65565927">
+      <data key="d10">8950109</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">14.89004804197518</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450214820" target="4451440113">
+      <data key="d10">8949455</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kenny Wren Road</data>
+      <data key="d9">106.83031065604688</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564838" target="65564833">
+      <data key="d10">8949414</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Blueberry Street</data>
+      <data key="d9">129.8680235451771</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564838" target="65572289">
+      <data key="d10">8950498</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Cranberry Circle</data>
+      <data key="d9">58.54794540908898</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564838" target="65564959">
+      <data key="d10">8949430</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Salmonberry Circle</data>
+      <data key="d9">90.23103787988533</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440113" target="4451440123">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">E Street West</data>
+      <data key="d9">169.10961935704057</data>
+      <data key="d10">448096671</data>
+      <data key="d11">LINESTRING (-158.4691369 59.0419252, -158.4669321 59.0422677, -158.4667814 59.0423485, -158.4666997 59.0425682)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440113" target="4450214820">
+      <data key="d10">8949455</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kenny Wren Road</data>
+      <data key="d9">106.8303106558578</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440113" target="65565111">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kenny Wren Road</data>
+      <data key="d9">170.25434540252743</data>
+      <data key="d10">8949455</data>
+      <data key="d11">LINESTRING (-158.4691369 59.0419252, -158.4686165 59.0424983, -158.4687961 59.0433917)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568540" target="65568538">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">73.6121002425983</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568540" target="65570557">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Gauthier Way</data>
+      <data key="d9">191.8726164399425</data>
+      <data key="d10">8950253</data>
+      <data key="d11">LINESTRING (-158.4958954 59.0436327, -158.4958954 59.0446327, -158.4959144 59.0453577)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568540" target="65568542">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">17.64321908554524</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440085" target="65564720">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">North 3rd Street</data>
+      <data key="d9">108.27656088400555</data>
+      <data key="d10">8950487</data>
+      <data key="d11">LINESTRING (-158.46594 59.0401626, -158.4666495 59.039778, -158.4670758 59.0393928)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440085" target="65564857">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alaska Street</data>
+      <data key="d9">50.22298989045833</data>
+      <data key="d10">8950295</data>
+      <data key="d11">LINESTRING (-158.46594 59.0401626, -158.4660088 59.0401868, -158.4660804 59.0405938)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440085" target="65570031">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alaska Street</data>
+      <data key="d9">162.6267189692443</data>
+      <data key="d10">8950295</data>
+      <data key="d11">LINESTRING (-158.46594 59.0401626, -158.4648153 59.0397667, -158.4633484 59.0396681)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65571755" target="65568522">
+      <data key="d10">8950416</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Martin Street</data>
+      <data key="d9">193.29737302110541</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440114" target="65567712">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">46.0597333087885</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440114" target="65568841">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Sutherland Road</data>
+      <data key="d9">170.46369917350307</data>
+      <data key="d10">8950032</data>
+      <data key="d11">LINESTRING (-158.5012105 59.042004, -158.5018955 59.042525, -158.5028004 59.0432995)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440114" target="65568236">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">196.56939741208885</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450214830" target="65568549">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">243.1967371459039</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564829" target="65564813">
+      <data key="d10">8949412</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Raspberry Circle</data>
+      <data key="d9">204.68988889903991</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568328" target="65568055">
+      <data key="d10">8949963</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">69.80735772326317</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568434" target="65568438">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">458.7180726579959</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5365707 59.0015281, -158.5365511 59.0018504, -158.5367983 59.002989, -158.537374 59.003805, -158.538692 59.005459)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564853" target="65564857">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">159.26410968794676</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568438" target="65568434">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">458.71807265814334</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.538692 59.005459, -158.537374 59.003805, -158.5367983 59.002989, -158.5365511 59.0018504, -158.5365707 59.0015281)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568438" target="65566731">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">235.6320519762258</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568438" target="65566731">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Chuthmok Road</data>
+      <data key="d9">537.3357862584287</data>
+      <data key="d10">[8949712, 8950390]</data>
+      <data key="d11">LINESTRING (-158.538692 59.005459, -158.535495 59.005525, -158.535468 59.005623, -158.536329 59.005996, -158.538233 59.006312, -158.5400222 59.0074637)</data>
+      <data key="d12">1</data>
+    </edge>
+    <edge source="65565111" target="4451440113">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kenny Wren Road</data>
+      <data key="d9">170.25434540289643</data>
+      <data key="d10">8949455</data>
+      <data key="d11">LINESTRING (-158.4687961 59.0433917, -158.4686165 59.0424983, -158.4691369 59.0419252)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440056" target="4451440078">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue West</data>
+      <data key="d9">218.3477663977464</data>
+      <data key="d10">448096666</data>
+      <data key="d11">LINESTRING (-158.4626938 59.038035, -158.4620594 59.0388397, -158.4612094 59.0398433)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564857" target="65564859">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">112.11365187221088</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564857" target="65564853">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">159.26410968794676</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564857" target="4451440085">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Alaska Street</data>
+      <data key="d9">50.222989890256976</data>
+      <data key="d10">8950295</data>
+      <data key="d11">LINESTRING (-158.4660804 59.0405938, -158.4660088 59.0401868, -158.46594 59.0401626)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440058" target="65564716">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Denny Way</data>
+      <data key="d9">151.40720798885405</data>
+      <data key="d10">8950399</data>
+      <data key="d11">LINESTRING (-158.4680691 59.0384886, -158.4680691 59.0386502, -158.4678367 59.0388118, -158.4680879 59.0394872, -158.4681128 59.039626, -158.4680179 59.0397905)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564859" target="65564857">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">112.11365187221041</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564859" target="65564866">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">41.92928228737338</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564859" target="65568387">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['East Street West', 'Seward Street']</data>
+      <data key="d9">373.23557066315595</data>
+      <data key="d10">[8950081, 8949973]</data>
+      <data key="d11">LINESTRING (-158.464121 59.0405914, -158.4642839 59.0431379, -158.4637456 59.0434475, -158.4629836 59.0434661)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440060" target="4451440067">
+      <data key="d10">448096667</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">B Street East</data>
+      <data key="d9">104.38142804639382</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570557" target="65568540">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Gauthier Way</data>
+      <data key="d9">191.87261643987972</data>
+      <data key="d10">8950253</data>
+      <data key="d11">LINESTRING (-158.4959144 59.0453577, -158.4958954 59.0446327, -158.4958954 59.0436327)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440062" target="4451440068">
+      <data key="d10">448096668</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">B Street</data>
+      <data key="d9">53.34913948120007</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568703" target="65568753">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">1350.386718764939</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5216316 59.0404542, -158.5218638 59.0410162, -158.523426 59.041984, -158.5242992 59.0425024, -158.5256035 59.043853, -158.5277328 59.0449952, -158.5293016 59.0456782, -158.5302322 59.0458357, -158.5313373 59.0457474, -158.5341968 59.0450976, -158.535822 59.0446106, -158.5370772 59.044285, -158.5391954 59.0444136)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568703" target="65566261">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">336.68469862003735</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5216316 59.0404542, -158.5249 59.040143, -158.5254579 59.0400354, -158.5259836 59.0398284, -158.5265093 59.0395221, -158.5267093 59.0392818)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568703" target="65569437">
+      <data key="d10">8950109</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">53.40514896682006</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569984" target="65568542">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Fairview Drive</data>
+      <data key="d9">231.47679998427733</data>
+      <data key="d10">8950189</data>
+      <data key="d11">LINESTRING (-158.4955416 59.0415614, -158.4955546 59.0421494, -158.4955876 59.0436424)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572289" target="65564838">
+      <data key="d10">8950498</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Cranberry Circle</data>
+      <data key="d9">58.5479454089346</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440066" target="4451440082">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">82.41135511792272</data>
+      <data key="d10">448096665</data>
+      <data key="d11">LINESTRING (-158.4584917 59.039287, -158.4585041 59.0397509, -158.458435 59.0400256)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440066" target="4451440067">
+      <data key="d10">448096670</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">6.117110296933566</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440066" target="4451440068">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">53.27517899267079</data>
+      <data key="d10">448096670</data>
+      <data key="d11">LINESTRING (-158.4584917 59.039287, -158.4591008 59.039284, -158.4594212 59.0393001)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568314" target="4450214842">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">2453.802941906716</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4532413 59.0669069, -158.455599 59.0666016, -158.4588904 59.0662981, -158.4615663 59.0661495, -158.4631366 59.066072, -158.4638527 59.0659752, -158.4645034 59.0657252, -158.4714406 59.06221, -158.4767351 59.0580938, -158.4785637 59.0575982, -158.4807191 59.0571297, -158.4825712 59.0567843, -158.4846642 59.0564787, -158.4880223 59.0561394)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568314" target="4451440205">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Maqi Circle</data>
+      <data key="d9">355.699147990598</data>
+      <data key="d10">8950074</data>
+      <data key="d11">LINESTRING (-158.4532413 59.0669069, -158.4529518 59.0665471, -158.4525902 59.06629, -158.4520374 59.065896, -158.4514533 59.0656216, -158.4507435 59.0654537, -158.4499206 59.0654117, -158.4494809 59.0654343, -158.4492045 59.0653374, -158.4490224 59.0652729, -158.4487397 59.0652664, -158.4485198 59.0652793)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568314" target="65568055">
+      <data key="d10">8949963</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">477.56921076675656</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440068" target="4451440066">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">53.275178992666</data>
+      <data key="d10">448096670</data>
+      <data key="d11">LINESTRING (-158.4594212 59.0393001, -158.4591008 59.039284, -158.4584917 59.039287)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440068" target="4451440075">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">78.97819244478065</data>
+      <data key="d10">448096670</data>
+      <data key="d11">LINESTRING (-158.4594212 59.0393001, -158.4596724 59.0393648, -158.4604513 59.0397639)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440068" target="4451440062">
+      <data key="d10">448096668</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">B Street</data>
+      <data key="d9">53.3491394811338</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440069" target="4451440067">
+      <data key="d10">448096670</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">221.058154401921</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568236" target="65564937">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">122.28363208703405</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4990053 59.0433592, -158.4995309 59.0435299, -158.5003738 59.0441779)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568236" target="4451440114">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">196.5693974121326</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568236" target="65568534">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">66.25946364365602</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570593" target="65571617">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Widgeon Lane', 'Emperor Road']</data>
+      <data key="d9">4407.649163791319</data>
+      <data key="d10">[8950388, 8950135]</data>
+      <data key="d11">LINESTRING (-158.553241 59.0799423, -158.5538008 59.0794067, -158.5542729 59.0791862, -158.5553029 59.0789987, -158.5564187 59.0789215, -158.5588648 59.0788554, -158.5600235 59.0788002, -158.5609248 59.0786569, -158.5619547 59.0782489, -158.5626414 59.0776535, -158.562856 59.0771794, -158.5634997 59.0637131, -158.5633924 59.0633932, -158.5625985 59.0625769, -158.5607102 59.0613965, -158.5598733 59.0605801, -158.5596158 59.0598189, -158.5595729 59.0572814, -158.5591867 59.0564539, -158.5584357 59.0557036, -158.5567486 59.054763, -158.550016 59.051224, -158.549363 59.050553, -158.5481171 59.049376, -158.5519193 59.0472636)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570593" target="4450214842">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Waskey Road</data>
+      <data key="d9">4688.737243023881</data>
+      <data key="d10">8950259</data>
+      <data key="d11">LINESTRING (-158.553241 59.0799423, -158.5444238 59.0786459, -158.5348589 59.0754318, -158.4955508 59.0613963, -158.491359 59.060034, -158.4901359 59.0595817, -158.4897067 59.0591404, -158.4883549 59.0574413, -158.4882047 59.0570773, -158.4880223 59.0561394)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570593" target="65568995">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Waskey Road</data>
+      <data key="d9">2337.502840494999</data>
+      <data key="d10">8950259</data>
+      <data key="d11">LINESTRING (-158.553241 59.0799423, -158.5557105 59.0805203, -158.5580924 59.0813362, -158.5623624 59.0829128, -158.5709015 59.0860637, -158.5728618 59.0865579, -158.5804731 59.0865786, -158.5892918 59.0867272, -158.5900631 59.0864523)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440075" target="65564761">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">53.0995245222372</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440075" target="4451440068">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">C Street</data>
+      <data key="d9">78.97819244499075</data>
+      <data key="d10">448096670</data>
+      <data key="d11">LINESTRING (-158.4604513 59.0397639, -158.4596724 59.0393648, -158.4594212 59.0393001)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440075" target="4451440078">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">44.267973372768836</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568972" target="4451440096">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Lane</data>
+      <data key="d9">230.29513593530143</data>
+      <data key="d10">8950040</data>
+      <data key="d11">LINESTRING (-158.4976056 59.0420592, -158.4964664 59.0412186, -158.4957621 59.040827, -158.4953978 59.0407591, -158.4950146 59.0407333, -158.4948136 59.0407817)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568972" target="4451440112">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Sunny Drive</data>
+      <data key="d9">138.30733355272952</data>
+      <data key="d10">[448096673, 8950099]</data>
+      <data key="d11">LINESTRING (-158.4976056 59.0420592, -158.4963691 59.0421372, -158.4962458 59.0415379)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568972" target="65568534">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Lane</data>
+      <data key="d9">169.075167053989</data>
+      <data key="d10">8950040</data>
+      <data key="d11">LINESTRING (-158.4976056 59.0420592, -158.4977847 59.0422358, -158.4978161 59.0425589, -158.4979116 59.0435551)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440078" target="4451440056">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue West</data>
+      <data key="d9">218.34776639734832</data>
+      <data key="d10">448096666</data>
+      <data key="d11">LINESTRING (-158.4612094 59.0398433, -158.4620594 59.0388397, -158.4626938 59.038035)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440078" target="65564760">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">132.67838166785592</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.4612094 59.0398433, -158.4616809 59.0398927, -158.4633424 59.0394889)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440078" target="4451440075">
+      <data key="d10">8949408</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">44.267973372755115</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440082" target="65564761">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">76.72887910962588</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.458435 59.0400256, -158.4590026 59.04006, -158.4597701 59.0400881)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440082" target="4451440066">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">82.41135511828911</data>
+      <data key="d10">448096665</data>
+      <data key="d11">LINESTRING (-158.458435 59.0400256, -158.4585041 59.0397509, -158.4584917 59.039287)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440082" target="65564767">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Main Street East</data>
+      <data key="d9">22.147785174601523</data>
+      <data key="d10">8949408</data>
+      <data key="d11">LINESTRING (-158.458435 59.0400256, -158.4582654 59.0400256, -158.4580615 59.0400645)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569059" target="65569912">
+      <data key="d10">8950171</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Agulawok Drive</data>
+      <data key="d9">369.8726927747859</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569059" target="65564833">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">1493.169325711089</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5752924 59.0553323, -158.576579 59.0558046, -158.5772871 59.0563231, -158.5775446 59.0570072, -158.5775643 59.0583305, -158.5776465 59.0594772, -158.5780542 59.0601722, -158.5787839 59.060565, -158.5820668 59.0610548, -158.5839122 59.0615181, -158.5849207 59.0618711, -158.5854357 59.0624227, -158.5853284 59.0629853, -158.5838263 59.06464, -158.5826424 59.0655536)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569059" target="65568596">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">260.31234141222245</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5752924 59.0553323, -158.5731243 59.0548998, -158.57126 59.0542745)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564885" target="65564761">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">105.39594789409577</data>
+      <data key="d10">447963648</data>
+      <data key="d11">LINESTRING (-158.4595988 59.0410201, -158.459528 59.0407106, -158.4596662 59.040268, -158.4597701 59.0400881)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564885" target="65564866">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">229.79896043064954</data>
+      <data key="d10">8949418</data>
+      <data key="d11">LINESTRING (-158.4595988 59.0410201, -158.4618145 59.0410081, -158.4625869 59.040826, -158.4633901 59.0405643)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564885" target="65564890">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">92.17963537290355</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564885" target="65568389">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">185.14783472218306</data>
+      <data key="d10">8950313</data>
+      <data key="d11">LINESTRING (-158.4595988 59.0410201, -158.4604519 59.0418056, -158.4605653 59.0425682)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569010" target="65572274">
+      <data key="d10">8950494</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Mossberry Circle</data>
+      <data key="d9">77.8404716033264</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569010" target="65564813">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">279.502052723545</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569010" target="65564950">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">839.4660394378104</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.584761 59.073159, -158.5872319 59.0760215, -158.5873392 59.0765398, -158.5865667 59.079528, -158.5870972 59.0803649)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564939" target="65564937">
+      <data key="d10">8949427</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">John Pearson Lane</data>
+      <data key="d9">77.80618871565274</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565927" target="65569153">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Spur Road</data>
+      <data key="d9">392.7101294214379</data>
+      <data key="d10">8950060</data>
+      <data key="d11">LINESTRING (-158.5190946 59.040595, -158.5185566 59.0403662, -158.516429 59.0400389, -158.513675 59.039991, -158.5124908 59.0400458)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565927" target="65569442">
+      <data key="d10">8950109</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">14.89004804198388</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65565927" target="65567818">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">571.5749221602792</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5190946 59.040595, -158.5181382 59.0409788, -158.5154007 59.0423726, -158.5145143 59.0428235, -158.5127794 59.0444921)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564890" target="65568393">
+      <data key="d10">8950063</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">76.84648072392686</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564890" target="65572061">
+      <data key="d10">8950458</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street East</data>
+      <data key="d9">66.2203993501266</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564890" target="65564885">
+      <data key="d10">8949418</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street</data>
+      <data key="d9">92.17963537290068</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65564890" target="65564767">
+      <data key="d10">8950063</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">1st Avenue East</data>
+      <data key="d9">103.58028352971098</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570953" target="65568389">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Central Avenue</data>
+      <data key="d9">237.31790328120175</data>
+      <data key="d10">8950313</data>
+      <data key="d11">LINESTRING (-158.4591609 59.044165, -158.4596629 59.044147, -158.4599789 59.044116, -158.4603619 59.044038, -158.4605329 59.043911, -158.4605359 59.043286, -158.4605653 59.0425682)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65572061" target="65564890">
+      <data key="d10">8950458</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">D Street East</data>
+      <data key="d9">66.22039935023449</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374878" target="65564988">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">324.7681788739407</data>
+      <data key="d10">447963649</data>
+      <data key="d11">LINESTRING (-158.4771361 59.0412627, -158.478784 59.0415907, -158.4823775 59.0423824)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374878" target="65567548">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">145.05566303032566</data>
+      <data key="d10">447963649</data>
+      <data key="d11">LINESTRING (-158.4771361 59.0412627, -158.4763636 59.0411412, -158.4755482 59.0410998, -158.4746463 59.0411539)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450374878" target="65567374">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Harbor Road</data>
+      <data key="d9">148.021141247697</data>
+      <data key="d10">8950184</data>
+      <data key="d11">LINESTRING (-158.4771361 59.0412627, -158.4773882 59.0407825, -158.4773399 59.0406831, -158.4772541 59.0405976, -158.4760749 59.0404108)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568549" target="65567824">
+      <data key="d10">8950479</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">New Windmill Road</data>
+      <data key="d9">132.91893380179127</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568549" target="65568546">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">65.44626086271451</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568549" target="4450214830">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">243.19673714590022</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567712" target="4451440114">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">46.059733308761984</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567712" target="65568522">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">90.47836107522224</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567712" target="65567719">
+      <data key="d10">8949858</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d9">139.22995275784214</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569104" target="65569112">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">192.51094045881476</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569104" target="65569164">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Bea Avenue</data>
+      <data key="d9">344.08810854898866</data>
+      <data key="d10">8950062</data>
+      <data key="d11">LINESTRING (-158.5519108 59.0422305, -158.5525249 59.041789, -158.5541817 59.0393849)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569104" target="65569094">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">363.8631159176017</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5519108 59.0422305, -158.552482 59.0425948, -158.5531687 59.0433178, -158.5537909 59.043969, -158.5546814 59.0443553, -158.5557604 59.0447375)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568995" target="65570593">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Waskey Road</data>
+      <data key="d9">2337.5028404947184</data>
+      <data key="d10">8950259</data>
+      <data key="d11">LINESTRING (-158.5900631 59.0864523, -158.5892918 59.0867272, -158.5804731 59.0865786, -158.5728618 59.0865579, -158.5709015 59.0860637, -158.5623624 59.0829128, -158.5580924 59.0813362, -158.5557105 59.0805203, -158.553241 59.0799423)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568995" target="65568154">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">391.1358639172764</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5900631 59.0864523, -158.589206 59.0856909, -158.5889118 59.0852227, -158.5884024 59.0830937)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450214842" target="65570593">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Waskey Road</data>
+      <data key="d9">4688.737243024737</data>
+      <data key="d10">8950259</data>
+      <data key="d11">LINESTRING (-158.4880223 59.0561394, -158.4882047 59.0570773, -158.4883549 59.0574413, -158.4897067 59.0591404, -158.4901359 59.0595817, -158.491359 59.060034, -158.4955508 59.0613963, -158.5348589 59.0754318, -158.5444238 59.0786459, -158.553241 59.0799423)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450214842" target="65568314">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">2453.80294190656</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4880223 59.0561394, -158.4846642 59.0564787, -158.4825712 59.0567843, -158.4807191 59.0571297, -158.4785637 59.0575982, -158.4767351 59.0580938, -158.4714406 59.06221, -158.4645034 59.0657252, -158.4638527 59.0659752, -158.4631366 59.066072, -158.4615663 59.0661495, -158.4588904 59.0662981, -158.455599 59.0666016, -158.4532413 59.0669069)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450214842" target="65568267">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">789.8072958908612</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4880223 59.0561394, -158.4898755 59.0561362, -158.4903259 59.0561061, -158.4912524 59.0557698, -158.4916379 59.0554829, -158.4918382 59.0551851, -158.4919191 59.0547693, -158.4918193 59.0541857, -158.4915787 59.0531784, -158.4912728 59.0525193, -158.4911538 59.0521372, -158.4912438 59.0518121, -158.4916503 59.0513458, -158.4926523 59.0508079)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568801" target="65568783">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">116.40227762144286</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5446031 59.0482229, -158.5445061 59.0481939, -158.5440761 59.0480279, -158.5440421 59.0480019, -158.5439621 59.0479309, -158.5439191 59.0477789, -158.5439031 59.0477339, -158.5439671 59.0475069, -158.5439851 59.0474069, -158.5440051 59.0473379)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567719" target="65567712">
+      <data key="d10">8949858</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d9">139.22995275791956</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568233" target="65567979">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">471.1415898378597</data>
+      <data key="d10">8949955</data>
+      <data key="d11">LINESTRING (-158.524929 59.026463, -158.523824 59.026755, -158.523603 59.026966, -158.523445 59.027161, -158.523193 59.02734, -158.522877 59.027437, -158.522499 59.027616, -158.522214 59.027892, -158.52193 59.028168, -158.521899 59.028525, -158.521836 59.028818, -158.52193 59.029143, -158.522372 59.0295, -158.522435 59.02976, -158.522435 59.02994)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567979" target="65567984">
+      <data key="d10">8949914</data>
+      <data key="d6">residential</data>
+      <data key="d9">228.95414609289406</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.522435 59.02994, -158.520763 59.029321, -158.519199 59.02873)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567979" target="65568233">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">471.1415898374506</data>
+      <data key="d10">8949955</data>
+      <data key="d11">LINESTRING (-158.522435 59.02994, -158.522435 59.02976, -158.522372 59.0295, -158.52193 59.029143, -158.521836 59.028818, -158.521899 59.028525, -158.52193 59.028168, -158.522214 59.027892, -158.522499 59.027616, -158.522877 59.027437, -158.523193 59.02734, -158.523445 59.027161, -158.523603 59.026966, -158.523824 59.026755, -158.524929 59.026463)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567979" target="65567502">
+      <data key="d10">8949955</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Olaf Hansen Road</data>
+      <data key="d9">8.341969146519123</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568492" target="65569136">
+      <data key="d10">8950058</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">193.3503432488741</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568492" target="65566731">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">3406.6870307200534</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5292161 59.0361786, -158.5300534 59.035505, -158.5306617 59.0352318, -158.5332041 59.0343113, -158.5353606 59.0329616, -158.5357361 59.0326166, -158.5359185 59.0322467, -158.5358005 59.0315235, -158.5355216 59.0306291, -158.5355616 59.0300142, -158.537067 59.027807, -158.5375386 59.026814, -158.5378068 59.0259195, -158.5383754 59.0240256, -158.5397075 59.0214045, -158.541773 59.014565, -158.5417443 59.0104804, -158.5400222 59.0074637)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568492" target="65568495">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">52.69528411151899</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65570642" target="65569136">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Nina Way</data>
+      <data key="d9">387.13615362849856</data>
+      <data key="d10">8950262</data>
+      <data key="d11">LINESTRING (-158.536552 59.035071, -158.534813 59.036383, -158.534436 59.036635, -158.534206 59.036744, -158.533976 59.036778, -158.533615 59.036795, -158.533133 59.036617, -158.5320004 59.0371634)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568495" target="65568188">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Squaw Creek Road</data>
+      <data key="d9">854.5474131173671</data>
+      <data key="d10">8950293</data>
+      <data key="d11">LINESTRING (-158.5287109 59.0365747, -158.5265376 59.0358841, -158.5256963 59.0351648, -158.5242948 59.0346739, -158.5238812 59.034485, -158.5237792 59.0342244, -158.5237866 59.0339324, -158.5240461 59.0334278, -158.524073 59.031386, -158.52355 59.030873, -158.522816 59.030449, -158.522624 59.030418)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568495" target="65568498">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">193.35904942742036</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568495" target="65568492">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">52.69528411117174</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567984" target="65567979">
+      <data key="d10">8949914</data>
+      <data key="d6">residential</data>
+      <data key="d9">228.95414609316327</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.519199 59.02873, -158.520763 59.029321, -158.522435 59.02994)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568753" target="65569114">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Lupine Drive</data>
+      <data key="d9">614.5776121397797</data>
+      <data key="d10">8950083</data>
+      <data key="d11">LINESTRING (-158.5391954 59.0444136, -158.54327 59.0431331, -158.5456614 59.0423404, -158.5473 59.0420785, -158.547853 59.0417975, -158.5480021 59.0414833)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568753" target="65568703">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">1350.386718764201</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5391954 59.0444136, -158.5370772 59.044285, -158.535822 59.0446106, -158.5341968 59.0450976, -158.5313373 59.0457474, -158.5302322 59.0458357, -158.5293016 59.0456782, -158.5277328 59.0449952, -158.5256035 59.043853, -158.5242992 59.0425024, -158.523426 59.041984, -158.5218638 59.0410162, -158.5216316 59.0404542)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568753" target="65568783">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Emperor Way</data>
+      <data key="d9">512.3199352175683</data>
+      <data key="d10">8950021</data>
+      <data key="d11">LINESTRING (-158.5391954 59.0444136, -158.5424801 59.0447639, -158.5429351 59.0449559, -158.5433041 59.0451489, -158.5435421 59.0453879, -158.5438231 59.0456939, -158.5441461 59.0461469, -158.5443181 59.0465319, -158.5443131 59.0465429, -158.5441461 59.0470299, -158.5440291 59.0472509, -158.5440051 59.0473379)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568498" target="65566267">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">103.81498025439409</data>
+      <data key="d10">8949987</data>
+      <data key="d11">LINESTRING (-158.5269285 59.0380516, -158.5264378 59.0382699, -158.526048 59.0383795, -158.525609 59.0384521, -158.5253512 59.0384702)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568498" target="65566261">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">140.5979311118323</data>
+      <data key="d10">8950109</data>
+      <data key="d11">LINESTRING (-158.5269285 59.0380516, -158.527044 59.0384687, -158.527025 59.0387532, -158.5270037 59.0388868, -158.5269358 59.0390157, -158.5267093 59.0392818)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568498" target="65568495">
+      <data key="d10">8949987</data>
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">193.3590494272607</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440112" target="65568972">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Sunny Drive</data>
+      <data key="d9">138.3073335524751</data>
+      <data key="d10">[448096673, 8950099]</data>
+      <data key="d11">LINESTRING (-158.4962458 59.0415379, -158.4963691 59.0421372, -158.4976056 59.0420592)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4451440096" target="65568972">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Birch Lane</data>
+      <data key="d9">230.2951359355635</data>
+      <data key="d10">8950040</data>
+      <data key="d11">LINESTRING (-158.4948136 59.0407817, -158.4950146 59.0407333, -158.4953978 59.0407591, -158.4957621 59.040827, -158.4964664 59.0412186, -158.4976056 59.0420592)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569017" target="65564833">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">406.15806520772617</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5820824 59.0691833, -158.5820606 59.0675848, -158.5826424 59.0655536)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569017" target="65569181">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Crowberry Lane</data>
+      <data key="d9">291.9856155022412</data>
+      <data key="d10">8950066</data>
+      <data key="d11">LINESTRING (-158.5820824 59.0691833, -158.584886 59.069444, -158.587144 59.069459)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65569017" target="65564813">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Aleknagik Lake Road</data>
+      <data key="d9">196.24693422317944</data>
+      <data key="d10">8950058</data>
+      <data key="d11">LINESTRING (-158.5820824 59.0691833, -158.5822108 59.0703972, -158.5825527 59.070917)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567548" target="65564716">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">['Kanakanak Road', 'Main Street East']</data>
+      <data key="d9">441.8130390570843</data>
+      <data key="d10">[8949408, 447963649]</data>
+      <data key="d11">LINESTRING (-158.4746463 59.0411539, -158.4743976 59.0412034, -158.4726736 59.0413536, -158.4720091 59.0413311, -158.4713809 59.0412212, -158.470485 59.0409359, -158.4680179 59.0397905)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567548" target="4450374878">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Kanakanak Road</data>
+      <data key="d9">145.05566303034536</data>
+      <data key="d10">447963649</data>
+      <data key="d11">LINESTRING (-158.4746463 59.0411539, -158.4755482 59.0410998, -158.4763636 59.0411412, -158.4771361 59.0412627)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65567548" target="65567374">
+      <data key="d10">8949799</data>
+      <data key="d6">residential</data>
+      <data key="d9">144.4061993049913</data>
+      <data key="d7">False</data>
+      <data key="d11">LINESTRING (-158.4746463 59.0411539, -158.4746685 59.040719, -158.4749313 59.0404955, -158.4752741 59.0404252, -158.4760749 59.0404108)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="4450375421" target="65568055">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Yako Road</data>
+      <data key="d9">566.3425423391707</data>
+      <data key="d10">8949932</data>
+      <data key="d11">LINESTRING (-158.4398936 59.0696035, -158.4403764 59.0693001, -158.4399955 59.0690382, -158.4397112 59.068819, -158.4397166 59.0686729, -158.4397381 59.0685074, -158.4399741 59.0684523, -158.4401994 59.0684578, -158.4405534 59.0685515, -158.4409397 59.0686342, -158.4412937 59.0685901, -158.4417658 59.0684247, -158.4424203 59.0680166, -158.4429245 59.0675699, -158.4431176 59.0674651, -158.4433322 59.0674982, -158.4438194 59.0677077, -158.4447136 59.0681411, -158.4453622 59.0683326)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568255" target="65568267">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">394.3750074717659</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4983158 59.0489541, -158.4980274 59.0490006, -158.4975077 59.0490747, -158.4965987 59.0491855, -158.4956639 59.0493849, -158.4944266 59.0498441, -158.4926523 59.0508079)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568255" target="65565029">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Wood River Road</data>
+      <data key="d9">530.336463796994</data>
+      <data key="d10">8949963</data>
+      <data key="d11">LINESTRING (-158.4983158 59.0489541, -158.49907 59.0488404, -158.499789 59.0486894, -158.500531 59.0483894, -158.501011 59.0480044, -158.501369 59.0476524, -158.501417 59.0473474, -158.501372 59.0452234, -158.5013598 59.0450292)</data>
+      <data key="d12">0</data>
+    </edge>
+    <edge source="65568255" target="65569366">
+      <data key="d6">residential</data>
+      <data key="d7">False</data>
+      <data key="d8">Airport Road</data>
+      <data key="d9">1399.8838703409901</data>
+      <data key="d10">8950104</data>
+      <data key="d11">LINESTRING (-158.4983158 59.0489541, -158.498438 59.0495482, -158.4985358 59.049908, -158.4986487 59.050425, -158.4985746 59.0507934, -158.4981183 59.0513052, -158.4969705 59.0525027, -158.4966431 59.0528041, -158.4966572 59.0529567, -158.4968902 59.0530736, -158.497723 59.0532637, -158.4979883 59.0532727, -158.4981615 59.0532301, -158.4984081 59.053031, -158.4987171 59.0527141, -158.5006829 59.0506619, -158.5012729 59.0500639, -158.5017847 59.0498688, -158.5020934 59.0497668, -158.5041799 59.049801, -158.5050988 59.0498509, -158.5056428 59.0498439, -158.5065197 59.0498179, -158.5069207 59.0497826, -158.5073185 59.0496709, -158.5078569 59.0494679, -158.5082414 59.0491965)</data>
+      <data key="d12">0</data>
+    </edge>
+  </graph>
+</graphml>
