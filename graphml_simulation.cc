@@ -16,11 +16,17 @@ using namespace builder;
 using namespace std;
 using namespace rapidxml;
 
+Renderer* renderer;
+
 int num_cells;
 Cell** cells;
 
 int num_cars = 2000;
 Car** cars;
+
+void draw_cell(Cell* cell) {
+  renderer->draw_cell(cell);
+}
 
 void init_cars() {
   // Build cars.
@@ -71,12 +77,10 @@ class CoordinateTranslator {
 
  private:
   double long_to_x(double l) {
-    //return 111132.92 - 559.82*cos(2*l) + 1.175*cos(4*l) - 0.0023*cos(6*l);
     return earth_radius_*(l/180*M_PI)*cos(s_avg_lat_/180*M_PI);
   }
 
   double lat_to_y(double l) {
-    //return 111412.84*cos(l) - 93.5*cos(3*l) + 0.118*cos(5*l);
     return earth_radius_*l/180*M_PI;
   }
 
@@ -287,24 +291,24 @@ int main(int argc, char** argv) {
   scale_factor = min(scale_factor, 1.0 * window_y / ctrans.max_y());
   cout << "Using GUI scale factor " << scale_factor << "\n";
 
-  init_gui(num_cells, cells, window_x, window_y, scale_factor);
-  update_gui();
+  renderer = new Renderer(num_cells, cells, window_x, window_y, scale_factor);
+  renderer->update_gui();
 
   for (int i = 0; i < num_cells; ++i) {
     cells[i]->draw();
   }
-  update_gui();
+  renderer->update_gui();
   cout << "First GUI update complete.\n";
 
   init_cars();
-  update_gui();
+  renderer->update_gui();
 
   while (true) {
     step();
-    update_gui();
+    renderer->update_gui();
   }
 
-  destroy_gui();
+  delete renderer;
 
   return 0;
 }

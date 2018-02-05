@@ -3,6 +3,8 @@
 #include "drawing.h"
 #include "traffic.h"
 
+extern void draw_cell(Cell* cell);
+
 void Cell::draw() {
   draw_cell(this);
 }
