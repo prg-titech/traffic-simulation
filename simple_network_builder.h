@@ -110,7 +110,7 @@ class SimpleNetworkBuilder {
 
   Cell* build_cell(double x, double y, double max_velocity) {
     if (x < 0 || y < 0) {
-      printf("Warning: Cell (%f, %f) out of range.\n", x, y);
+      ++cells_out_of_range_;
     }
 
     auto* cell = new Cell(max_velocity, x, y);
@@ -129,6 +129,8 @@ class SimpleNetworkBuilder {
          it != intersections_.end(); ++it) {
       (*it)->build();
     }
+
+    printf("%i cell coordinates were out of range.\n", cells_out_of_range_);
   }
 
   void get_cells(Cell** cells) {
@@ -142,6 +144,9 @@ class SimpleNetworkBuilder {
   }
 
  private:
+  // Debug information. x, y is -inf or +inf.
+  int cells_out_of_range_ = 0;
+
   int cell_size_;
 
   std::vector<Intersection*> intersections_;

@@ -1,6 +1,6 @@
 CPPFLAGS=-std=c++11
 LDFLAGS=-lSDL2 -lSDL2_gfx
-OBJS=drawing.o simple_network_builder.o traffic.o
+OBJS=drawing.o simple_network_builder.o graphml_network_builder.o traffic.o
 
 %.o: %.cc
 	$(CXX) $(CPPFLAGS) -c $<
