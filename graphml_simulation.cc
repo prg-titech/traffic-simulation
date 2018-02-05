@@ -233,8 +233,6 @@ int main(int argc, char** argv) {
             auto long_lat = split(coordinates[i], " ");
             double pos_x = ctrans.x(atof(long_lat[0].c_str()));
             double pos_y = ctrans.y(atof(long_lat[1].c_str()));
-            //pos_x = max(0.0, pos_x);
-            //pos_y = max(0.0, pos_y);
             shape.push_back(builder.build_intersection(
                 max_velocity, pos_x, pos_y));
           }
@@ -289,7 +287,7 @@ int main(int argc, char** argv) {
   scale_factor = min(scale_factor, 1.0 * window_y / ctrans.max_y());
   cout << "Using GUI scale factor " << scale_factor << "\n";
 
-  init_gui(num_cells, window_x, window_y, scale_factor);
+  init_gui(num_cells, cells, window_x, window_y, scale_factor);
   update_gui();
 
   for (int i = 0; i < num_cells; ++i) {
