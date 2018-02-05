@@ -62,9 +62,36 @@ void Renderer::redraw_everything() {
 
   SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 0);
   SDL_RenderClear(renderer_);
-  for (int i = 0; i < num_cells_; ++i) {
-    cells_[i]->draw();
+
+  // Draw streets.
+  for (int i = 0; i < streets_.size(); ++i) {
+    int pos1_x = (get<0>(streets_[i]) - origin_x_)*scale_factor_;
+    int pos1_y = window_size_y_ - ((get<1>(streets_[i]) - origin_y_)
+                                   * scale_factor_);
+    int pos2_x = (get<2>(streets_[i]) - origin_x_)*scale_factor_;
+    int pos2_y = window_size_y_ - ((get<3>(streets_[i]) - origin_y_)
+                                   * scale_factor_);
+
+    if ((pos1_x >= 0 && pos1_x < window_size_x_ &&
+        pos1_y >= 0 && pos1_y < window_size_y_) ||
+        (pos2_x >= 0 && pos2_x < window_size_x_ &&
+        pos2_y >= 0 && pos2_y < window_size_y_)) {
+      thickLineRGBA(renderer_, pos1_x, pos1_y, pos2_x, pos2_y, 3,
+                    255, 255, 255, 255);
+    }
   }
+
+  for (int i = 0; i < num_cells_; ++i) {
+    // Only draw occupied cells.
+    if (!cells_[i]->is_free()) {
+      cells_[i]->draw();
+    }
+  }
+}
+
+
+void Renderer::add_street(std::tuple<double, double, double, double> street) {
+  streets_.push_back(street);
 }
 
 

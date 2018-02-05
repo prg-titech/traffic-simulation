@@ -137,6 +137,10 @@ class SimpleNetworkBuilder {
 
   int num_cells() { return cells_.size(); }
 
+  std::vector<Street*>& streets() {
+    return streets_;
+  }
+
  private:
   int cell_size_;
 

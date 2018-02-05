@@ -1,6 +1,9 @@
 #ifndef DRAWING_H
 #define DRAWING_H
 
+#include <vector>
+#include <tuple>
+
 class SDL_Window;
 class SDL_Renderer;
 class Cell;
@@ -18,7 +21,12 @@ class Renderer {
 
   void redraw_everything();
 
+  void add_street(std::tuple<double, double, double, double> street);
+
  private:
+  // Start and end points of all streets.
+  std::vector<std::tuple<double, double, double, double>> streets_;
+
   // A list of all cells.
   Cell** cells_;
   int num_cells_;

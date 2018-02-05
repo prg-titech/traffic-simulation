@@ -292,12 +292,16 @@ int main(int argc, char** argv) {
   cout << "Using GUI scale factor " << scale_factor << "\n";
 
   renderer = new Renderer(num_cells, cells, window_x, window_y, scale_factor);
-  renderer->update_gui();
-
-  for (int i = 0; i < num_cells; ++i) {
-    cells[i]->draw();
+  // Add streets.
+  auto& streets = builder.streets();
+  for (int i = 0; i < streets.size(); ++i) {
+    renderer->add_street(make_tuple(
+        streets[i]->first_cell()->x(),
+        streets[i]->first_cell()->y(),
+        streets[i]->last_cell()->x(),
+        streets[i]->last_cell()->y()));
   }
-  renderer->update_gui();
+  renderer->redraw_everything();
   cout << "First GUI update complete.\n";
 
   init_cars();
