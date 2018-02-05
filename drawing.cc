@@ -15,9 +15,13 @@ SDL_Window* window;
 SDL_Renderer* renderer;
 
 double scale_factor_;
+int size_x_;
+int size_y_;
 
 void init_gui(int num_cells, int size_x, int size_y, double scale_factor) {
   scale_factor_ = scale_factor;
+  size_x_ = size_x;
+  size_y_ = size_y;
 
   num_free_cells = 0;
   free_cells = new Cell*[num_cells];
@@ -30,7 +34,7 @@ void init_gui(int num_cells, int size_x, int size_y, double scale_factor) {
     exit(1);
   }
 
-  window = SDL_CreateWindow("SDL2_gfx test", 100, 100,
+  window = SDL_CreateWindow("traffic_simulation", 100, 100,
                             size_x, size_y, SDL_WINDOW_OPENGL); 
   if (window == NULL) { 
     printf("SDL_CreateWindow Error: %s", SDL_GetError());
@@ -63,13 +67,13 @@ void update_gui() {
 
   for (; num_free_cells > 0; --num_free_cells) {
     filledCircleRGBA(renderer, free_cells[num_free_cells - 1]->x()*scale_factor_,
-                     free_cells[num_free_cells - 1]->y()*scale_factor_, 3,
+                     size_y_ - free_cells[num_free_cells - 1]->y()*scale_factor_, 2,
                      255, 255, 255, 255);
   }
 
   for (; num_occupied_cells > 0; --num_occupied_cells) {
     filledCircleRGBA(renderer, occupied_cells[num_occupied_cells - 1]->x()*scale_factor_,
-                     occupied_cells[num_occupied_cells - 1]->y()*scale_factor_, 3,
+                     size_y_ - occupied_cells[num_occupied_cells - 1]->y()*scale_factor_, 2,
                      255, 0, 0, 255);
   }
 

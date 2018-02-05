@@ -19,7 +19,7 @@ using namespace rapidxml;
 int num_cells;
 Cell** cells;
 
-int num_cars = 200;
+int num_cars = 2000;
 Car** cars;
 
 void init_cars() {
@@ -127,6 +127,23 @@ int main(int argc, char** argv) {
 
   auto* graph_ml_node = doc.first_node("graphml");
   assert(graph_ml_node != NULL);
+
+  // Parse layout description.
+  map<string, string> data_ids;
+  data_ids["x"] = data_ids["y"] = data_ids["geometry"]
+                = data_ids["length"] = data_ids["osmid"]
+                = data_ids["oneway"] = "n/a";
+  for (auto* node = graph_ml_node->first_node("key"); node;
+       node = node->next_sibling("key")) {
+    if (data_ids.find(node->first_attribute("attr.name")->value())
+        != data_ids.end()) {
+      data_ids[node->first_attribute("attr.name")->value()] =
+          node->first_attribute("id")->value();
+      cout << "Graph file has data for "
+           << node->first_attribute("attr.name")->value() << "\n";
+    }
+  }
+
   auto* graph_node = graph_ml_node->first_node("graph");
   assert(graph_node != NULL);
 
@@ -141,15 +158,18 @@ int main(int argc, char** argv) {
     for (auto* data_node = node->first_node("data"); data_node;
          data_node = data_node->next_sibling("data")) {
 
-      if (strcmp(data_node->first_attribute("key")->value(), "d3") == 0) {
+      if (strcmp(data_node->first_attribute("key")->value(),
+          data_ids["osmid"].c_str()) == 0) {
         id = atol(data_node->value());
       }
-      else if (strcmp(data_node->first_attribute("key")->value(), "d4") == 0) {
+      else if (strcmp(data_node->first_attribute("key")->value(),
+               data_ids["y"].c_str()) == 0) {
         pos_lat = atof(data_node->value());
         min_lat = min(min_lat, pos_lat);
         max_lat = max(max_lat, pos_lat);
       }
-      else if (strcmp(data_node->first_attribute("key")->value(), "d5") == 0) {
+      else if (strcmp(data_node->first_attribute("key")->value(),
+               data_ids["x"].c_str()) == 0) {
         pos_long = atof(data_node->value());
         min_long = min(min_long, pos_long);
         max_long = max(max_long, pos_long);
@@ -190,13 +210,16 @@ int main(int argc, char** argv) {
 
     for (auto* data_edge = edge->first_node("data"); data_edge;
          data_edge = data_edge->next_sibling("data")) {
-      if (strcmp(data_edge->first_attribute("key")->value(), "d7") == 0) {
+      if (strcmp(data_edge->first_attribute("key")->value(),
+          data_ids["oneway"].c_str()) == 0) {
         is_one_way = strcmp(data_edge->value(), "True") == 0;
       }
-      else if (strcmp(data_edge->first_attribute("key")->value(), "d9") == 0) {
+      else if (strcmp(data_edge->first_attribute("key")->value(),
+               data_ids["length"].c_str()) == 0) {
         length = atof(data_edge->value());
       }
-      else if (strcmp(data_edge->first_attribute("key")->value(), "d11") == 0) {
+      else if (strcmp(data_edge->first_attribute("key")->value(),
+               data_ids["geometry"].c_str()) == 0) {
         // Parse shape description.
         string prefix = "LINESTRING (";
         string linestring = data_edge->value();
@@ -260,7 +283,7 @@ int main(int argc, char** argv) {
   cout << "GUI content within (" << ctrans.min_x() << ", " << ctrans.min_y()
        << ") and (" << ctrans.max_x() << ", " << ctrans.max_y() << ")\n";
 
-  int window_x = 2200;
+  int window_x = 1600;
   int window_y = 1300;
   double scale_factor = 1.0 * window_x / ctrans.max_x();
   scale_factor = min(scale_factor, 1.0 * window_y / ctrans.max_y());

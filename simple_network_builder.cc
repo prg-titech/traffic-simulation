@@ -55,7 +55,7 @@ void Intersection::build() {
 
 Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
                Intersection* to, double max_velocity) {
-  if (from != to) {
+  if (from == to) {
     printf("Warning: Detected self-loop during street construction.\n");
   }
 
