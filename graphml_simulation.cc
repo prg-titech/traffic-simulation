@@ -11,48 +11,21 @@ using namespace std;
 
 Renderer* renderer;
 
-int num_cells;
-Cell** cells;
-
 int num_cars = 40000;
 Car** cars;
-
-vector<TrafficLight*> traffic_lights;
 
 void draw_cell(Cell* cell) {
   renderer->draw_cell(cell);
 }
 
-void init_cars() {
-  // Build cars.
-  cars = new Car*[num_cars];
-  for (int i = 0; i < num_cars; ++i) {
-    cars[i] = new Car(20, cells[rand() % num_cells]);
-  }
-}
-
-void step() {
-  for (int i = 0; i < traffic_lights.size(); ++i) {
-    traffic_lights[i]->step();
-  }
-
-  for (int i = 0; i < num_cars; ++i) {
-    cars[i]->step_velocity();
-  }
-
-  for (int i = 0; i < num_cars; ++i) {
-    cars[i]->step_move();
-  }
-}
-
 int main(int argc, char** argv) {
   string filename(argv[1]);
   GraphmlNetworkBuilder graph_builder(filename);
-  graph_builder.build();
-  num_cells = graph_builder.num_cells();
-  cout << num_cells << " cells.\n";
-  cells = new Cell*[num_cells];
-  graph_builder.get_cells(cells);
+  graph_builder.build_connections();
+  graph_builder.build_traffic_lights();
+  auto* simulation = graph_builder.simulation();
+
+  cout << simulation->num_cells() << " cells.\n";
 
   int window_x = 1600;
   int window_y = 1300;
@@ -60,29 +33,18 @@ int main(int argc, char** argv) {
   scale_factor = min(scale_factor, 1.0 * window_y / graph_builder.max_y());
   cout << "Using GUI scale factor " << scale_factor << "\n";
 
-  renderer = new Renderer(num_cells, cells, window_x, window_y, scale_factor);
-
-  // Add streets.
-  auto& streets = graph_builder.streets();
-  for (int i = 0; i < streets.size(); ++i) {
-    renderer->add_street(make_tuple(
-        streets[i]->first_cell()->x(),
-        streets[i]->first_cell()->y(),
-        streets[i]->last_cell()->x(),
-        streets[i]->last_cell()->y()));
-  }
-  
-  // Add traffic lights.
-  traffic_lights = graph_builder.build_traffic_lights();
-
+  renderer = new Renderer(simulation, window_x, window_y, scale_factor);
   renderer->redraw_everything();
   cout << "First GUI update complete.\n";
 
-  init_cars();
+  // Build cars.
+  for (int i = 0; i < 40000; ++i) {
+    simulation->add_car(new Car(20, simulation->random_cell()));
+  }
   renderer->update_gui();
 
   while (true) {
-    step();
+    simulation->step();
     renderer->update_gui();
   }
 

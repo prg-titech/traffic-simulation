@@ -80,9 +80,11 @@ vector<string> split(const string& str, const string& delim)
   return tokens;
 }
 
-GraphmlNetworkBuilder::GraphmlNetworkBuilder(
-    string filename, int cell_size, double default_speed_limit,
-    double iteration_length) : builder_(cell_size) {
+GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
+                                             int cell_size,
+                                             double default_speed_limit,
+                                             double iteration_length)
+    : simulation_(new Simulation()), builder_(simulation_, cell_size) {
   // Max. velocity is measured in cells / iteration length.
   int max_velocity = default_speed_limit / cell_size * iteration_length;
   if (max_velocity == 0) {
@@ -289,26 +291,14 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(
   max_y_ = ctrans.max_y();
 }
 
-void GraphmlNetworkBuilder::build() {
-  builder_.build();
+void GraphmlNetworkBuilder::build_connections() {
+  builder_.build_connections();
 }
 
-int GraphmlNetworkBuilder::num_cells() {
-  return builder_.num_cells();
-}
-
-void GraphmlNetworkBuilder::get_cells(Cell** cells) {
-  builder_.get_cells(cells);
-}
-
-std::vector<Street*>& GraphmlNetworkBuilder::streets() {
-  return builder_.streets();
-}
-
-std::vector<TrafficLight*> GraphmlNetworkBuilder::build_traffic_lights() {
+void GraphmlNetworkBuilder::build_traffic_lights() {
   std::vector<TrafficLight*> result;
-  for (int i = 0; i < builder_.intersections().size(); ++i) {
-    auto* intersection = builder_.intersections()[i];
+  for (int i = 0; i < builder_.intersections_.size(); ++i) {
+    auto* intersection = builder_.intersections_[i];
     auto& incoming_streets = intersection->incoming_streets();
 
     std::vector<SharedSignalGroup*> signal_groups;
@@ -318,11 +308,9 @@ std::vector<TrafficLight*> GraphmlNetworkBuilder::build_traffic_lights() {
     }
 
     if (signal_groups.size() > 1) {
-      result.push_back(new TrafficLight(30, signal_groups));
+      simulation_->add_traffic_light(new TrafficLight(30, signal_groups));
     }
   }
-
-  return result;
 }
 
 }  // namespace builder

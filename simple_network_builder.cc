@@ -26,7 +26,7 @@ void Intersection::connect_outgoing(Street* street) {
   outgoing_streets_.push_back(street);
 }
 
-void Intersection::build() {
+void Intersection::build_connections() {
   if (outgoing_streets_.size() == 0 && incoming_streets_.size() == 0) {
     printf("Warning: Detected intersection without any edges.\n");
     return;

@@ -7,10 +7,11 @@
 class SDL_Window;
 class SDL_Renderer;
 class Cell;
+class Simulation;
 
 class Renderer {
  public:
-  Renderer(int num_cells, Cell** cells, int window_size_x, int window_size_y,
+  Renderer(Simulation* Simulation, int window_size_x, int window_size_y,
            double scale_factor);
 
   ~Renderer();
@@ -24,12 +25,7 @@ class Renderer {
   void add_street(std::tuple<double, double, double, double> street);
 
  private:
-  // Start and end points of all streets.
-  std::vector<std::tuple<double, double, double, double>> streets_;
-
-  // A list of all cells.
-  Cell** cells_;
-  int num_cells_;
+  Simulation* simulation_;
 
   // A list of cells that became free in this iteration.
   Cell** free_cells_;

@@ -29,7 +29,7 @@ class Intersection {
 
   void connect_outgoing(Street* street);
 
-  void build();
+  void build_connections();
 
   // TODO: Build traffic controller (e.g., street light).
 
@@ -94,7 +94,9 @@ class TwoWayStreet {
 
 class SimpleNetworkBuilder {
  public:
-  SimpleNetworkBuilder(int cell_size) : cell_size_(cell_size) {}
+  SimpleNetworkBuilder(int cell_size) : cell_size_(cell_size) {
+    simulation_ = new Simulation();
+  }
 
   ~SimpleNetworkBuilder() {
     for (auto it = intersections_.begin(); it != intersections_.end(); ++it) {
@@ -114,7 +116,37 @@ class SimpleNetworkBuilder {
     return i;
   }
 
+  void build_connections() {
+    for (auto it = intersections_.begin();
+         it != intersections_.end(); ++it) {
+      (*it)->build_connections();
+    }
+
+    printf("%i cell coordinates were out of range.\n", cells_out_of_range_);
+  }
+
   int cell_size() { return cell_size_; }
+
+  Simulation* simulation() { return simulation_; }
+
+ private:
+  friend class GraphmlNetworkBuilder;
+  friend class Intersection;
+  friend class Street;
+
+  // Debug information. x, y is -inf or +inf.
+  int cells_out_of_range_ = 0;
+
+  int cell_size_;
+
+  Simulation* simulation_;
+
+  std::vector<Intersection*> intersections_;
+
+  std::vector<Street*> streets_;
+
+  SimpleNetworkBuilder(Simulation* simulation, int cell_size)
+      : cell_size_(cell_size), simulation_(simulation) {}
 
   Cell* build_cell(double x, double y, double max_velocity) {
     if (x < 0 || y < 0) {
@@ -122,51 +154,17 @@ class SimpleNetworkBuilder {
     }
 
     auto* cell = new Cell(max_velocity, x, y);
-    cells_.push_back(cell);
+    simulation_->add_cell(cell);
     return cell;
   }
 
   Street* build_street(Intersection* from, Intersection* to, double max_velocity) {
     auto* street = new Street(this, from, to, max_velocity);
     streets_.push_back(street);
+    simulation_->add_street(std::make_tuple(from->x(), from->y(),
+                                            to->x(), to->y()));
     return street;
   }
-
-  void build() {
-    for (auto it = intersections_.begin();
-         it != intersections_.end(); ++it) {
-      (*it)->build();
-    }
-
-    printf("%i cell coordinates were out of range.\n", cells_out_of_range_);
-  }
-
-  void get_cells(Cell** cells) {
-    memcpy(cells, cells_.data(), sizeof(Cell*) * cells_.size());
-  }
-
-  int num_cells() { return cells_.size(); }
-
-  std::vector<Street*>& streets() {
-    return streets_;
-  }
-
-  std::vector<Intersection*>& intersections() {
-    return intersections_;
-  }
-
- private:
-  // Debug information. x, y is -inf or +inf.
-  int cells_out_of_range_ = 0;
-
-  int cell_size_;
-
-  std::vector<Intersection*> intersections_;
-
-  std::vector<Cell*> cells_;
-
-  std::vector<Street*> streets_;
-
 };
 
 }

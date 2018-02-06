@@ -154,4 +154,45 @@ class TrafficLight : public TrafficController {
   std::vector<SharedSignalGroup*> signal_groups_;
 };
 
+class Simulation {
+ public:
+  using StreetLine = std::tuple<double, double, double, double>;
+
+  std::vector<Cell*>& cells() { return cells_; }
+
+  int num_cells() { return cells_.size(); }
+
+  Cell* random_cell() { return cells_[rand() % num_cells()]; }
+
+  std::vector<StreetLine>& streets() { return streets_; }
+
+  void step() {
+    for (int i = 0; i < traffic_lights_.size(); ++i) {
+      traffic_lights_[i]->step();
+    }
+
+    for (int i = 0; i < cars_.size(); ++i) {
+      cars_[i]->step_velocity();
+    }
+
+    for (int i = 0; i < cars_.size(); ++i) {
+      cars_[i]->step_move();
+    }
+  }
+
+  void add_street(StreetLine street) { streets_.push_back(street); }
+  void add_cell(Cell* cell) { cells_.push_back(cell); }
+  void add_car(Car* car) { cars_.push_back(car); }
+  void add_traffic_light(TrafficLight* light) { 
+    traffic_lights_.push_back(light);
+  }
+
+  // Only for GUI purposes.
+  std::vector<StreetLine> streets_;
+
+  std::vector<Cell*> cells_;
+  std::vector<Car*> cars_;
+  std::vector<TrafficLight*> traffic_lights_;
+};
+
 #endif  // TRAFFIC_H

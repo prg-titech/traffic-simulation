@@ -23,20 +23,17 @@ class GraphmlNetworkBuilder {
                         double default_speed_limit = 13.8,
                         double iteration_length = 2);
 
-  void build();
-
-  int num_cells();
-
-  void get_cells(Cell** cells);
-
-  std::vector<Street*>& streets();
+  void build_connections();
+  void build_traffic_lights();
 
   double max_x() { return max_x_; }
   double max_y() { return max_y_; }
 
-  std::vector<TrafficLight*> build_traffic_lights();
+  Simulation* simulation() { return simulation_; }
 
  private:
+  Simulation* simulation_;
+
   SimpleNetworkBuilder builder_;
 
   double max_x_, max_y_;

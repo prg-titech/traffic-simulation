@@ -8,13 +8,13 @@
 using namespace std;
 
 
-Renderer::Renderer(int num_cells, Cell** cells, int window_size_x,
+Renderer::Renderer(Simulation* simulation, int window_size_x,
                    int window_size_y, double scale_factor)
     : min_scale_factor_(scale_factor), scale_factor_(scale_factor),
       window_size_x_(window_size_x), window_size_y_(window_size_y),
-      num_cells_(num_cells), cells_(cells), num_free_cells_(0),
-      free_cells_(new Cell*[num_cells]), num_occupied_cells_(0),
-      occupied_cells_(new Cell*[num_cells]) {
+      num_free_cells_(0), free_cells_(new Cell*[simulation->num_cells()]),
+      num_occupied_cells_(0), simulation_(simulation),
+      occupied_cells_(new Cell*[simulation->num_cells()]) {
   // Initialize renderer.
   if (SDL_Init(SDL_INIT_VIDEO)) {
     printf("SDL_Init Error: %s", SDL_GetError());
@@ -63,13 +63,14 @@ void Renderer::redraw_everything() {
   SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 0);
   SDL_RenderClear(renderer_);
 
+  auto& streets = simulation_->streets();
   // Draw streets.
-  for (int i = 0; i < streets_.size(); ++i) {
-    int pos1_x = (get<0>(streets_[i]) - origin_x_)*scale_factor_;
-    int pos1_y = window_size_y_ - ((get<1>(streets_[i]) - origin_y_)
+  for (int i = 0; i < streets.size(); ++i) {
+    int pos1_x = (get<0>(streets[i]) - origin_x_)*scale_factor_;
+    int pos1_y = window_size_y_ - ((get<1>(streets[i]) - origin_y_)
                                    * scale_factor_);
-    int pos2_x = (get<2>(streets_[i]) - origin_x_)*scale_factor_;
-    int pos2_y = window_size_y_ - ((get<3>(streets_[i]) - origin_y_)
+    int pos2_x = (get<2>(streets[i]) - origin_x_)*scale_factor_;
+    int pos2_y = window_size_y_ - ((get<3>(streets[i]) - origin_y_)
                                    * scale_factor_);
 
     if ((pos1_x >= 0 && pos1_x < window_size_x_ &&
@@ -81,17 +82,12 @@ void Renderer::redraw_everything() {
     }
   }
 
-  for (int i = 0; i < num_cells_; ++i) {
+  for (int i = 0; i < simulation_->num_cells(); ++i) {
     // Only draw occupied cells.
-    if (!cells_[i]->is_free()) {
-      cells_[i]->draw();
+    if (!simulation_->cells()[i]->is_free()) {
+      simulation_->cells()[i]->draw();
     }
   }
-}
-
-
-void Renderer::add_street(std::tuple<double, double, double, double> street) {
-  streets_.push_back(street);
 }
 
 
