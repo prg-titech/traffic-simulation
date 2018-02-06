@@ -116,7 +116,8 @@ class Car {
 
 class SharedSignalGroup {
  public:
-  SharedSignalGroup(std::initializer_list<Cell*> cells) : cells_(cells) {}
+  // TODO: Use rvalue references.
+  SharedSignalGroup(std::vector<Cell*> cells) : cells_(cells) {}
 
   // Set traffic lights to green.
   void signal_go();
@@ -134,7 +135,7 @@ class TrafficController {};
 class TrafficLight : public TrafficController {
  public:
   TrafficLight(int phase_time,
-               std::initializer_list<SharedSignalGroup*> signal_groups)
+               std::vector<SharedSignalGroup*> signal_groups)
       : phase_time_(phase_time), signal_groups_(signal_groups) {}
 
   void step();

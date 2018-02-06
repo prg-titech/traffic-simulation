@@ -39,6 +39,14 @@ class Intersection {
   double longitude() { return longitude_; }
   double latitude() { return latitude_; }
 
+  std::vector<Street*>& outgoing_streets() {
+    return outgoing_streets_;
+  }
+
+  std::vector<Street*>& incoming_streets() {
+    return incoming_streets_;
+  }
+
  private:
   // Used only for rendering purposes.
   double x_, y_;
@@ -141,6 +149,10 @@ class SimpleNetworkBuilder {
 
   std::vector<Street*>& streets() {
     return streets_;
+  }
+
+  std::vector<Intersection*>& intersections() {
+    return intersections_;
   }
 
  private:

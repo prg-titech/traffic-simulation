@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "lib/rapidxml-1.13/rapidxml.hpp"
 
 #include "graphml_network_builder.h"
@@ -13,8 +14,10 @@ Renderer* renderer;
 int num_cells;
 Cell** cells;
 
-int num_cars = 2000;
+int num_cars = 40000;
 Car** cars;
+
+vector<TrafficLight*> traffic_lights;
 
 void draw_cell(Cell* cell) {
   renderer->draw_cell(cell);
@@ -29,6 +32,10 @@ void init_cars() {
 }
 
 void step() {
+  for (int i = 0; i < traffic_lights.size(); ++i) {
+    traffic_lights[i]->step();
+  }
+
   for (int i = 0; i < num_cars; ++i) {
     cars[i]->step_velocity();
   }
@@ -64,6 +71,10 @@ int main(int argc, char** argv) {
         streets[i]->last_cell()->x(),
         streets[i]->last_cell()->y()));
   }
+  
+  // Add traffic lights.
+  traffic_lights = graph_builder.build_traffic_lights();
+
   renderer->redraw_everything();
   cout << "First GUI update complete.\n";
 

@@ -6,6 +6,7 @@
 #include "lib/rapidxml-1.13/rapidxml.hpp"
 
 #include "simple_network_builder.h"
+#include "traffic.h"
 
 class Cell;
 
@@ -32,6 +33,8 @@ class GraphmlNetworkBuilder {
 
   double max_x() { return max_x_; }
   double max_y() { return max_y_; }
+
+  std::vector<TrafficLight*> build_traffic_lights();
 
  private:
   SimpleNetworkBuilder builder_;

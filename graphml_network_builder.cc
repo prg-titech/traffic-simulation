@@ -305,4 +305,24 @@ std::vector<Street*>& GraphmlNetworkBuilder::streets() {
   return builder_.streets();
 }
 
+std::vector<TrafficLight*> GraphmlNetworkBuilder::build_traffic_lights() {
+  std::vector<TrafficLight*> result;
+  for (int i = 0; i < builder_.intersections().size(); ++i) {
+    auto* intersection = builder_.intersections()[i];
+    auto& incoming_streets = intersection->incoming_streets();
+
+    std::vector<SharedSignalGroup*> signal_groups;
+    for (int j = 0; j < incoming_streets.size(); ++j) {
+      signal_groups.push_back(
+          new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));
+    }
+
+    if (signal_groups.size() > 1) {
+      result.push_back(new TrafficLight(30, signal_groups));
+    }
+  }
+
+  return result;
+}
+
 }  // namespace builder
