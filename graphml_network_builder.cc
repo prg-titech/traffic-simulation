@@ -87,6 +87,7 @@ map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
   result["secondary"] = Cell::kSecondary;
   result["primary"] = Cell::kPrimary;
   result["motorway"] = Cell::kMotorway;
+  result["motorway_link"] = Cell::kMotorwayLink;
   return result;
 }
 
@@ -327,48 +328,56 @@ void GraphmlNetworkBuilder::build_connections() {
   builder_.build_connections();
 }
 
+
+Cell::Type cell_type(Street* street) {
+  return street->last_cell()->type();
+}
+
+TrafficController* GraphmlNetworkBuilder::build_traffic_light(
+    Intersection* intersection) {
+  auto& incoming_streets = intersection->incoming_streets();
+  vector<SharedSignalGroup*> signal_groups;
+  for (int j = 0; j < incoming_streets.size(); ++j) {
+    signal_groups.push_back(
+        new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));
+  }
+
+  return new TrafficLight(30, signal_groups);
+}
+
+TrafficController*
+    GraphmlNetworkBuilder::build_priority_yield_traffic_controller(
+        Intersection* intersection) {
+  auto& incoming_streets = intersection->incoming_streets();
+  assert(incoming_streets.size() == 2);
+  vector<Cell*> prioritized_cells;
+  if (cell_type(incoming_streets[0]) > cell_type(incoming_streets[1])) {
+    // First one has priority.
+    return new PriorityYieldTrafficController( {
+        incoming_streets[0]->last_cell(), incoming_streets[1]->last_cell() } );
+  } else {
+    // Second one has priority.
+    return new PriorityYieldTrafficController( {
+        incoming_streets[1]->last_cell(), incoming_streets[0]->last_cell() } );
+  }
+}
+
 void GraphmlNetworkBuilder::build_traffic_controllers() {
   int num_traffic_lights = 0;
   int num_priority_yield_traffic_controllers = 0;
 
   for (int i = 0; i < builder_.intersections_.size(); ++i) {
     auto* intersection = builder_.intersections_[i];
-    if (intersection->incoming_streets().size() > 1) {
-      auto& incoming_streets = intersection->incoming_streets();
-      bool has_motorway = false;
+    auto& incoming = intersection->incoming_streets();
+    int num_incoming = incoming.size();
 
-      vector<SharedSignalGroup*> signal_groups;
-      for (int j = 0; j < incoming_streets.size(); ++j) {
-        if (incoming_streets[j]->last_cell()->type() == Cell::kMotorway) {
-          has_motorway = true;
-          break;
-        }
-
-        signal_groups.push_back(
-            new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));
-      }
-
-      if (has_motorway) {
-        for (int j = 0; j < signal_groups.size(); ++j) delete signal_groups[j];
-
-        // Build PriorityYieldTrafficController.
-        vector<Cell*> prioritized_cells;
-        for (int j = 0; j < incoming_streets.size(); ++j) {
-          if (incoming_streets[j]->last_cell()->type() == Cell::kMotorway) {
-            prioritized_cells.insert(prioritized_cells.begin(),
-                                     incoming_streets[j]->last_cell());
-          } else {
-            prioritized_cells.push_back(incoming_streets[j]->last_cell());
-          }
-        }
-        simulation_->add_traffic_controller(
-            new PriorityYieldTrafficController(prioritized_cells));
-        ++num_priority_yield_traffic_controllers;
-      } else {
-        simulation_->add_traffic_controller(
-            new TrafficLight(30, signal_groups));
-        ++num_traffic_lights;
-      }
+    if (num_incoming == 2 && cell_type(incoming[0]) != cell_type(incoming[1])) {
+      simulation_->add_traffic_controller(
+          build_priority_yield_traffic_controller(intersection));
+      ++num_priority_yield_traffic_controllers;
+    } else if (num_incoming >= 2) {
+      simulation_->add_traffic_controller(build_traffic_light(intersection));
+      ++num_traffic_lights;
     }
   }
 

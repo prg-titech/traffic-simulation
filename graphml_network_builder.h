@@ -41,6 +41,10 @@ class GraphmlNetworkBuilder {
 
   double max_x_, max_y_;
 
+  TrafficController* build_traffic_light(Intersection* intersection);
+  TrafficController* build_priority_yield_traffic_controller(
+      Intersection* intersection);
+
   // Mapping from XML values to cell types.
   static const map<string, Cell::Type> cell_types_;
 

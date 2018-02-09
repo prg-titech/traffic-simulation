@@ -57,11 +57,8 @@ Renderer::~Renderer() {
 
 
 uint32_t cell_color(Cell::Type type) {
-  switch (type) {
-    case Cell::kResidential: return 0xffffffff;
-    case Cell::kMotorway: return 0xff22aaff;
-    default: return 0xffffffff;
-  }
+  uint32_t s = 255-32*type;
+  return 0xffff00ff + (s << 8);
 }
 
 

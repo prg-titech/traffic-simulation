@@ -14,10 +14,12 @@
 class Cell {
  public:
   enum Type {
+    // Sorted from smallest to largest.
     kResidential,
     kTertiary,
     kSecondary,
     kPrimary,
+    kMotorwayLink,
     kMotorway,
 
     kMaxType

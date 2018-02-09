@@ -39,9 +39,20 @@ void Car::step_move() {
 }
 
 Cell* Car::next_step(Cell* position) {
-  // Random walk.
+  // (Almost) Random walk.
   assert(position->num_outgoing_cells() > 0);
-  return position->outgoing_cells()[rand() % position->num_outgoing_cells()];
+  auto** cells = position->outgoing_cells();
+
+  if (position->num_outgoing_cells() == 2) {
+    // Take the larger street with higher probability.
+    if (cells[0]->type() > cells[1]->type()) {
+      return cells[rand() % 1000 < 700 ? 0 : 1];
+    } else if (cells[0]->type() < cells[1]->type()) {
+      return cells[rand() % 1000 < 700 ? 1 : 0];
+    }
+  }
+
+  return cells[rand() % position->num_outgoing_cells()];
 }
 
 void Car::step_accelerate() {
