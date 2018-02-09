@@ -1,6 +1,7 @@
 #ifndef GRAPHML_NETWORK_BUILDER_H
 #define GRAPHML_NETWORK_BUILDER_H
 
+#include <map>
 #include <string>
 #include <vector>
 #include "lib/rapidxml-1.13/rapidxml.hpp"
@@ -9,6 +10,8 @@
 #include "traffic.h"
 
 class Cell;
+
+using namespace std;
 
 namespace builder {
 
@@ -19,7 +22,7 @@ class GraphmlNetworkBuilder {
   // Iteration length in seconds: Higher length means better resolution, but
   // also higher safety distance to previous vehicle. Def.: 2s.
   // Assuming a speed limit of 50 km/h, this implies a safety distance of 25 m.
-  GraphmlNetworkBuilder(std::string filename, int cell_size = 5,
+  GraphmlNetworkBuilder(string filename, int cell_size = 5,
                         double default_speed_limit = 13.8,
                         double iteration_length = 2);
 
@@ -37,6 +40,11 @@ class GraphmlNetworkBuilder {
   SimpleNetworkBuilder builder_;
 
   double max_x_, max_y_;
+
+  // Mapping from XML values to cell types.
+  static const map<string, Cell::Type> cell_types_;
+
+  static map<string, Cell::Type> create_cell_types_map();
 };
 
 }  // namespace builder

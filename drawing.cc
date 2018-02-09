@@ -56,6 +56,15 @@ Renderer::~Renderer() {
 }
 
 
+uint32_t cell_color(Cell::Type type) {
+  switch (type) {
+    case Cell::kResidential: return 0xffffffff;
+    case Cell::kMotorway: return 0xff22aaff;
+    default: return 0xffffffff;
+  }
+}
+
+
 void Renderer::redraw_everything() {
   num_free_cells_ = 0;
   num_occupied_cells_ = 0;
@@ -64,21 +73,24 @@ void Renderer::redraw_everything() {
   SDL_RenderClear(renderer_);
 
   auto& streets = simulation_->streets();
+  int line_w = 4*scale_factor_/0.2;
+  line_w = line_w == 0 ? 1 : line_w;
+
   // Draw streets.
   for (int i = 0; i < streets.size(); ++i) {
-    int pos1_x = (get<0>(streets[i]) - origin_x_)*scale_factor_;
-    int pos1_y = window_size_y_ - ((get<1>(streets[i]) - origin_y_)
+    int pos1_x = (streets[i]->first()->x() - origin_x_)*scale_factor_;
+    int pos1_y = window_size_y_ - ((streets[i]->first()->y() - origin_y_)
                                    * scale_factor_);
-    int pos2_x = (get<2>(streets[i]) - origin_x_)*scale_factor_;
-    int pos2_y = window_size_y_ - ((get<3>(streets[i]) - origin_y_)
+    int pos2_x = (streets[i]->last()->x() - origin_x_)*scale_factor_;
+    int pos2_y = window_size_y_ - ((streets[i]->last()->y() - origin_y_)
                                    * scale_factor_);
 
     if ((pos1_x >= 0 && pos1_x < window_size_x_ &&
         pos1_y >= 0 && pos1_y < window_size_y_) ||
         (pos2_x >= 0 && pos2_x < window_size_x_ &&
         pos2_y >= 0 && pos2_y < window_size_y_)) {
-      thickLineRGBA(renderer_, pos1_x, pos1_y, pos2_x, pos2_y, 3,
-                    255, 255, 255, 255);
+      thickLineColor(renderer_, pos1_x, pos1_y, pos2_x, pos2_y, line_w,
+                     cell_color(streets[i]->type()));
     }
   }
 
@@ -129,6 +141,7 @@ void Renderer::update_gui() {
   }
 
   SDL_SetRenderDrawColor(renderer_, 0, 0, 255, 255);
+  double cell_w = 2*scale_factor_/0.2;
 
   for (; num_free_cells_ > 0; --num_free_cells_) {
     int pos_x = (free_cells_[num_free_cells_ - 1]->x() - origin_x_)
@@ -139,7 +152,8 @@ void Renderer::update_gui() {
 
     if (pos_x >= 0 && pos_x < window_size_x_ &&
         pos_y >= 0 && pos_y < window_size_y_)
-      filledCircleRGBA(renderer_, pos_x, pos_y, 2, 255, 255, 255, 255);
+      filledCircleColor(renderer_, pos_x, pos_y, cell_w,
+                        cell_color(free_cells_[num_free_cells_ - 1]->type()));
   }
 
   for (; num_occupied_cells_ > 0; --num_occupied_cells_) {
@@ -151,7 +165,7 @@ void Renderer::update_gui() {
 
     if (pos_x >= 0 && pos_x < window_size_x_ &&
         pos_y >= 0 && pos_y < window_size_y_)
-    filledCircleRGBA(renderer_, pos_x, pos_y, 2, 255, 0, 0, 255);
+    filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 255, 0, 0, 255);
   }
 
   SDL_RenderPresent(renderer_);

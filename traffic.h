@@ -13,9 +13,21 @@
 // Traffic simulation based on cellular automaton
 class Cell {
  public:
-  Cell(double max_velocity, double x, double y)
-      : is_free_(true), max_velocity_(max_velocity),
-        controller_max_velocity_(max_velocity), x_(x), y_(y) {}
+  enum Type {
+    kResidential,
+    kTertiary,
+    kSecondary,
+    kPrimary,
+    kMotorway,
+
+    kMaxType
+  };
+
+  Cell(double max_velocity, double x, double y, Type type = kResidential)
+      : is_free_(true), max_velocity_(max_velocity), type_(type),
+        controller_max_velocity_(max_velocity), x_(x), y_(y) {
+    assert(type >= 0 && type < Type::kMaxType);
+  }
 
   bool is_free() const {
     return is_free_;
@@ -36,20 +48,22 @@ class Cell {
   void release();
 
   void connect_to(Cell* other) {
-    neighbors_.push_back(other);
+    outgoing_cells_.push_back(other);
   }
 
-  int num_neighbors() {
-    assert(neighbors_.size() > 0);
-    return neighbors_.size();
+  int num_outgoing_cells() {
+    assert(outgoing_cells_.size() > 0);
+    return outgoing_cells_.size();
   }
 
-  Cell** neighbors() {
-    return neighbors_.data();
+  Cell** outgoing_cells() {
+    return outgoing_cells_.data();
   }
 
   double x() { return x_; }
   double y() { return y_; }
+
+  Type type() { return type_; }
 
   void set_max_velocity(double velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
@@ -64,11 +78,13 @@ class Cell {
   }
 
  private:
+  Type type_;
   bool is_free_;
   double max_velocity_;
   double controller_max_velocity_;
 
-  std::vector<Cell*> neighbors_;
+  std::vector<Cell*> outgoing_cells_;
+  std::vector<Cell*> incoming_cells_;
 
   // Coordinates on the map. Used for rendering.
   double x_, y_;
@@ -154,17 +170,32 @@ class TrafficLight : public TrafficController {
   std::vector<SharedSignalGroup*> signal_groups_;
 };
 
+class Street {
+ public:
+  Street(Cell* first, Cell* last, Cell::Type type = Cell::kResidential)
+      : first_(first), last_(last), type_(type) {
+    assert(type >= 0 && type < Cell::kMaxType);
+  }
+
+  Cell* first() { return first_; }
+  Cell* last() { return last_; }
+  Cell::Type type() { return type_; }
+
+ private:
+  Cell* first_;
+  Cell* last_;
+  Cell::Type type_;
+};
+
 class Simulation {
  public:
-  using StreetLine = std::tuple<double, double, double, double>;
-
   std::vector<Cell*>& cells() { return cells_; }
 
   int num_cells() { return cells_.size(); }
 
   Cell* random_cell() { return cells_[rand() % num_cells()]; }
 
-  std::vector<StreetLine>& streets() { return streets_; }
+  std::vector<Street*>& streets() { return streets_; }
 
   void step() {
     for (int i = 0; i < traffic_lights_.size(); ++i) {
@@ -180,16 +211,15 @@ class Simulation {
     }
   }
 
-  void add_street(StreetLine street) { streets_.push_back(street); }
+  void add_street(Street* street) { streets_.push_back(street); }
   void add_cell(Cell* cell) { cells_.push_back(cell); }
   void add_car(Car* car) { cars_.push_back(car); }
   void add_traffic_light(TrafficLight* light) { 
     traffic_lights_.push_back(light);
   }
 
-  // Only for GUI purposes.
-  std::vector<StreetLine> streets_;
-
+  // Currently only for GUI purposes.
+  std::vector<Street*> streets_;
   std::vector<Cell*> cells_;
   std::vector<Car*> cars_;
   std::vector<TrafficLight*> traffic_lights_;

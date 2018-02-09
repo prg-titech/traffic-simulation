@@ -2,11 +2,11 @@
 #define DRAWING_H
 
 #include <vector>
-#include <tuple>
 
 class SDL_Window;
 class SDL_Renderer;
 class Cell;
+class Street;
 class Simulation;
 
 class Renderer {
@@ -22,7 +22,7 @@ class Renderer {
 
   void redraw_everything();
 
-  void add_street(std::tuple<double, double, double, double> street);
+  void add_street(Street* street);
 
  private:
   Simulation* simulation_;

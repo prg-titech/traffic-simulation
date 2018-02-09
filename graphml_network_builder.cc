@@ -56,10 +56,10 @@ class CoordinateTranslator {
   double s_min_long_, s_min_lat_, s_max_long_, s_max_lat_;
   double s_avg_lat_;
 
-  double t_max_x_ = -std::numeric_limits<double>::max();
-  double t_min_x_ = std::numeric_limits<double>::max();
-  double t_max_y_ = -std::numeric_limits<double>::max();
-  double t_min_y_ = std::numeric_limits<double>::max();
+  double t_max_x_ = -numeric_limits<double>::max();
+  double t_min_x_ = numeric_limits<double>::max();
+  double t_max_y_ = -numeric_limits<double>::max();
+  double t_min_y_ = numeric_limits<double>::max();
 };
 
 // Taken from:
@@ -79,6 +79,19 @@ vector<string> split(const string& str, const string& delim)
   while (pos < str.length() && prev < str.length());
   return tokens;
 }
+
+map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
+  map<string, Cell::Type> result;
+  result["residential"] = Cell::kResidential;
+  result["tertiary"] = Cell::kTertiary;
+  result["secondary"] = Cell::kSecondary;
+  result["primary"] = Cell::kPrimary;
+  result["motorway"] = Cell::kMotorway;
+  return result;
+}
+
+const map<string, Cell::Type> GraphmlNetworkBuilder::cell_types_ =
+    GraphmlNetworkBuilder::create_cell_types_map();
 
 GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
                                              int cell_size,
@@ -101,15 +114,15 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
   cout << "Intersection speed limit = " << intersection_speed_limit
        << " cells/iteration\n";
 
-  std::ifstream xml_stream(filename.c_str());
-  std::string xml_content;
+  ifstream xml_stream(filename.c_str());
+  string xml_content;
 
-  xml_stream.seekg(0, std::ios::end);   
+  xml_stream.seekg(0, ios::end);   
   xml_content.reserve(xml_stream.tellg());
-  xml_stream.seekg(0, std::ios::beg);
+  xml_stream.seekg(0, ios::beg);
 
-  xml_content.assign((std::istreambuf_iterator<char>(xml_stream)),
-                      std::istreambuf_iterator<char>());
+  xml_content.assign((istreambuf_iterator<char>(xml_stream)),
+                      istreambuf_iterator<char>());
 
   xml_document<> doc;
   doc.parse<0>(const_cast<char*>(xml_content.c_str()));
@@ -118,17 +131,28 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
   assert(graph_ml_node != NULL);
 
   // Parse layout description.
-  map<string, string> data_ids;
-  data_ids["x"] = data_ids["y"] = data_ids["geometry"]
-                = data_ids["length"] = data_ids["osmid"]
-                = data_ids["oneway"] = data_ids["maxspeed"] = "n/a";
+  map<string, string> edge_data_ids;
+  map<string, string> node_data_ids;
+  node_data_ids["x"] = node_data_ids["y"] = node_data_ids["osmid"] = "n/a";
+  edge_data_ids["oneway"] = edge_data_ids["length"] = edge_data_ids["geometry"]
+                          = edge_data_ids["maxspeed"]= edge_data_ids["highway"]
+                          = "n/a";
   for (auto* node = graph_ml_node->first_node("key"); node;
        node = node->next_sibling("key")) {
-    if (data_ids.find(node->first_attribute("attr.name")->value())
-        != data_ids.end()) {
-      data_ids[node->first_attribute("attr.name")->value()] =
+    if (edge_data_ids.find(node->first_attribute("attr.name")->value())
+        != edge_data_ids.end()
+        && strcmp(node->first_attribute("for")->value(), "edge") == 0) {
+      edge_data_ids[node->first_attribute("attr.name")->value()] =
           node->first_attribute("id")->value();
-      cout << "Graph file has data for "
+      cout << "Graph file has edge data for "
+           << node->first_attribute("attr.name")->value() << "\n";
+    }
+    if (node_data_ids.find(node->first_attribute("attr.name")->value())
+        != node_data_ids.end()
+        && strcmp(node->first_attribute("for")->value(), "node") == 0) {
+      node_data_ids[node->first_attribute("attr.name")->value()] =
+          node->first_attribute("id")->value();
+      cout << "Graph file has node data for "
            << node->first_attribute("attr.name")->value() << "\n";
     }
   }
@@ -148,17 +172,17 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
          data_node = data_node->next_sibling("data")) {
 
       if (strcmp(data_node->first_attribute("key")->value(),
-          data_ids["osmid"].c_str()) == 0) {
+          node_data_ids["osmid"].c_str()) == 0) {
         id = atol(data_node->value());
       }
       else if (strcmp(data_node->first_attribute("key")->value(),
-               data_ids["y"].c_str()) == 0) {
+               node_data_ids["y"].c_str()) == 0) {
         pos_lat = atof(data_node->value());
         min_lat = min(min_lat, pos_lat);
         max_lat = max(max_lat, pos_lat);
       }
       else if (strcmp(data_node->first_attribute("key")->value(),
-               data_ids["x"].c_str()) == 0) {
+               node_data_ids["x"].c_str()) == 0) {
         pos_long = atof(data_node->value());
         min_long = min(min_long, pos_long);
         max_long = max(max_long, pos_long);
@@ -189,6 +213,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
     uint64_t to = atol(edge->first_attribute("target")->value());
     assert(intersections.find(to) != intersections.end());
 
+    Cell::Type street_type = Cell::kResidential;
     bool is_one_way = false;
     double length;
     int speed_limit = max_velocity;
@@ -201,15 +226,15 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
     for (auto* data_edge = edge->first_node("data"); data_edge;
          data_edge = data_edge->next_sibling("data")) {
       if (strcmp(data_edge->first_attribute("key")->value(),
-          data_ids["oneway"].c_str()) == 0) {
+          edge_data_ids["oneway"].c_str()) == 0) {
         is_one_way = strcmp(data_edge->value(), "True") == 0;
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
-               data_ids["length"].c_str()) == 0) {
+               edge_data_ids["length"].c_str()) == 0) {
         length = atof(data_edge->value());
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
-               data_ids["geometry"].c_str()) == 0) {
+               edge_data_ids["geometry"].c_str()) == 0) {
         // Parse shape description.
         string prefix = "LINESTRING (";
         string linestring = data_edge->value();
@@ -232,7 +257,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
         }
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
-               data_ids["maxspeed"].c_str()) == 0) {
+               edge_data_ids["maxspeed"].c_str()) == 0) {
         string suffix = " mph";
         string limitstring = data_edge->value();
 
@@ -254,6 +279,12 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
                << limitstring << "\n";
         }
       }
+      else if (strcmp(data_edge->first_attribute("key")->value(),
+               edge_data_ids["highway"].c_str()) == 0) {
+        if (cell_types_.find(data_edge->value()) != cell_types_.end()) {
+          street_type = cell_types_.at(data_edge->value());
+        }
+      }
     }
 
     shape.push_back(intersections[to]);
@@ -268,7 +299,8 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
       // TODO: Need to adjust layout if two-way intersection.
       assert(int_start != NULL);
       assert(int_end != NULL);
-      int_start->connect_one_way(int_end, max_velocity);
+      assert(street_type >= 0 && street_type < Cell::kMaxType);
+      int_start->connect_one_way(int_end, max_velocity, street_type);
 
       // Check if shape matches length.
       double dx = int_end->x() - int_start->x();
@@ -296,12 +328,12 @@ void GraphmlNetworkBuilder::build_connections() {
 }
 
 void GraphmlNetworkBuilder::build_traffic_lights() {
-  std::vector<TrafficLight*> result;
+  vector<TrafficLight*> result;
   for (int i = 0; i < builder_.intersections_.size(); ++i) {
     auto* intersection = builder_.intersections_[i];
     auto& incoming_streets = intersection->incoming_streets();
 
-    std::vector<SharedSignalGroup*> signal_groups;
+    vector<SharedSignalGroup*> signal_groups;
     for (int j = 0; j < incoming_streets.size(); ++j) {
       signal_groups.push_back(
           new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));

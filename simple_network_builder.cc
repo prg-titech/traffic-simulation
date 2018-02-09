@@ -5,14 +5,16 @@
 namespace builder {
 
 Street* Intersection::connect_one_way(Intersection* other,
-                                      double max_velocity) {
-  return builder_->build_street(this, other, max_velocity);
+                                      double max_velocity,
+                                      Cell::Type type) {
+  return builder_->build_street(this, other, max_velocity, type);
 }
 
 TwoWayStreet* Intersection::connect_two_way(Intersection* other,
-                                            double max_velocity) {
-  auto* first = this->connect_one_way(other, max_velocity);
-  auto* second = other->connect_one_way(this, max_velocity);
+                                            double max_velocity,
+                                            Cell::Type type) {
+  auto* first = this->connect_one_way(other, max_velocity, type);
+  auto* second = other->connect_one_way(this, max_velocity, type);
   return new TwoWayStreet(first, second);
 }
 
@@ -33,8 +35,9 @@ void Intersection::build_connections() {
   }
 
   if (outgoing_streets_.size() == 0) {
-    printf("Warning: Intersection has no outgoing edge! Sending to first incoming edge.\n");
-    outgoing_streets_.push_back(incoming_streets_[0]);
+    printf("Warning: Intersection has no outgoing edge! Sending to random street.\n");
+    auto street = builder_->streets_[rand() % builder_->streets_.size()];
+    outgoing_streets_.push_back(street);
   }
 
   if (incoming_streets_.size() == 0) {
@@ -54,7 +57,7 @@ void Intersection::build_connections() {
 }
 
 Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
-               Intersection* to, double max_velocity) {
+               Intersection* to, double max_velocity, Cell::Type type) {
   if (from == to) {
     printf("Warning: Detected self-loop during street construction.\n");
   }
@@ -72,14 +75,14 @@ Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
   // Build first cell.
   Cell* prev_segment = builder->build_cell(from->x() + 0.5*segment_dx,
                                            from->y() + 0.5*segment_dy,
-                                           max_velocity);
+                                           max_velocity, type);
   first_cell_ = prev_segment;
 
   // Build remaining cells.
   for (int i = 1; i < num_segments; ++i) {
     Cell* new_segment = builder->build_cell(from->x() + (i+0.5)*segment_dx,
                                             from->y() + (i+0.5)*segment_dy,
-                                            max_velocity);
+                                            max_velocity, type);
     prev_segment->connect_to(new_segment);
     prev_segment = new_segment;
   }
@@ -90,6 +93,28 @@ Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
   // STEP 2: Connect street to other streets.
   from->connect_outgoing(this);
   to->connect_incoming(this);
+}
+
+Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
+                                       Cell::Type type) {
+  if (x < 0 || y < 0) {
+    ++cells_out_of_range_;
+  }
+
+  auto* cell = new Cell(max_velocity, x, y, type);
+  simulation_->add_cell(cell);
+  return cell;
+}
+
+Street* SimpleNetworkBuilder::build_street(Intersection* from, Intersection* to,
+                                           double max_velocity, Cell::Type type) {
+  auto* street = new Street(this, from, to, max_velocity, type);
+  streets_.push_back(street);
+
+  // Currently only for rendering purposes...
+  simulation_->add_street(new ::Street(street->first_cell(),
+                                       street->last_cell(), type));
+  return street;
 }
 
 }  // namespace builder

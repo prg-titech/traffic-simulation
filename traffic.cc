@@ -40,8 +40,8 @@ void Car::step_move() {
 
 Cell* Car::next_step(Cell* position) {
   // Random walk.
-  assert(position->num_neighbors() > 0);
-  return position->neighbors()[rand() % position->num_neighbors()];
+  assert(position->num_outgoing_cells() > 0);
+  return position->outgoing_cells()[rand() % position->num_outgoing_cells()];
 }
 
 void Car::step_accelerate() {
