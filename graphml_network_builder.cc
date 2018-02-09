@@ -327,22 +327,54 @@ void GraphmlNetworkBuilder::build_connections() {
   builder_.build_connections();
 }
 
-void GraphmlNetworkBuilder::build_traffic_lights() {
-  vector<TrafficLight*> result;
+void GraphmlNetworkBuilder::build_traffic_controllers() {
+  int num_traffic_lights = 0;
+  int num_priority_yield_traffic_controllers = 0;
+
   for (int i = 0; i < builder_.intersections_.size(); ++i) {
     auto* intersection = builder_.intersections_[i];
-    auto& incoming_streets = intersection->incoming_streets();
+    if (intersection->incoming_streets().size() > 1) {
+      auto& incoming_streets = intersection->incoming_streets();
+      bool has_motorway = false;
 
-    vector<SharedSignalGroup*> signal_groups;
-    for (int j = 0; j < incoming_streets.size(); ++j) {
-      signal_groups.push_back(
-          new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));
-    }
+      vector<SharedSignalGroup*> signal_groups;
+      for (int j = 0; j < incoming_streets.size(); ++j) {
+        if (incoming_streets[j]->last_cell()->type() == Cell::kMotorway) {
+          has_motorway = true;
+          break;
+        }
 
-    if (signal_groups.size() > 1) {
-      simulation_->add_traffic_light(new TrafficLight(30, signal_groups));
+        signal_groups.push_back(
+            new SharedSignalGroup( { incoming_streets[j]->last_cell() } ));
+      }
+
+      if (has_motorway) {
+        for (int j = 0; j < signal_groups.size(); ++j) delete signal_groups[j];
+
+        // Build PriorityYieldTrafficController.
+        vector<Cell*> prioritized_cells;
+        for (int j = 0; j < incoming_streets.size(); ++j) {
+          if (incoming_streets[j]->last_cell()->type() == Cell::kMotorway) {
+            prioritized_cells.insert(prioritized_cells.begin(),
+                                     incoming_streets[j]->last_cell());
+          } else {
+            prioritized_cells.push_back(incoming_streets[j]->last_cell());
+          }
+        }
+        simulation_->add_traffic_controller(
+            new PriorityYieldTrafficController(prioritized_cells));
+        ++num_priority_yield_traffic_controllers;
+      } else {
+        simulation_->add_traffic_controller(
+            new TrafficLight(30, signal_groups));
+        ++num_traffic_lights;
+      }
     }
   }
+
+  cout << "Traffic Lights: " << num_traffic_lights << "\n";
+  cout << "Priority Yield Traffic Controllers: "
+       << num_priority_yield_traffic_controllers << "\n";
 }
 
 }  // namespace builder

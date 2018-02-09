@@ -148,3 +148,43 @@ void TrafficLight::initialize() {
     (*it)->signal_stop();
   }
 }
+
+
+bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell,
+                                                          int lookahead) {
+  if (lookahead == 0) {
+    // Don't care.
+    return false;
+  } else if (lookahead == 1) { 
+    return !cell->is_free();
+  }
+
+  // Check incoming cells. This is BFS.
+  bool result = false;
+  for (int i = 0; i < cell->num_incoming_cells(); ++i) {
+    result |= has_incoming_traffic(cell->incoming_cells()[i], lookahead - 1);
+  }
+  return result;
+}
+
+
+bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell) {
+  return has_incoming_traffic(cell, cell->street_max_velocity());
+}
+
+
+void PriorityYieldTrafficController::step() {
+  bool found_traffic = false;
+  for (int i = 0; i < cells_.size(); ++i) {
+    if (!found_traffic && has_incoming_traffic(cells_[i])) {
+      found_traffic = true;
+      // Allow traffic to flow.
+      cells_[i]->remove_controller_max_velocity();
+      continue;
+    } else if (found_traffic) {
+      // Traffic with higher priority is incoming.
+      cells_[i]->set_controller_max_velocity(0);
+    }
+  }
+}
+

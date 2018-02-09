@@ -27,7 +27,7 @@ class GraphmlNetworkBuilder {
                         double iteration_length = 2);
 
   void build_connections();
-  void build_traffic_lights();
+  void build_traffic_controllers();
 
   double max_x() { return max_x_; }
   double max_y() { return max_y_; }

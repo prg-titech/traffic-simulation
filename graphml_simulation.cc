@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
   string filename(argv[1]);
   GraphmlNetworkBuilder graph_builder(filename);
   graph_builder.build_connections();
-  graph_builder.build_traffic_lights();
+  graph_builder.build_traffic_controllers();
   auto* simulation = graph_builder.simulation();
 
   cout << simulation->num_cells() << " cells.\n";

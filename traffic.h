@@ -23,7 +23,7 @@ class Cell {
     kMaxType
   };
 
-  Cell(double max_velocity, double x, double y, Type type = kResidential)
+  Cell(int max_velocity, double x, double y, Type type = kResidential)
       : is_free_(true), max_velocity_(max_velocity), type_(type),
         controller_max_velocity_(max_velocity), x_(x), y_(y) {
     assert(type >= 0 && type < Type::kMaxType);
@@ -33,12 +33,17 @@ class Cell {
     return is_free_;
   }
 
-  double max_velocity() const {
+  int max_velocity() const {
     if (controller_max_velocity_ < max_velocity_) {
       return controller_max_velocity_;
     } else {
       return max_velocity_;
     }
+  }
+
+  // Return max. velocity regardless of traffic controllers.
+  int street_max_velocity() {
+    return max_velocity_;
   }
 
   void draw();
@@ -60,16 +65,24 @@ class Cell {
     return outgoing_cells_.data();
   }
 
+  int num_incoming_cells() {
+    return incoming_cells_.size();
+  }
+
+  Cell** incoming_cells() {
+    return incoming_cells_.data();
+  }
+
   double x() { return x_; }
   double y() { return y_; }
 
   Type type() { return type_; }
 
-  void set_max_velocity(double velocity) {
+  void set_max_velocity(int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
   }
 
-  void set_controller_max_velocity(double velocity) {
+  void set_controller_max_velocity(int velocity) {
     controller_max_velocity_ = velocity;
   }
 
@@ -80,8 +93,8 @@ class Cell {
  private:
   Type type_;
   bool is_free_;
-  double max_velocity_;
-  double controller_max_velocity_;
+  int max_velocity_;
+  int controller_max_velocity_;
 
   std::vector<Cell*> outgoing_cells_;
   std::vector<Cell*> incoming_cells_;
@@ -146,7 +159,11 @@ class SharedSignalGroup {
 };
 
 
-class TrafficController {};
+class TrafficController {
+ public:
+  virtual void step() = 0;
+};
+
 
 class TrafficLight : public TrafficController {
  public:
@@ -169,6 +186,22 @@ class TrafficLight : public TrafficController {
   // Cells which are set to "green" at the same time.
   std::vector<SharedSignalGroup*> signal_groups_;
 };
+
+
+class PriorityYieldTrafficController : public TrafficController {
+ public:
+  PriorityYieldTrafficController(std::vector<Cell*> cells) : cells_(cells) {}
+
+  void step();
+
+ private:
+  std::vector<Cell*> cells_;
+
+  // Check if a car is coming from this cell within the next iteration.
+  bool has_incoming_traffic(Cell* cell);
+  bool has_incoming_traffic(Cell* cell, int lookahead);
+};
+
 
 class Street {
  public:
@@ -198,8 +231,8 @@ class Simulation {
   std::vector<Street*>& streets() { return streets_; }
 
   void step() {
-    for (int i = 0; i < traffic_lights_.size(); ++i) {
-      traffic_lights_[i]->step();
+    for (int i = 0; i < traffic_controllers_.size(); ++i) {
+      traffic_controllers_[i]->step();
     }
 
     for (int i = 0; i < cars_.size(); ++i) {
@@ -214,15 +247,15 @@ class Simulation {
   void add_street(Street* street) { streets_.push_back(street); }
   void add_cell(Cell* cell) { cells_.push_back(cell); }
   void add_car(Car* car) { cars_.push_back(car); }
-  void add_traffic_light(TrafficLight* light) { 
-    traffic_lights_.push_back(light);
+  void add_traffic_controller(TrafficController* light) { 
+    traffic_controllers_.push_back(light);
   }
 
   // Currently only for GUI purposes.
   std::vector<Street*> streets_;
   std::vector<Cell*> cells_;
   std::vector<Car*> cars_;
-  std::vector<TrafficLight*> traffic_lights_;
+  std::vector<TrafficController*> traffic_controllers_;
 };
 
 #endif  // TRAFFIC_H
