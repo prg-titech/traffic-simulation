@@ -56,6 +56,7 @@ class Cell {
 
   void connect_to(Cell* other) {
     outgoing_cells_.push_back(other);
+    other->incoming_cells_.push_back(this);
   }
 
   int num_outgoing_cells() {

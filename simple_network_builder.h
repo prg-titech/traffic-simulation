@@ -31,7 +31,7 @@ class Intersection {
 
   void connect_outgoing(Street* street);
 
-  void build_connections();
+  void build_connections(int turn_lane_length);
 
   // TODO: Build traffic controller (e.g., street light).
 
@@ -121,7 +121,7 @@ class SimpleNetworkBuilder {
   void build_connections() {
     for (auto it = intersections_.begin();
          it != intersections_.end(); ++it) {
-      (*it)->build_connections();
+      (*it)->build_connections(/*turn_lane_length=*/ 5);
     }
 
     printf("%i cell coordinates were out of range.\n", cells_out_of_range_);

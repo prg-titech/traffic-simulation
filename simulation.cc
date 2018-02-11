@@ -79,9 +79,24 @@ int main() {
   }
   update_gui();
 
+  uint64_t iteration_counter = 0;
+  auto last_time = std::chrono::steady_clock::now();
+
   while (true) {
     step();
     update_gui();
+
+    // Measure performance.
+    ++iteration_counter;
+
+    if (iteration_counter == 250) {
+      iteration_counter = 0;
+      auto current_time = std::chrono::steady_clock::now();
+      double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+          current_time - last_time) / 1000.0;
+      cout << "Performance: " << seconds << " seconds/250 iterations; "
+           << 1.0/seconds/250.0 << " iterations/second.\n";
+    }
   }
 
   destroy_gui();

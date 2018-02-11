@@ -28,7 +28,25 @@ void Intersection::connect_outgoing(Street* street) {
   outgoing_streets_.push_back(street);
 }
 
-void Intersection::build_connections() {
+std::vector<Cell*> n_previous_cells(Cell* start, int n, Cell* end) {
+  Cell* cell = start;
+  int i = 0;
+  std::vector<Cell*> result;
+  result.push_back(start);
+
+  for (; i < n && cell != end; ++i) {
+    if (cell->num_incoming_cells() == 0) {
+      printf("Warning: Cell has no incoming cells.\n");
+      return result;
+    }
+
+    cell = cell->incoming_cells()[0];
+    result.insert(result.begin(), cell);
+  }
+  return result;
+}
+
+void Intersection::build_connections(int turn_lane_length) {
   if (outgoing_streets_.size() == 0 && incoming_streets_.size() == 0) {
     printf("Warning: Detected intersection without any edges.\n");
     return;
@@ -45,13 +63,35 @@ void Intersection::build_connections() {
   }
 
   // Simple case: Connect every incoming street to every outgoing street.
-  for (auto out = outgoing_streets_.begin();
-       out != outgoing_streets_.end(); ++out) {
-    for (auto in = incoming_streets_.begin();
-         in != incoming_streets_.end(); ++in) {
-      (*in)->last_cell()->connect_to((*out)->first_cell());
-      (*in)->last_cell()->set_max_velocity(max_velocity_);
-      (*out)->first_cell()->set_max_velocity(max_velocity_);
+  for (auto in = incoming_streets_.begin();
+       in != incoming_streets_.end(); ++in) {
+    auto n_previous = n_previous_cells((*in)->last_cell(),
+                                       /*n=*/ turn_lane_length + 1,
+                                       (*in)->first_cell());
+    assert(n_previous.size() > 0);
+
+    for (auto out = outgoing_streets_.begin();
+         out != outgoing_streets_.end(); ++out) {
+      if (false && out != outgoing_streets_.begin()) {
+        // Create turn lane.
+        Cell* prev_cell = n_previous[0];
+        for (int i = 1; i < n_previous.size(); ++i) {
+          auto* next_cell = builder_->build_cell(
+              n_previous[i]->x(),
+              n_previous[i]->y(),
+              n_previous[i]->street_max_velocity(),
+              n_previous[i]->type());
+          prev_cell->connect_to(next_cell);
+          prev_cell = next_cell;
+        }
+
+        prev_cell->connect_to((*out)->first_cell());
+        (*out)->first_cell()->set_max_velocity(max_velocity_);
+      } else {
+        // No lane for this one. Just use the existing street.
+        (*in)->last_cell()->connect_to((*out)->first_cell());
+        (*out)->first_cell()->set_max_velocity(max_velocity_);
+      }     
     }
   }
 }
