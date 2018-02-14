@@ -161,8 +161,13 @@ void Renderer::update_gui() {
                                   * scale_factor_);
 
     if (pos_x >= 0 && pos_x < window_size_x_ &&
-        pos_y >= 0 && pos_y < window_size_y_)
-    filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 255, 0, 0, 255);
+        pos_y >= 0 && pos_y < window_size_y_) {
+      if (occupied_cells_[num_occupied_cells_ - 1]->tag() && Cell::kTurnLane) {
+        filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 20, 200, 85, 255);
+      } else {
+        filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 255, 0, 0, 255);
+      }
+    }
   }
 
   SDL_RenderPresent(renderer_);

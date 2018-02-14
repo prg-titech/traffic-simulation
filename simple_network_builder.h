@@ -124,7 +124,11 @@ class SimpleNetworkBuilder {
       (*it)->build_connections(/*turn_lane_length=*/ 5);
     }
 
-    printf("%i cell coordinates were out of range.\n", cells_out_of_range_);
+    printf("%i cell coordinates were out of range.\n", num_cells_out_of_range_);
+    printf("Additional turn lane cells: %d\n", num_turn_lane_cells_);
+    printf("Number of streets too short for turn lanes: %d\n",
+           num_streets_too_short_);
+    printf("Number of streets (incl. segments): %lu\n", streets_.size());
   }
 
   int cell_size() { return cell_size_; }
@@ -137,7 +141,9 @@ class SimpleNetworkBuilder {
   friend class Street;
 
   // Debug information. x, y is -inf or +inf.
-  int cells_out_of_range_ = 0;
+  int num_cells_out_of_range_ = 0;
+  int num_turn_lane_cells_ = 0;
+  int num_streets_too_short_ = 0;
 
   int cell_size_;
 
@@ -151,7 +157,8 @@ class SimpleNetworkBuilder {
       : cell_size_(cell_size), simulation_(simulation) {}
 
   Cell* build_cell(double x, double y, double max_velocity,
-                   Cell::Type type = Cell::kResidential);
+                   Cell::Type type = Cell::kResidential,
+                   uint32_t tag = 0);
 
   Street* build_street(Intersection* from, Intersection* to,
                        double max_velocity, Cell::Type type = Cell::kResidential);

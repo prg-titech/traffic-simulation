@@ -13,6 +13,8 @@
 // Traffic simulation based on cellular automaton
 class Cell {
  public:
+  static const uint32_t kTurnLane = 1;
+
   enum Type {
     // Sorted from smallest to largest.
     kResidential,
@@ -25,9 +27,10 @@ class Cell {
     kMaxType
   };
 
-  Cell(int max_velocity, double x, double y, Type type = kResidential)
+  Cell(int max_velocity, double x, double y, Type type = kResidential,
+       uint32_t tag = 0)
       : is_free_(true), max_velocity_(max_velocity), type_(type),
-        controller_max_velocity_(max_velocity), x_(x), y_(y) {
+        controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
     assert(type >= 0 && type < Type::kMaxType);
   }
 
@@ -81,6 +84,8 @@ class Cell {
 
   Type type() { return type_; }
 
+  uint32_t tag() { return tag_; }
+
   void set_max_velocity(int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
   }
@@ -104,6 +109,9 @@ class Cell {
 
   // Coordinates on the map. Used for rendering.
   double x_, y_;
+
+  // Debug information only.
+  uint32_t tag_;
 };
 
 

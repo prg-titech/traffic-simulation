@@ -1,6 +1,9 @@
 #include <math.h>
+#include <utility>
 
 #include "simple_network_builder.h"
+
+using namespace std;
 
 namespace builder {
 
@@ -28,15 +31,22 @@ void Intersection::connect_outgoing(Street* street) {
   outgoing_streets_.push_back(street);
 }
 
-std::vector<Cell*> n_previous_cells(Cell* start, int n, Cell* end) {
+// Return up to `n` predecessors of `start` (including `start`).
+// Stop of `end` is reached. Return vector of cells, starting with cell
+// that is furthest away from `start`.
+vector<Cell*> n_previous_cells(Cell* start, int n) {
   Cell* cell = start;
-  int i = 0;
-  std::vector<Cell*> result;
+  vector<Cell*> result;
   result.push_back(start);
 
-  for (; i < n && cell != end; ++i) {
+  for (int i = 0; i < n; ++i) {
     if (cell->num_incoming_cells() == 0) {
-      printf("Warning: Cell has no incoming cells.\n");
+      //printf("Warning: Cell has no incoming cells.\n");
+      return result;
+    }
+
+    if (cell->num_incoming_cells() > 1) {
+      // Reached an intersection. Stop here.
       return result;
     }
 
@@ -66,21 +76,39 @@ void Intersection::build_connections(int turn_lane_length) {
   for (auto in = incoming_streets_.begin();
        in != incoming_streets_.end(); ++in) {
     auto n_previous = n_previous_cells((*in)->last_cell(),
-                                       /*n=*/ turn_lane_length + 1,
-                                       (*in)->first_cell());
+                                       /*n=*/ turn_lane_length + 1);
     assert(n_previous.size() > 0);
 
+    if (n_previous.size() < 2) {
+      builder_->num_streets_too_short_++;
+    }
+
+    int num_turn_lanes = 0;
     for (auto out = outgoing_streets_.begin();
          out != outgoing_streets_.end(); ++out) {
-      if (false && out != outgoing_streets_.begin()) {
+      if (out != outgoing_streets_.begin() && n_previous.size() >= 2) {
         // Create turn lane.
+        num_turn_lanes++;
+
+        // First calculate rendering position of lane.
+        auto street_direction = make_pair(
+            n_previous[1]->x() - n_previous[0]->x(),
+            n_previous[1]->y() - n_previous[0]->y());
+        auto cell_dist = sqrt(street_direction.first*street_direction.first + 
+                              street_direction.second*street_direction.second);
+        auto street_rotated = make_pair(street_direction.second/cell_dist,
+                                        -street_direction.first/cell_dist);
+
+        // Now create new cells.
         Cell* prev_cell = n_previous[0];
         for (int i = 1; i < n_previous.size(); ++i) {
+          builder_->num_turn_lane_cells_++;
           auto* next_cell = builder_->build_cell(
-              n_previous[i]->x(),
-              n_previous[i]->y(),
+              n_previous[i]->x() + street_rotated.first*4*num_turn_lanes,
+              n_previous[i]->y() + street_rotated.second*4*num_turn_lanes,
               n_previous[i]->street_max_velocity(),
-              n_previous[i]->type());
+              n_previous[i]->type(),
+              Cell::kTurnLane);
           prev_cell->connect_to(next_cell);
           prev_cell = next_cell;
         }
@@ -136,12 +164,12 @@ Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
 }
 
 Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
-                                       Cell::Type type) {
+                                       Cell::Type type, uint32_t tag) {
   if (x < 0 || y < 0) {
-    ++cells_out_of_range_;
+    ++num_cells_out_of_range_;
   }
 
-  auto* cell = new Cell(max_velocity, x, y, type);
+  auto* cell = new Cell(max_velocity, x, y, type, tag);
   simulation_->add_cell(cell);
   return cell;
 }
