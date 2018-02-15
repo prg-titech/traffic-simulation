@@ -12,7 +12,7 @@ using namespace std;
 
 Renderer* renderer;
 
-int num_cars = 40000;
+int num_cars = 200;
 Car** cars;
 
 void draw_cell(Cell* cell) {
@@ -39,10 +39,13 @@ int main(int argc, char** argv) {
   cout << "First GUI update complete.\n";
 
   // Build cars.
-  for (int i = 0; i < 40000; ++i) {
-    simulation->add_car(new Car(20, simulation->random_cell()));
+  for (int i = 0; i < num_cars; ++i) {
+    simulation->add_car(new Car(20, simulation->random_free_cell()));
   }
   renderer->update_gui();
+
+  // Initialize simulation.
+  simulation->initialize();
 
   uint64_t iteration_counter = 0;
   auto last_time = std::chrono::steady_clock::now();

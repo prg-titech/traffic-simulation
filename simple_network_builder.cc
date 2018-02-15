@@ -58,18 +58,23 @@ vector<Cell*> n_previous_cells(Cell* start, int n) {
 
 void Intersection::build_connections(int turn_lane_length) {
   if (outgoing_streets_.size() == 0 && incoming_streets_.size() == 0) {
-    printf("Warning: Detected intersection without any edges.\n");
+    builder_->num_intersections_without_edges_++;
     return;
   }
 
   if (outgoing_streets_.size() == 0) {
-    printf("Warning: Intersection has no outgoing edge! Sending to random street.\n");
-    auto street = builder_->streets_[rand() % builder_->streets_.size()];
-    outgoing_streets_.push_back(street);
+    printf("Warning: Intersection (%f, %f) has no outgoing edge! Using as sink.\n",
+           x_, y_);
+    for (auto in = incoming_streets_.begin();
+         in != incoming_streets_.end(); ++in) {
+      (*in)->last_cell()->set_sink(true);
+    }
+    return;
   }
 
   if (incoming_streets_.size() == 0) {
-    printf("Warning: Intersection has no incoming edge.\n");
+    builder_->num_no_incoming_edge_++;
+    return;
   }
 
   // Simple case: Connect every incoming street to every outgoing street.
@@ -113,6 +118,7 @@ void Intersection::build_connections(int turn_lane_length) {
           prev_cell = next_cell;
         }
 
+        (*in)->add_turn_lane_last_cell(prev_cell);
         prev_cell->connect_to((*out)->first_cell());
         (*out)->first_cell()->set_max_velocity(max_velocity_);
       } else {
@@ -161,6 +167,9 @@ Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
   // STEP 2: Connect street to other streets.
   from->connect_outgoing(this);
   to->connect_incoming(this);
+
+  // STEP 3: Set up turn lane cell vector.
+  all_last_cells_.push_back(last_cell_);
 }
 
 Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
@@ -181,7 +190,8 @@ Street* SimpleNetworkBuilder::build_street(Intersection* from, Intersection* to,
 
   // Currently only for rendering purposes...
   simulation_->add_street(new ::Street(street->first_cell(),
-                                       street->last_cell(), type));
+                                       street->last_cell(),
+                                       type));
   return street;
 }
 

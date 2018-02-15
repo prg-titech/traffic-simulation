@@ -35,6 +35,10 @@ class GraphmlNetworkBuilder {
   Simulation* simulation() { return simulation_; }
 
  private:
+  // Only for debugging purposes.
+  int num_traffic_lights_ = 0;
+  int num_priority_yield_traffic_controllers_ = 0;
+
   Simulation* simulation_;
 
   SimpleNetworkBuilder builder_;

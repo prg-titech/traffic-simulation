@@ -58,6 +58,10 @@ class fixed_size_queue {
     return buffer_[(start_ + index) % capacity_];
   }
 
+  T operator[](int index) {
+    return get(index);
+  }
+
   class iterator {
    public:
     typedef T value_type;

@@ -148,9 +148,15 @@ void Renderer::update_gui() {
                                   * scale_factor_);
 
     if (pos_x >= 0 && pos_x < window_size_x_ &&
-        pos_y >= 0 && pos_y < window_size_y_)
-      filledCircleColor(renderer_, pos_x, pos_y, cell_w,
-                        cell_color(free_cells_[num_free_cells_ - 1]->type()));
+        pos_y >= 0 && pos_y < window_size_y_) {
+      if (free_cells_[num_free_cells_ - 1]->is_sink()) {
+        filledCircleRGBA(renderer_, pos_x, pos_y, cell_w*4,
+                         0, 255, 0, 255);
+      } else {
+        filledCircleColor(renderer_, pos_x, pos_y, cell_w,
+                          cell_color(free_cells_[num_free_cells_ - 1]->type()));
+      }
+    }
   }
 
   for (; num_occupied_cells_ > 0; --num_occupied_cells_) {
@@ -162,7 +168,15 @@ void Renderer::update_gui() {
 
     if (pos_x >= 0 && pos_x < window_size_x_ &&
         pos_y >= 0 && pos_y < window_size_y_) {
-      if (occupied_cells_[num_occupied_cells_ - 1]->tag() && Cell::kTurnLane) {
+      if (occupied_cells_[num_occupied_cells_ - 1]->is_sink()) {
+        // End of map.
+      } else if (occupied_cells_[num_occupied_cells_ - 1]->car() == nullptr) {
+        // Seems like this happens only when zooming...
+        // printf("ERR!\n");
+      } else if (occupied_cells_[num_occupied_cells_ - 1]->car()->is_jammed()) {
+        filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 20, 20, 220, 255);
+      } else if (occupied_cells_[num_occupied_cells_ - 1]->tag()
+                 && Cell::kTurnLane) {
         filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 20, 200, 85, 255);
       } else {
         filledCircleRGBA(renderer_, pos_x, pos_y, cell_w, 255, 0, 0, 255);

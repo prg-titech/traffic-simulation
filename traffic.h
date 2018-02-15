@@ -6,9 +6,12 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <set>
 
 #include "fixed_size_queue.h"
 
+
+class Car;
 
 // Traffic simulation based on cellular automaton
 class Cell {
@@ -53,7 +56,7 @@ class Cell {
 
   void draw();
 
-  void occupy();
+  void occupy(Car* car);
 
   void release();
 
@@ -63,7 +66,6 @@ class Cell {
   }
 
   int num_outgoing_cells() {
-    assert(outgoing_cells_.size() > 0);
     return outgoing_cells_.size();
   }
 
@@ -98,14 +100,23 @@ class Cell {
     controller_max_velocity_ = max_velocity_;
   }
 
+  Car* car() { return car_; }
+
+  void set_sink(bool is_sink) { is_sink_ = is_sink; }
+
+  bool is_sink() { return is_sink_; }
+
  private:
   Type type_;
   bool is_free_;
+  bool is_sink_ = false;
   int max_velocity_;
   int controller_max_velocity_;
 
   std::vector<Cell*> outgoing_cells_;
   std::vector<Cell*> incoming_cells_;
+
+  Car* car_ = nullptr;
 
   // Coordinates on the map. Used for rendering.
   double x_, y_;
@@ -117,17 +128,25 @@ class Cell {
 
 class Car {
  public:
-  Car(double max_velocity, Cell* initial_position)
+  Car(int max_velocity, Cell* initial_position)
       : max_velocity_(max_velocity), path_(max_velocity),
-        position_(initial_position) {
-    initial_position->occupy();
+        position_(initial_position), is_active_(true) {
+    initial_position->occupy(this);
   }
+
+  void assert_check_velocity();
 
   void step_velocity();
 
   void step_move();
 
   Cell* position() { return position_; }
+
+  bool is_jammed();
+
+  void set_active(bool is_active) { is_active_ = is_active; }
+
+  bool is_active() { return is_active_; }
 
  protected:
   // Assuming that the car is located at position, determine where to go next.
@@ -142,8 +161,9 @@ class Car {
   void step_slow_down();
 
  private:
-  double velocity_ = 0;
-  double max_velocity_;
+  bool is_active_;
+  int velocity_ = 0;
+  int max_velocity_;
 
   // Maintain max_velocity_ many cells in the queue. This is the path that the
   // car is going to take. The maximum movement speed is limited by the
@@ -165,6 +185,8 @@ class SharedSignalGroup {
   // Set traffic lights to red.
   void signal_stop();
 
+  std::vector<Cell*>& cells() { return cells_; }
+
  private:
   std::vector<Cell*> cells_;
 };
@@ -172,7 +194,9 @@ class SharedSignalGroup {
 
 class TrafficController {
  public:
+  virtual void initialize() = 0;
   virtual void step() = 0;
+  virtual void assert_check_state() = 0;
 };
 
 
@@ -186,6 +210,9 @@ class TrafficLight : public TrafficController {
 
   // Set all lights to red.
   void initialize();
+
+  // Make sure that only one group has green light.
+  void assert_check_state();
 
  private:
   int timer_;
@@ -201,15 +228,20 @@ class TrafficLight : public TrafficController {
 
 class PriorityYieldTrafficController : public TrafficController {
  public:
-  PriorityYieldTrafficController(std::vector<Cell*> cells) : cells_(cells) {}
+  PriorityYieldTrafficController(std::vector<SharedSignalGroup*> groups)
+      : groups_(groups) {}
+
+  void initialize() {}
 
   void step();
 
- private:
-  std::vector<Cell*> cells_;
+  void assert_check_state();
 
-  // Check if a car is coming from this cell within the next iteration.
-  bool has_incoming_traffic(Cell* cell);
+ private:
+  std::vector<SharedSignalGroup*> groups_;
+
+  // Check if a car is coming from this group within the next iteration.
+  bool has_incoming_traffic(SharedSignalGroup* group);
   bool has_incoming_traffic(Cell* cell, int lookahead);
 };
 
@@ -233,27 +265,31 @@ class Street {
 
 class Simulation {
  public:
+  void initialize();
+
   std::vector<Cell*>& cells() { return cells_; }
 
   int num_cells() { return cells_.size(); }
 
   Cell* random_cell() { return cells_[rand() % num_cells()]; }
 
+  Cell* random_free_cell() {
+    // Try max. of 100 times.
+    for (int i = 0; i < 100; ++i) {
+      int id = rand() % num_cells();
+      if (cells_[id]->is_free()) {
+        return cells_[id];
+      }
+    }
+
+    // Could not find free cell.
+    assert(false);
+    return random_cell();
+  }
+
   std::vector<Street*>& streets() { return streets_; }
 
-  void step() {
-    for (int i = 0; i < traffic_controllers_.size(); ++i) {
-      traffic_controllers_[i]->step();
-    }
-
-    for (int i = 0; i < cars_.size(); ++i) {
-      cars_[i]->step_velocity();
-    }
-
-    for (int i = 0; i < cars_.size(); ++i) {
-      cars_[i]->step_move();
-    }
-  }
+  void step();
 
   void add_street(Street* street) { streets_.push_back(street); }
   void add_cell(Cell* cell) { cells_.push_back(cell); }
