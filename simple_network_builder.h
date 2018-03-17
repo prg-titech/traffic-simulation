@@ -140,6 +140,8 @@ class SimpleNetworkBuilder {
     printf("Number of streets (incl. segments): %lu\n", streets_.size());
     printf("Number of intersections without incoming streets: %d\n",
            num_no_incoming_edge_);
+    printf("Number of intersections without outgoing streets: %d\n",
+           num_no_outgoing_edge_);
     printf("Number of intersections without any streets: %d\n",
            num_intersections_without_edges_);
   }
@@ -158,6 +160,7 @@ class SimpleNetworkBuilder {
   int num_turn_lane_cells_ = 0;
   int num_streets_too_short_ = 0;
   int num_no_incoming_edge_ = 0;
+  int num_no_outgoing_edge_ = 0;
   int num_intersections_without_edges_ = 0;
 
   int cell_size_;

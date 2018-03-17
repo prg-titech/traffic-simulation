@@ -10,13 +10,39 @@
 using namespace builder;
 using namespace std;
 
+Simulation* simulation;
 Renderer* renderer;
 
-int num_cars = 200;
+int num_cars = 20000;
 Car** cars;
 
 void draw_cell(Cell* cell) {
   renderer->draw_cell(cell);
+}
+
+void print_stats(float iterations_per_second) {
+  int num_cars_active = 0;
+  int num_cars_jammed = 0;
+  int num_cars_turning = 0;
+  
+  for (int i = 0; i < num_cars; ++i) {
+    if (cars[i]->is_active()) {
+      num_cars_active++;
+
+      if (cars[i]->position()->tag() && Cell::kTurnLane) {
+        num_cars_turning++;
+      }
+    }
+
+    if (cars[i]->is_jammed()) {
+      num_cars_jammed++;
+    }
+  }
+
+  printf("\r| %9.4f | %6d | %6d | %6d |",
+         iterations_per_second, num_cars_active, num_cars_jammed,
+         num_cars_turning);
+  fflush(stdout);
 }
 
 int main(int argc, char** argv) {
@@ -24,9 +50,7 @@ int main(int argc, char** argv) {
   GraphmlNetworkBuilder graph_builder(filename);
   graph_builder.build_connections();
   graph_builder.build_traffic_controllers();
-  auto* simulation = graph_builder.simulation();
-
-  cout << simulation->num_cells() << " cells.\n";
+  simulation = graph_builder.simulation();
 
   int window_x = 1600;
   int window_y = 1300;
@@ -46,11 +70,13 @@ int main(int argc, char** argv) {
 
   // Initialize simulation.
   simulation->initialize();
+  simulation->print_stats();
+  cars = simulation->cars().data();
 
   uint64_t iteration_counter = 0;
   auto last_time = std::chrono::steady_clock::now();
 
-  cout << "Performance: (computing)";
+  printf("|      it/s | active | jammed |   turn |\nPerformance: (computing)");
   fflush(stdout);
 
   while (true) {
@@ -64,9 +90,7 @@ int main(int argc, char** argv) {
       auto current_time = std::chrono::steady_clock::now();
       double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
           current_time - last_time).count() / 1000.0;
-      cout << "\rPerformance: " << seconds << " seconds/100 iterations; "
-           << 100.0/seconds << " iterations/second.";
-      fflush(stdout);
+      print_stats(100.0/seconds);
       
       last_time = std::chrono::steady_clock::now();
       iteration_counter = 0;

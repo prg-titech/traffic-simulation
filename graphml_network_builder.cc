@@ -337,6 +337,11 @@ Cell::Type cell_type(Street* street) {
   return street->last_cell()->type();
 }
 
+#ifndef NDEBUG
+// Ensure that no cell is used twice in a traffic light.
+set<Cell*> traffic_light_cells_;
+#endif
+
 TrafficController* GraphmlNetworkBuilder::build_traffic_light(
     Intersection* intersection) {
   auto& incoming = intersection->incoming_streets();
@@ -344,9 +349,18 @@ TrafficController* GraphmlNetworkBuilder::build_traffic_light(
   for (int j = 0; j < incoming.size(); ++j) {
     signal_groups.push_back(
         new SharedSignalGroup(incoming[j]->last_cells()));
+
+#ifndef NDEBUG
+    for (int i = 0; i < incoming[j]->last_cells().size(); ++i) {
+      Cell* next_cell = incoming[j]->last_cells()[i];
+      assert(traffic_light_cells_.insert(next_cell).second);
+    }
+#endif
   }
 
-  simulation_->add_traffic_controller(new TrafficLight(30, signal_groups));
+  int phase_len = 20 + rand() % 20;
+  simulation_->add_traffic_controller(new TrafficLight(
+      phase_len, signal_groups));
   ++num_traffic_lights_;
 }
 
@@ -385,8 +399,8 @@ void GraphmlNetworkBuilder::build_traffic_controllers() {
     }
   }
 
-  cout << "Traffic Lights: " << num_traffic_lights_ << "\n";
-  cout << "Priority Yield Traffic Controllers: "
+  cout << "Number of traffic lights: " << num_traffic_lights_ << "\n"
+       << "Number of priority yield traffic controllers: "
        << num_priority_yield_traffic_controllers_ << "\n";
 }
 

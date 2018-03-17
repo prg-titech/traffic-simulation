@@ -35,9 +35,11 @@ class Cell {
       : is_free_(true), max_velocity_(max_velocity), type_(type),
         controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
     assert(type >= 0 && type < Type::kMaxType);
+    assert(max_velocity_ > 0);
   }
 
   bool is_free() const {
+    assert(is_free_ == (car_ == nullptr));
     return is_free_;
   }
 
@@ -61,6 +63,7 @@ class Cell {
   void release();
 
   void connect_to(Cell* other) {
+    assert(other != this);
     outgoing_cells_.push_back(other);
     other->incoming_cells_.push_back(this);
   }
@@ -148,9 +151,17 @@ class Car {
 
   bool is_active() { return is_active_; }
 
+  int velocity() { return velocity_; }
+
+  fixed_size_queue<Cell*>& path() { return path_; }
+
+  void set_position(Cell* cell);
+
  protected:
   // Assuming that the car is located at position, determine where to go next.
   Cell* next_step(Cell* position);
+
+  void step_initialize_iteration();
 
   void step_accelerate();
 
@@ -204,7 +215,10 @@ class TrafficLight : public TrafficController {
  public:
   TrafficLight(int phase_time,
                std::vector<SharedSignalGroup*> signal_groups)
-      : phase_time_(phase_time), signal_groups_(signal_groups) {}
+      : phase_time_(phase_time), signal_groups_(signal_groups) {
+    // Initialize with random time.
+    timer_ = rand() % phase_time_;
+  }
 
   void step();
 
@@ -267,27 +281,9 @@ class Simulation {
  public:
   void initialize();
 
-  std::vector<Cell*>& cells() { return cells_; }
+  Cell* random_cell();
 
-  int num_cells() { return cells_.size(); }
-
-  Cell* random_cell() { return cells_[rand() % num_cells()]; }
-
-  Cell* random_free_cell() {
-    // Try max. of 100 times.
-    for (int i = 0; i < 100; ++i) {
-      int id = rand() % num_cells();
-      if (cells_[id]->is_free()) {
-        return cells_[id];
-      }
-    }
-
-    // Could not find free cell.
-    assert(false);
-    return random_cell();
-  }
-
-  std::vector<Street*>& streets() { return streets_; }
+  Cell* random_free_cell();
 
   void step();
 
@@ -297,12 +293,35 @@ class Simulation {
   void add_traffic_controller(TrafficController* light) { 
     traffic_controllers_.push_back(light);
   }
+  void add_inactive_car(Car* car) { inactive_cars_.push_back(car); }
 
-  // Currently only for GUI purposes.
+  // Return a vector of all cars. Only used for debug output.
+  std::vector<Car*>& cars() { return cars_; }
+
+  // Print information about this simulation.
+  void print_stats();
+
+ private:
+  friend class Renderer;
+
+  // A vector of all streets. Contains only the cells of start and
+  // end points. Only used for GUI purposes.
   std::vector<Street*> streets_;
+  std::vector<Street*>& streets() { return streets_; }
+
+  // A vector of all cells.
   std::vector<Cell*> cells_;
+  std::vector<Cell*>& cells() { return cells_; }
+
+  // A vector of all cars.
   std::vector<Car*> cars_;
+
+  // A vector of all traffic controllers, e.g., traffic lights.
   std::vector<TrafficController*> traffic_controllers_;
+
+  // A vector of all inactive cars. Used to keep track of cars that are
+  // leaving the map.
+  std::vector<Car*> inactive_cars_;
 };
 
 #endif  // TRAFFIC_H

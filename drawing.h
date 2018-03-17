@@ -25,6 +25,9 @@ class Renderer {
   void add_street(Street* street);
 
  private:
+
+  void draw_updates();
+
   Simulation* simulation_;
 
   // A list of cells that became free in this iteration.

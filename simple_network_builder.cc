@@ -7,6 +7,8 @@ using namespace std;
 
 namespace builder {
 
+bool make_turn_lanes = true;
+
 Street* Intersection::connect_one_way(Intersection* other,
                                       double max_velocity,
                                       Cell::Type type) {
@@ -63,12 +65,15 @@ void Intersection::build_connections(int turn_lane_length) {
   }
 
   if (outgoing_streets_.size() == 0) {
+    /*
     printf("Warning: Intersection (%f, %f) has no outgoing edge! Using as sink.\n",
            x_, y_);
+    */
     for (auto in = incoming_streets_.begin();
          in != incoming_streets_.end(); ++in) {
       (*in)->last_cell()->set_sink(true);
     }
+    builder_->num_no_outgoing_edge_++;
     return;
   }
 
@@ -91,7 +96,8 @@ void Intersection::build_connections(int turn_lane_length) {
     int num_turn_lanes = 0;
     for (auto out = outgoing_streets_.begin();
          out != outgoing_streets_.end(); ++out) {
-      if (out != outgoing_streets_.begin() && n_previous.size() >= 2) {
+      if (make_turn_lanes && 
+          out != outgoing_streets_.begin() && n_previous.size() >= 2) {
         // Create turn lane.
         num_turn_lanes++;
 

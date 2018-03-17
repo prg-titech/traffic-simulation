@@ -50,6 +50,11 @@ class fixed_size_queue {
 
   int size() { return size_; }
 
+  void shrink_to_size(int size) {
+    assert(size_ >= size);
+    size_ = size;
+  }
+
   int capacity() { return capacity_ - 1; }
 
   T get(int index) {
