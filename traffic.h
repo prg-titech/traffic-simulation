@@ -131,9 +131,10 @@ class Cell {
 
 class Car {
  public:
-  Car(int max_velocity, Cell* initial_position)
+  Car(int max_velocity, Cell* initial_position, uint32_t random_state)
       : max_velocity_(max_velocity), path_(max_velocity),
-        position_(initial_position), is_active_(true) {
+        position_(initial_position), is_active_(true),
+        random_state_(random_state) {
     initial_position->occupy(this);
   }
 
@@ -158,6 +159,8 @@ class Car {
   void set_position(Cell* cell);
 
  protected:
+  friend class Simulation;
+
   // Assuming that the car is located at position, determine where to go next.
   Cell* next_step(Cell* position);
 
@@ -182,6 +185,10 @@ class Car {
   fixed_size_queue<Cell*> path_;
 
   Cell* position_;
+
+  // Every car has a state for its random number generator.
+  uint32_t random_state_;
+  uint32_t rand32();
 };
 
 
@@ -214,12 +221,7 @@ class TrafficController {
 class TrafficLight : public TrafficController {
  public:
   TrafficLight(int phase_time,
-               std::vector<SharedSignalGroup*> signal_groups)
-      : phase_time_(phase_time), signal_groups_(signal_groups) {
-    // Initialize with random time.
-    timer_ = rand() % phase_time_;
-  }
-
+               std::vector<SharedSignalGroup*> signal_groups);
   void step();
 
   // Set all lights to red.
@@ -279,11 +281,13 @@ class Street {
 
 class Simulation {
  public:
+  Simulation() {}
+
   void initialize();
 
-  Cell* random_cell();
+  Cell* random_cell(uint32_t* state);
 
-  Cell* random_free_cell();
+  Cell* random_free_cell(uint32_t* state);
 
   void step();
 
@@ -300,6 +304,9 @@ class Simulation {
 
   // Print information about this simulation.
   void print_stats();
+
+  // Calculate a checksum for the state of this simulation.
+  uint64_t checksum();
 
  private:
   friend class Renderer;

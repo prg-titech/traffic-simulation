@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
 #include <chrono>
 #include <vector>
 #include "lib/rapidxml-1.13/rapidxml.hpp"
@@ -20,7 +23,7 @@ void draw_cell(Cell* cell) {
   renderer->draw_cell(cell);
 }
 
-void print_stats(float iterations_per_second) {
+void print_stats(float iterations_per_second, uint64_t checksum) {
   int num_cars_active = 0;
   int num_cars_jammed = 0;
   int num_cars_turning = 0;
@@ -39,13 +42,15 @@ void print_stats(float iterations_per_second) {
     }
   }
 
-  printf("\r| %9.4f | %6d | %6d | %6d |",
+  printf("\r| %9.4f | %6d | %6d | %6d | %lu",
          iterations_per_second, num_cars_active, num_cars_jammed,
-         num_cars_turning);
+         num_cars_turning, checksum);
   fflush(stdout);
 }
 
 int main(int argc, char** argv) {
+  srand(42);
+
   string filename(argv[1]);
   GraphmlNetworkBuilder graph_builder(filename);
   graph_builder.build_connections();
@@ -64,7 +69,10 @@ int main(int argc, char** argv) {
 
   // Build cars.
   for (int i = 0; i < num_cars; ++i) {
-    simulation->add_car(new Car(20, simulation->random_free_cell()));
+    uint32_t state = (uint32_t) rand() + 1;
+    uint32_t state2 = (uint32_t) rand() + 1;
+    simulation->add_car(new Car(20, simulation->random_free_cell(&state2),
+                                state));
   }
   renderer->update_gui();
 
@@ -76,7 +84,7 @@ int main(int argc, char** argv) {
   uint64_t iteration_counter = 0;
   auto last_time = std::chrono::steady_clock::now();
 
-  printf("|      it/s | active | jammed |   turn |\nPerformance: (computing)");
+  printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)");
   fflush(stdout);
 
   while (true) {
@@ -90,7 +98,7 @@ int main(int argc, char** argv) {
       auto current_time = std::chrono::steady_clock::now();
       double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
           current_time - last_time).count() / 1000.0;
-      print_stats(100.0/seconds);
+      print_stats(100.0/seconds, simulation->checksum());
       
       last_time = std::chrono::steady_clock::now();
       iteration_counter = 0;

@@ -4,6 +4,7 @@
 
 #include "drawing.h"
 #include "traffic.h"
+#include "random.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ void Car::step_velocity() {
   step_constraint_velocity();
 }
 
+
 void Car::step_move() {
   Cell* next_cell = position_;
   assert(velocity_ <= next_cell->max_velocity());
@@ -76,14 +78,14 @@ Cell* Car::next_step(Cell* position) {
   if (position->num_outgoing_cells() == 2) {
     // Take the larger street with higher probability.
     if (cells[0]->type() > cells[1]->type()) {
-      return cells[rand() % 1000 < 700 ? 0 : 1];
+      return cells[rand32() % 1000 < 700 ? 0 : 1];
     } else if (cells[0]->type() < cells[1]->type()) {
-      return cells[rand() % 1000 < 700 ? 1 : 0];
+      return cells[rand32() % 1000 < 700 ? 1 : 0];
     }
   }
   */
 
-  Cell* next_cell = cells[rand() % position->num_outgoing_cells()];
+  Cell* next_cell = cells[rand32() % position->num_outgoing_cells()];
   assert(next_cell != position);
   return next_cell;
 }
@@ -199,10 +201,15 @@ bool Car::is_jammed() {
 }
 
 void Car::step_slow_down() {
-  float rand_float = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  float rand_float = static_cast<float>(rand32())/static_cast<float>(RAND32_MAX);
   if (rand_float < 0.5 && velocity_ > 0) {
     --velocity_;
   }
+}
+
+
+uint32_t Car::rand32() {
+  return ::rand32(&random_state_);
 }
 
 
@@ -221,13 +228,20 @@ void SharedSignalGroup::signal_stop() {
 }
 
 
+TrafficLight::TrafficLight(int phase_time,
+                           std::vector<SharedSignalGroup*> signal_groups)
+    : phase_time_(phase_time), signal_groups_(signal_groups) {
+  // Initialize with random time.
+  timer_ = rand() % phase_time_;
+}
+
+
 void TrafficLight::step() {
   timer_ = (timer_ + 1) % phase_time_;
 
   if (timer_ == 0) {
     signal_groups_[phase_]->signal_stop();
     phase_ = (phase_ + 1) % signal_groups_.size();
-    //phase_ = rand() % signal_groups_.size();
     signal_groups_[phase_]->signal_go();
   }
 }
@@ -358,7 +372,7 @@ void Simulation::step() {
 
   // Reactivate cars.
   for (auto it = inactive_cars_.begin(); it != inactive_cars_.end(); ++it) {
-    Cell* new_start_cell = random_free_cell();
+    Cell* new_start_cell = random_free_cell(&((*it)->random_state_));
     (*it)->set_position(new_start_cell);
     (*it)->set_active(true);
   }
@@ -366,15 +380,15 @@ void Simulation::step() {
 }
 
 
-Cell* Simulation::random_cell() {
-  return cells_[rand() % cells_.size()];
+Cell* Simulation::random_cell(uint32_t* state) {
+  return cells_[rand32(state) % cells_.size()];
 }
 
 
-Cell* Simulation::random_free_cell() {
+Cell* Simulation::random_free_cell(uint32_t* state) {
   // Try max. of 100 times.
   for (int i = 0; i < 100; ++i) {
-    int id = rand() % cells_.size();
+    int id = rand32(state) % cells_.size();
     if (cells_[id]->is_free()) {
       return cells_[id];
     }
@@ -382,7 +396,7 @@ Cell* Simulation::random_free_cell() {
 
   // Could not find free cell.
   assert(false);
-  return random_cell();
+  return random_cell(state);
 }
 
 
@@ -395,9 +409,20 @@ void Simulation::print_stats() {
 }
 
 
+uint64_t Simulation::checksum() {
+  uint64_t c = 17;
+  for (int i = 0; i < cars_.size(); ++i) {
+    c += cars_[i]->position()->x() + cars_[i]->position()->y();
+    c %= UINT64_MAX;
+  }
+  return c;
+}
+
+
 void Simulation::initialize() {
   for (int i = 0; i < traffic_controllers_.size(); ++i) {
     traffic_controllers_[i]->initialize();
   }
 }
+
 
