@@ -35,35 +35,35 @@ class fixed_size_queue {
     return result;
   }
 
-  T back() {
+  T back() const {
     int index = (start_ + size_ - 1) % capacity_;
     assert(index >= 0);
     assert(index < capacity_);
     return buffer_[index];
   }
 
-  T front() {
+  T front() const {
     assert(start_ >= 0);
     assert(start_ < capacity_);
     return buffer_[start_];
   }
 
-  int size() { return size_; }
+  int size() const { return size_; }
 
   void shrink_to_size(int size) {
     assert(size_ >= size);
     size_ = size;
   }
 
-  int capacity() { return capacity_ - 1; }
+  int capacity() const { return capacity_ - 1; }
 
-  T get(int index) {
+  T get(int index) const {
     assert(index >= 0);
     assert(index < capacity_);
     return buffer_[(start_ + index) % capacity_];
   }
 
-  T operator[](int index) {
+  T operator[](int index) const {
     return get(index);
   }
 

@@ -17,9 +17,9 @@ Simulation* simulation;
 Renderer* renderer;
 
 int num_cars = 20000;
-Car** cars;
+Car* const* cars;
 
-void draw_cell(Cell* cell) {
+void draw_cell(const Cell& cell) {
   renderer->draw_cell(cell);
 }
 

@@ -15,9 +15,9 @@ Renderer::Renderer(Simulation* simulation, int window_size_x,
                    int window_size_y, double scale_factor)
     : min_scale_factor_(scale_factor), scale_factor_(scale_factor),
       window_size_x_(window_size_x), window_size_y_(window_size_y),
-      num_free_cells_(0), free_cells_(new Cell*[simulation->cells().size()]),
-      num_occupied_cells_(0), simulation_(simulation),
-      occupied_cells_(new Cell*[simulation->cells().size()]) {
+      num_free_cells_(0), num_occupied_cells_(0), simulation_(simulation),
+      free_cells_(new const Cell*[simulation->cells().size()]),
+      occupied_cells_(new const Cell*[simulation->cells().size()]) {
 
   if (!gui_output) return;
 
@@ -108,7 +108,7 @@ void Renderer::redraw_everything() {
       int pos1_y = window_size_y_ - ((cell->y() - origin_y_)
                                      * scale_factor_);
 
-      for (int j = 0; j < cell->num_outgoing_cells(); ++j) {
+      for (int j = 0; j < cell->outgoing_cells().size(); ++j) {
         Cell* next_cell = cell->outgoing_cells()[j];
         int pos2_x = (next_cell->x() - origin_x_)*scale_factor_;
         int pos2_y = window_size_y_ - ((next_cell->y() - origin_y_)
@@ -249,10 +249,10 @@ void Renderer::update_gui() {
 }
 
 
-void Renderer::draw_cell(Cell* cell) {
-  if (cell->is_free()) {
-    free_cells_[num_free_cells_++] = cell;
+void Renderer::draw_cell(const Cell& cell) {
+  if (cell.is_free()) {
+    free_cells_[num_free_cells_++] = &cell;
   } else {
-    occupied_cells_[num_occupied_cells_++] = cell;
+    occupied_cells_[num_occupied_cells_++] = &cell;
   }
 }

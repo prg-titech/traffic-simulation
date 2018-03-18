@@ -11,10 +11,53 @@ using namespace std;
 // Singleton simulation instance.
 extern Simulation* simulation;
 
-extern void draw_cell(Cell* cell);
+extern void draw_cell(const Cell& cell);
 
-void Cell::draw() {
-  draw_cell(this);
+Cell::Cell(int max_velocity, double x, double y, Type type, uint32_t tag)
+    : is_free_(true), max_velocity_(max_velocity), type_(type),
+      controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
+  assert(type >= 0 && type < Type::kMaxType);
+  assert(max_velocity_ > 0);
+}
+
+void Cell::connect_to(Cell* other) {
+  assert(other != this);
+  outgoing_cells_.push_back(other);
+  other->incoming_cells_.push_back(this);
+}
+
+void Cell::draw() const {
+  draw_cell(*this);
+}
+
+bool Cell::is_free() const {
+  assert(is_free_ == (car_ == nullptr));
+  return is_free_;
+}
+
+bool Car::is_jammed() const {
+  if (path_.size() == 0) return false;
+
+  assert(path_[0] != position_);
+  return !path_[0]->is_free();
+}
+
+int Cell::max_velocity() const {
+  if (controller_max_velocity_ < max_velocity_) {
+    return controller_max_velocity_;
+  } else {
+    return max_velocity_;
+  }
+}
+
+Cell* Car::next_step(Cell* position) {
+  // Random walk.
+  assert(position->outgoing_cells().size() > 0);
+  auto& cells = position->outgoing_cells();
+
+  Cell* next_cell = cells[rand32() % position->outgoing_cells().size()];
+  assert(next_cell != position);
+  return next_cell;
 }
 
 void Cell::occupy(Car* car) {
@@ -35,14 +78,12 @@ void Cell::release() {
   draw();
 }
 
-
 void Car::step_velocity() {
   step_initialize_iteration();
   step_accelerate();
   step_extend_path();
   step_constraint_velocity();
 }
-
 
 void Car::step_move() {
   Cell* next_cell = position_;
@@ -67,27 +108,6 @@ void Car::step_move() {
     // Add car at random cell.
     simulation->add_inactive_car(this);
   }
-}
-
-Cell* Car::next_step(Cell* position) {
-  // (Almost) Random walk.
-  assert(position->num_outgoing_cells() > 0);
-  auto** cells = position->outgoing_cells();
-
-  /*
-  if (position->num_outgoing_cells() == 2) {
-    // Take the larger street with higher probability.
-    if (cells[0]->type() > cells[1]->type()) {
-      return cells[rand32() % 1000 < 700 ? 0 : 1];
-    } else if (cells[0]->type() < cells[1]->type()) {
-      return cells[rand32() % 1000 < 700 ? 1 : 0];
-    }
-  }
-  */
-
-  Cell* next_cell = cells[rand32() % position->num_outgoing_cells()];
-  assert(next_cell != position);
-  return next_cell;
 }
 
 void Car::step_initialize_iteration() {
@@ -180,7 +200,7 @@ void Car::set_position(Cell* cell) {
   position_ = cell;
 }
 
-void Car::assert_check_velocity() {
+void Car::assert_check_velocity() const {
   assert(path_.size() >= velocity_);
 
   if (velocity_ > 0) {
@@ -193,20 +213,12 @@ void Car::assert_check_velocity() {
   }
 }
 
-bool Car::is_jammed() {
-  if (path_.size() == 0) return false;
-
-  assert(path_[0] != position_);
-  return !path_[0]->is_free();
-}
-
 void Car::step_slow_down() {
   float rand_float = static_cast<float>(rand32())/static_cast<float>(RAND32_MAX);
   if (rand_float < 0.5 && velocity_ > 0) {
     --velocity_;
   }
 }
-
 
 uint32_t Car::rand32() {
   return ::rand32(&random_state_);
@@ -254,7 +266,7 @@ void TrafficLight::initialize() {
 }
 
 
-void TrafficLight::assert_check_state() {
+void TrafficLight::assert_check_state() const {
   bool found_green = false;
   for (auto it = signal_groups_.begin(); it != signal_groups_.end(); ++it) {
     auto& group = (*it)->cells();
@@ -273,7 +285,7 @@ void TrafficLight::assert_check_state() {
 }
 
 
-void PriorityYieldTrafficController::assert_check_state() {}
+void PriorityYieldTrafficController::assert_check_state() const {}
 
 
 bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell,
@@ -283,7 +295,7 @@ bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell,
   }
 
   // Check incoming cells. This is BFS.
-  for (int i = 0; i < cell->num_incoming_cells(); ++i) {
+  for (int i = 0; i < cell->incoming_cells().size(); ++i) {
     if (has_incoming_traffic(cell->incoming_cells()[i], lookahead - 1)) {
       return true;
     }
@@ -380,12 +392,12 @@ void Simulation::step() {
 }
 
 
-Cell* Simulation::random_cell(uint32_t* state) {
+Cell* Simulation::random_cell(uint32_t* state) const {
   return cells_[rand32(state) % cells_.size()];
 }
 
 
-Cell* Simulation::random_free_cell(uint32_t* state) {
+Cell* Simulation::random_free_cell(uint32_t* state) const {
   // Try max. of 100 times.
   for (int i = 0; i < 100; ++i) {
     int id = rand32(state) % cells_.size();
@@ -400,7 +412,7 @@ Cell* Simulation::random_free_cell(uint32_t* state) {
 }
 
 
-void Simulation::print_stats() {
+void Simulation::print_stats() const {
   cout << "Number of cells: " << cells_.size() << "\n"
        << "Number of cars: " << cars_.size() << "\n"
        << "Number of streets: " << streets_.size() << "\n"
@@ -409,7 +421,7 @@ void Simulation::print_stats() {
 }
 
 
-uint64_t Simulation::checksum() {
+uint64_t Simulation::checksum() const {
   uint64_t c = 17;
   for (int i = 0; i < cars_.size(); ++i) {
     c += cars_[i]->position()->x() + cars_[i]->position()->y();
@@ -424,5 +436,3 @@ void Simulation::initialize() {
     traffic_controllers_[i]->initialize();
   }
 }
-
-

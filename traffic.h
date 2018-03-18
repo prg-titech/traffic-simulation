@@ -13,11 +13,12 @@
 
 class Car;
 
-// Traffic simulation based on cellular automaton
+// Cell for traffic flow simulation based on cellular automaton.
 class Cell {
  public:
   static const uint32_t kTurnLane = 1;
 
+  // Cell type according to OSM data.
   enum Type {
     // Sorted from smallest to largest.
     kResidential,
@@ -31,65 +32,43 @@ class Cell {
   };
 
   Cell(int max_velocity, double x, double y, Type type = kResidential,
-       uint32_t tag = 0)
-      : is_free_(true), max_velocity_(max_velocity), type_(type),
-        controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
-    assert(type >= 0 && type < Type::kMaxType);
-    assert(max_velocity_ > 0);
-  }
+       uint32_t tag = 0);
 
-  bool is_free() const {
-    assert(is_free_ == (car_ == nullptr));
-    return is_free_;
-  }
+  // Returns true if the cell is free.
+  bool is_free() const;
 
-  int max_velocity() const {
-    if (controller_max_velocity_ < max_velocity_) {
-      return controller_max_velocity_;
-    } else {
-      return max_velocity_;
-    }
-  }
+  // Returns the maximum velocity allowed on this cell at this moment. This
+  // function takes into account velocity limitations due to traffic lights.
+  int max_velocity() const;
 
   // Return max. velocity regardless of traffic controllers.
-  int street_max_velocity() {
+  int street_max_velocity() const {
     return max_velocity_;
   }
 
-  void draw();
+  // Draw this cell on the GUI.
+  void draw() const;
 
   void occupy(Car* car);
 
   void release();
 
-  void connect_to(Cell* other) {
-    assert(other != this);
-    outgoing_cells_.push_back(other);
-    other->incoming_cells_.push_back(this);
+  void connect_to(Cell* other);
+
+  const std::vector<Cell*>& outgoing_cells() const {
+    return outgoing_cells_;
   }
 
-  int num_outgoing_cells() {
-    return outgoing_cells_.size();
+  const std::vector<Cell*>& incoming_cells() const {
+    return incoming_cells_;
   }
 
-  Cell** outgoing_cells() {
-    return outgoing_cells_.data();
-  }
+  double x() const { return x_; }
+  double y() const { return y_; }
 
-  int num_incoming_cells() {
-    return incoming_cells_.size();
-  }
+  Type type() const { return type_; }
 
-  Cell** incoming_cells() {
-    return incoming_cells_.data();
-  }
-
-  double x() { return x_; }
-  double y() { return y_; }
-
-  Type type() { return type_; }
-
-  uint32_t tag() { return tag_; }
+  uint32_t tag() const { return tag_; }
 
   void set_max_velocity(int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
@@ -103,11 +82,11 @@ class Cell {
     controller_max_velocity_ = max_velocity_;
   }
 
-  Car* car() { return car_; }
+  Car* car() const { return car_; }
 
   void set_sink(bool is_sink) { is_sink_ = is_sink; }
 
-  bool is_sink() { return is_sink_; }
+  bool is_sink() const { return is_sink_; }
 
  private:
   Type type_;
@@ -138,23 +117,25 @@ class Car {
     initial_position->occupy(this);
   }
 
-  void assert_check_velocity();
+  void assert_check_velocity() const;
 
   void step_velocity();
 
   void step_move();
 
-  Cell* position() { return position_; }
+  Cell* position() const { return position_; }
 
-  bool is_jammed();
+  bool is_jammed() const;
 
   void set_active(bool is_active) { is_active_ = is_active; }
 
-  bool is_active() { return is_active_; }
+  bool is_active() const { return is_active_; }
 
-  int velocity() { return velocity_; }
+  int velocity() const { return velocity_; }
 
-  fixed_size_queue<Cell*>& path() { return path_; }
+  // Path cannot be modified using this API. It can only be modified from
+  // within this class.
+  const fixed_size_queue<Cell*>& path() const { return path_; }
 
   void set_position(Cell* cell);
 
@@ -203,7 +184,7 @@ class SharedSignalGroup {
   // Set traffic lights to red.
   void signal_stop();
 
-  std::vector<Cell*>& cells() { return cells_; }
+  const std::vector<Cell*>& cells() const { return cells_; }
 
  private:
   std::vector<Cell*> cells_;
@@ -214,7 +195,7 @@ class TrafficController {
  public:
   virtual void initialize() = 0;
   virtual void step() = 0;
-  virtual void assert_check_state() = 0;
+  virtual void assert_check_state() const = 0;
 };
 
 
@@ -228,7 +209,7 @@ class TrafficLight : public TrafficController {
   void initialize();
 
   // Make sure that only one group has green light.
-  void assert_check_state();
+  void assert_check_state() const;
 
  private:
   int timer_;
@@ -251,7 +232,7 @@ class PriorityYieldTrafficController : public TrafficController {
 
   void step();
 
-  void assert_check_state();
+  void assert_check_state() const;
 
  private:
   std::vector<SharedSignalGroup*> groups_;
@@ -269,9 +250,9 @@ class Street {
     assert(type >= 0 && type < Cell::kMaxType);
   }
 
-  Cell* first() { return first_; }
-  Cell* last() { return last_; }
-  Cell::Type type() { return type_; }
+  Cell* first() const { return first_; }
+  Cell* last() const { return last_; }
+  Cell::Type type() const { return type_; }
 
  private:
   Cell* first_;
@@ -285,9 +266,9 @@ class Simulation {
 
   void initialize();
 
-  Cell* random_cell(uint32_t* state);
+  Cell* random_cell(uint32_t* state) const;
 
-  Cell* random_free_cell(uint32_t* state);
+  Cell* random_free_cell(uint32_t* state) const;
 
   void step();
 
@@ -300,13 +281,13 @@ class Simulation {
   void add_inactive_car(Car* car) { inactive_cars_.push_back(car); }
 
   // Return a vector of all cars. Only used for debug output.
-  std::vector<Car*>& cars() { return cars_; }
+  const std::vector<Car*>& cars() const { return cars_; }
 
   // Print information about this simulation.
-  void print_stats();
+  void print_stats() const;
 
   // Calculate a checksum for the state of this simulation.
-  uint64_t checksum();
+  uint64_t checksum() const;
 
  private:
   friend class Renderer;

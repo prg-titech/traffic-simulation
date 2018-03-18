@@ -18,7 +18,7 @@ class Renderer {
 
   void update_gui();
 
-  void draw_cell(Cell* cell);
+  void draw_cell(const Cell& cell);
 
   void redraw_everything();
 
@@ -31,11 +31,11 @@ class Renderer {
   Simulation* simulation_;
 
   // A list of cells that became free in this iteration.
-  Cell** free_cells_;
+  const Cell** free_cells_;
   int num_free_cells_;
 
   // A list of cells that became occupied in this iteration.
-  Cell** occupied_cells_;
+  const Cell** occupied_cells_;
   int num_occupied_cells_;
 
   // SDL helper variables.
