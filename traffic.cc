@@ -50,6 +50,10 @@ int Cell::max_velocity() const {
   }
 }
 
+int Cell::street_max_velocity() const {
+  return max_velocity_;
+}
+
 Cell* Car::next_step(Cell* position) {
   // Random walk.
   assert(position->outgoing_cells().size() > 0);
@@ -288,8 +292,8 @@ void TrafficLight::assert_check_state() const {
 void PriorityYieldTrafficController::assert_check_state() const {}
 
 
-bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell,
-                                                          int lookahead) {
+bool PriorityYieldTrafficController::has_incoming_traffic(
+    Cell* cell, int lookahead) const {
   if (lookahead == 0) {
     return !cell->is_free();
   }
@@ -306,7 +310,7 @@ bool PriorityYieldTrafficController::has_incoming_traffic(Cell* cell,
 
 
 bool PriorityYieldTrafficController::has_incoming_traffic(
-    SharedSignalGroup* group) {
+    SharedSignalGroup* group) const {
   for (auto it = group->cells().begin(); it != group->cells().end(); ++it) {
     // Report incoming traffic if at least one cells in the group reports
     // incoming traffic.

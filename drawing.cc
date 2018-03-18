@@ -101,7 +101,7 @@ void Renderer::redraw_everything() {
     }
   } else {
     // Draw all segments.
-    Cell** cells = simulation_->cells().data();
+    Cell* const * cells = simulation_->cells().data();
     for (int i = 0; i < simulation_->cells().size(); ++i) {
       Cell* cell = cells[i];
       int pos1_x = (cell->x() - origin_x_)*scale_factor_;

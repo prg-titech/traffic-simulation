@@ -8,6 +8,8 @@
 #include <vector>
 #include <set>
 
+#define OPTION_CLASS 1
+#include "function_helper.h"
 #include "fixed_size_queue.h"
 
 
@@ -35,58 +37,69 @@ class Cell {
        uint32_t tag = 0);
 
   // Returns true if the cell is free.
-  bool is_free() const;
+  FUNCTION_DECL(is_free, bool) const;
 
   // Returns the maximum velocity allowed on this cell at this moment. This
   // function takes into account velocity limitations due to traffic lights.
-  int max_velocity() const;
+  FUNCTION_DECL(max_velocity, int) const;
 
   // Return max. velocity regardless of traffic controllers.
-  int street_max_velocity() const {
-    return max_velocity_;
-  }
+  FUNCTION_DECL(street_max_velocity, int) const;
 
   // Draw this cell on the GUI.
-  void draw() const;
+  FUNCTION_DECL(draw, void) const;
 
-  void occupy(Car* car);
+  // A car enters this cell.
+  FUNCTION_DECL(occupy, void, Car* car);
 
-  void release();
+  // A car leaves this cell.
+  FUNCTION_DECL(release, void);
 
-  void connect_to(Cell* other);
+  // Connects this cell to another cell.
+  FUNCTION_DECL(connect_to, void, Cell* other);
 
-  const std::vector<Cell*>& outgoing_cells() const {
+  FUNCTION_DECL(outgoing_cells, const std::vector<Cell*>&) const {
     return outgoing_cells_;
   }
 
-  const std::vector<Cell*>& incoming_cells() const {
+  FUNCTION_DECL(incoming_cells, const std::vector<Cell*>&) const {
     return incoming_cells_;
   }
 
-  double x() const { return x_; }
-  double y() const { return y_; }
+  // Return x and y coordinates of this cell. For rendering purposes only.
+  FUNCTION_DECL(x, double) const { return x_; }
+  FUNCTION_DECL(y, double) const { return y_; }
 
-  Type type() const { return type_; }
+  // Returns the type of this cell.
+  FUNCTION_DECL(type, Type) const { return type_; }
 
-  uint32_t tag() const { return tag_; }
+  // Additional information can be stored in the tag.
+  FUNCTION_DECL(tag, uint32_t) const { return tag_; }
 
-  void set_max_velocity(int velocity) {
+  // Sets the maximum velocity allowed on this street. This function will
+  // override any speed limits imposed by a traffic controller.
+  FUNCTION_DECL(set_max_velocity, void, int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
   }
 
-  void set_controller_max_velocity(int velocity) {
+  // Sets the maximum temporary speed limit (traffic controller).
+  FUNCTION_DECL(set_controller_max_velocity, void, int velocity) {
     controller_max_velocity_ = velocity;
   }
 
-  void remove_controller_max_velocity() {
+  // Removes the maximum temporary speed limit.
+  FUNCTION_DECL(remove_controller_max_velocity, void) {
     controller_max_velocity_ = max_velocity_;
   }
 
-  Car* car() const { return car_; }
+  // Returns the car that occupies this cell.
+  FUNCTION_DECL(car, Car*) const { return car_; }
 
-  void set_sink(bool is_sink) { is_sink_ = is_sink; }
+  // Make this cell a sink.
+  FUNCTION_DECL(set_sink, void, bool is_sink) { is_sink_ = is_sink; }
 
-  bool is_sink() const { return is_sink_; }
+  // Returns true if this cell is a sink.
+  FUNCTION_DECL(is_sink, bool) const { return is_sink_; }
 
  private:
   Type type_;
@@ -117,43 +130,43 @@ class Car {
     initial_position->occupy(this);
   }
 
-  void assert_check_velocity() const;
+  FUNCTION_DECL(assert_check_velocity, void) const;
 
-  void step_velocity();
+  FUNCTION_DECL(step_velocity, void);
 
-  void step_move();
+  FUNCTION_DECL(step_move, void);
 
-  Cell* position() const { return position_; }
+  FUNCTION_DECL(position, Cell*) const { return position_; }
 
-  bool is_jammed() const;
+  FUNCTION_DECL(set_position, void, Cell* cell);
 
-  void set_active(bool is_active) { is_active_ = is_active; }
+  FUNCTION_DECL(is_active, bool) const { return is_active_; }
 
-  bool is_active() const { return is_active_; }
+  FUNCTION_DECL(is_jammed, bool) const;
 
-  int velocity() const { return velocity_; }
+  FUNCTION_DECL(set_active, void, bool is_active) { is_active_ = is_active; }
+
+  FUNCTION_DECL(velocity, int) const { return velocity_; }
 
   // Path cannot be modified using this API. It can only be modified from
   // within this class.
-  const fixed_size_queue<Cell*>& path() const { return path_; }
-
-  void set_position(Cell* cell);
+  FUNCTION_DECL(path, const fixed_size_queue<Cell*>&) const { return path_; }
 
  protected:
   friend class Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
-  Cell* next_step(Cell* position);
+  FUNCTION_DECL(next_step, Cell*, Cell* position);
 
-  void step_initialize_iteration();
+  FUNCTION_DECL(step_initialize_iteration, void);
 
-  void step_accelerate();
+  FUNCTION_DECL(step_accelerate, void);
 
-  void step_extend_path();
+  FUNCTION_DECL(step_extend_path, void);
 
-  void step_constraint_velocity();
+  FUNCTION_DECL(step_constraint_velocity, void);
 
-  void step_slow_down();
+  FUNCTION_DECL(step_slow_down, void);
 
  private:
   bool is_active_;
@@ -169,7 +182,7 @@ class Car {
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
-  uint32_t rand32();
+  FUNCTION_DECL(rand32, uint32_t);
 };
 
 
@@ -178,24 +191,25 @@ class SharedSignalGroup {
   // TODO: Use rvalue references.
   SharedSignalGroup(std::vector<Cell*> cells) : cells_(cells) {}
 
-  // Set traffic lights to green.
-  void signal_go();
+  // Sets traffic lights to green.
+  FUNCTION_DECL(signal_go, void);
 
-  // Set traffic lights to red.
-  void signal_stop();
+  // Sets traffic lights to red.
+  FUNCTION_DECL(signal_stop, void);
 
-  const std::vector<Cell*>& cells() const { return cells_; }
+  // Returns a vector of cells that belong to this group.
+  FUNCTION_DECL(cells, const std::vector<Cell*>&) { return cells_; }
 
  private:
-  std::vector<Cell*> cells_;
+  const std::vector<Cell*> cells_;
 };
 
 
 class TrafficController {
  public:
-  virtual void initialize() = 0;
-  virtual void step() = 0;
-  virtual void assert_check_state() const = 0;
+  virtual FUNCTION_DECL(initialize, void) = 0;
+  virtual FUNCTION_DECL(step, void) = 0;
+  virtual FUNCTION_DECL(assert_check_state, void) const = 0;
 };
 
 
@@ -203,23 +217,27 @@ class TrafficLight : public TrafficController {
  public:
   TrafficLight(int phase_time,
                std::vector<SharedSignalGroup*> signal_groups);
-  void step();
 
   // Set all lights to red.
-  void initialize();
+  FUNCTION_DECL(initialize, void);
+
+  FUNCTION_DECL(step, void);
 
   // Make sure that only one group has green light.
-  void assert_check_state() const;
+  FUNCTION_DECL(assert_check_state, void) const;
 
  private:
+  // This timer is increased with every step.
   int timer_;
+
+  // The number of cycles in timer_ until the signal group is changed.
   const int phase_time_;
 
   // Index into groups_. The specified signal group has a green light.
   int phase_ = 0;
 
   // Cells which are set to "green" at the same time.
-  std::vector<SharedSignalGroup*> signal_groups_;
+  const std::vector<SharedSignalGroup*> signal_groups_;
 };
 
 
@@ -228,18 +246,18 @@ class PriorityYieldTrafficController : public TrafficController {
   PriorityYieldTrafficController(std::vector<SharedSignalGroup*> groups)
       : groups_(groups) {}
 
-  void initialize() {}
+  FUNCTION_DECL(initialize, void) {}
 
-  void step();
+  FUNCTION_DECL(step, void);
 
-  void assert_check_state() const;
+  FUNCTION_DECL(assert_check_state, void) const;
 
  private:
-  std::vector<SharedSignalGroup*> groups_;
+  const std::vector<SharedSignalGroup*> groups_;
 
   // Check if a car is coming from this group within the next iteration.
-  bool has_incoming_traffic(SharedSignalGroup* group);
-  bool has_incoming_traffic(Cell* cell, int lookahead);
+  FUNCTION_DECL(has_incoming_traffic, bool, SharedSignalGroup* group) const;
+  FUNCTION_DECL(has_incoming_traffic, bool, Cell* cell, int lookahead) const;
 };
 
 
@@ -250,9 +268,9 @@ class Street {
     assert(type >= 0 && type < Cell::kMaxType);
   }
 
-  Cell* first() const { return first_; }
-  Cell* last() const { return last_; }
-  Cell::Type type() const { return type_; }
+  FUNCTION_DECL(first, Cell*) const { return first_; }
+  FUNCTION_DECL(last, Cell*) const { return last_; }
+  FUNCTION_DECL(type, Cell::Type) const { return type_; }
 
  private:
   Cell* first_;
@@ -264,30 +282,45 @@ class Simulation {
  public:
   Simulation() {}
 
-  void initialize();
+  // Initialize this traffic simulation. May be called only when all streets
+  // cars, traffic controllers, etc. were added.
+  FUNCTION_DECL(initialize, void);
 
-  Cell* random_cell(uint32_t* state) const;
+  FUNCTION_DECL(random_cell, Cell*, uint32_t* state) const;
 
-  Cell* random_free_cell(uint32_t* state) const;
+  FUNCTION_DECL(random_free_cell, Cell*, uint32_t* state) const;
 
-  void step();
+  // Simulate a single tick.
+  FUNCTION_DECL(step, void);
 
-  void add_street(Street* street) { streets_.push_back(street); }
-  void add_cell(Cell* cell) { cells_.push_back(cell); }
-  void add_car(Car* car) { cars_.push_back(car); }
-  void add_traffic_controller(TrafficController* light) { 
+  FUNCTION_DECL(add_street, void, Street* street) {
+    streets_.push_back(street);
+  }
+
+  FUNCTION_DECL(add_cell, void, Cell* cell) {
+    cells_.push_back(cell);
+  }
+  
+  FUNCTION_DECL(add_car, void, Car* car) {
+    cars_.push_back(car);
+  }
+
+  FUNCTION_DECL(add_traffic_controller, void, TrafficController* light) {
     traffic_controllers_.push_back(light);
   }
-  void add_inactive_car(Car* car) { inactive_cars_.push_back(car); }
+
+  FUNCTION_DECL(add_inactive_car, void, Car* car) {
+    inactive_cars_.push_back(car);
+  }
 
   // Return a vector of all cars. Only used for debug output.
-  const std::vector<Car*>& cars() const { return cars_; }
+  FUNCTION_DECL(cars, const std::vector<Car*>&) const { return cars_; }
 
   // Print information about this simulation.
-  void print_stats() const;
+  FUNCTION_DECL(print_stats, void) const;
 
   // Calculate a checksum for the state of this simulation.
-  uint64_t checksum() const;
+  FUNCTION_DECL(checksum, uint64_t) const;
 
  private:
   friend class Renderer;
@@ -295,11 +328,13 @@ class Simulation {
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.
   std::vector<Street*> streets_;
-  std::vector<Street*>& streets() { return streets_; }
+  FUNCTION_DECL(streets, const std::vector<Street*>&) const {
+    return streets_;
+  }
 
   // A vector of all cells.
   std::vector<Cell*> cells_;
-  std::vector<Cell*>& cells() { return cells_; }
+  FUNCTION_DECL(cells, const std::vector<Cell*>&) const { return cells_; }
 
   // A vector of all cars.
   std::vector<Car*> cars_;
