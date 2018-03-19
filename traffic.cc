@@ -13,37 +13,36 @@ extern Simulation* simulation;
 
 extern void draw_cell(const Cell& cell);
 
-FUNCTION_DEF(Cell, Cell, , 
-    int max_velocity, double x, double y, Type type, uint32_t tag)
+Cell::Cell(int max_velocity, double x, double y, Type type, uint32_t tag)
     : is_free_(true), max_velocity_(max_velocity), type_(type),
       controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
   assert(type >= 0 && type < Type::kMaxType);
   assert(max_velocity_ > 0);
 }
 
-FUNCTION_DEF(Cell, connect_to, void, PTR(Cell) other) {
-  assert(other != THIS);
+void Cell::connect_to(Cell* other) {
+  assert(other != this);
   outgoing_cells_.push_back(other);
-  other->incoming_cells_.push_back(THIS);
+  other->incoming_cells_.push_back(this);
 }
 
-FUNCTION_DEF(Cell, draw, void) const {
-  draw_cell(*THIS);
+void Cell::draw() const {
+  draw_cell(*this);
 }
 
-FUNCTION_DEF(Cell, is_free, bool) const {
+bool Cell::is_free() const {
   assert(is_free_ == (car_ == nullptr));
   return is_free_;
 }
 
-FUNCTION_DEF(Car, is_jammed, bool) const {
+bool Car::is_jammed() const {
   if (path_.size() == 0) return false;
 
   assert(path_[0] != position_);
   return !path_[0]->is_free();
 }
 
-FUNCTION_DEF(Cell, max_velocity, int) const {
+int Cell::max_velocity() const {
   if (controller_max_velocity_ < max_velocity_) {
     return controller_max_velocity_;
   } else {
@@ -51,11 +50,11 @@ FUNCTION_DEF(Cell, max_velocity, int) const {
   }
 }
 
-FUNCTION_DEF(Cell, street_max_velocity, int) const {
+int Cell::street_max_velocity() const {
   return max_velocity_;
 }
 
-FUNCTION_DEF(Cell, occupy, void, PTR(Car) car) {
+void Cell::occupy(Car* car) {
   assert(is_free_);
   assert(car_ == nullptr);
 
@@ -64,7 +63,7 @@ FUNCTION_DEF(Cell, occupy, void, PTR(Car) car) {
   draw();
 }
 
-FUNCTION_DEF(Cell, release, void) {
+void Cell::release() {
   assert(!is_free_);
   assert(car_ != nullptr);
 
@@ -73,25 +72,25 @@ FUNCTION_DEF(Cell, release, void) {
   draw();
 }
 
-FUNCTION_DEF(Car, next_step, PTR(Cell), PTR(Cell) position) {
+Cell* Car::next_step(Cell* position) {
   // Random walk.
   assert(position->outgoing_cells().size() > 0);
   auto& cells = position->outgoing_cells();
 
-  PTR(Cell) next_cell = cells[rand32() % position->outgoing_cells().size()];
+  Cell* next_cell = cells[rand32() % position->outgoing_cells().size()];
   assert(next_cell != position);
   return next_cell;
 }
 
-FUNCTION_DEF(Car, step_velocity, void) {
+void Car::step_velocity() {
   step_initialize_iteration();
   step_accelerate();
   step_extend_path();
   step_constraint_velocity();
 }
 
-FUNCTION_DEF(Car, step_move, void) {
-  PTR(Cell) next_cell = position_;
+void Car::step_move() {
+  Cell* next_cell = position_;
   assert(velocity_ <= next_cell->max_velocity());
 
   for (int i = 0; i < velocity_; ++i) {
@@ -101,7 +100,7 @@ FUNCTION_DEF(Car, step_move, void) {
   }
 
   position_->release();
-  next_cell->occupy(THIS);
+  next_cell->occupy(this);
   position_ = next_cell;
 
   if (position_->is_sink()) {
@@ -111,17 +110,17 @@ FUNCTION_DEF(Car, step_move, void) {
     set_active(false);
 
     // Add car at random cell.
-    simulation->add_inactive_car(THIS);
+    simulation->add_inactive_car(this);
   }
 }
 
-FUNCTION_DEF(Car, step_initialize_iteration, void) {
+void Car::step_initialize_iteration() {
   if (velocity_ == 0) {
     path_.shrink_to_size(0);
   }
 }
 
-FUNCTION_DEF(Car, step_accelerate, void) {
+void Car::step_accelerate() {
   if (velocity_ < max_velocity_) {
     ++velocity_;
   }
@@ -130,7 +129,7 @@ FUNCTION_DEF(Car, step_accelerate, void) {
   assert(velocity_ <= path_.capacity());
 }
 
-FUNCTION_DEF(Car, step_constraint_velocity, void) {
+void Car::step_constraint_velocity() {
   // This is actually only needed for the very first iteration, because a car
   // may be positioned on a traffic light cell.
   if (velocity_ > position_->max_velocity()) {
@@ -144,7 +143,7 @@ FUNCTION_DEF(Car, step_constraint_velocity, void) {
     // Invariant: Movement of up to `distance - 1` many cells at `velocity_`
     //            is allowed.
     // Now check if next cell can be entered.
-    PTR(Cell) next_cell = *path_iter;
+    Cell* next_cell = *path_iter;
 
     // Avoid collision.
     if (!next_cell->is_free()) {
@@ -175,11 +174,11 @@ FUNCTION_DEF(Car, step_constraint_velocity, void) {
   assert(distance <= velocity_);
 }
 
-FUNCTION_DEF(Car, step_extend_path, void) {
+void Car::step_extend_path() {
   assert(path_.capacity() >= velocity_);
 
   int num_steps = velocity_ - path_.size();
-  PTR(Cell) position = position_;
+  Cell* position = position_;
 
   if (path_.size() > 0) {
     position = path_.back();
@@ -199,13 +198,13 @@ FUNCTION_DEF(Car, step_extend_path, void) {
   assert(path_.size() >= velocity_);
 }
 
-FUNCTION_DEF(Car, set_position, void, PTR(Cell) cell) {
+void Car::set_position(Cell* cell) {
   path_.shrink_to_size(0);
-  cell->occupy(THIS);
+  cell->occupy(this);
   position_ = cell;
 }
 
-FUNCTION_DEF(Car, assert_check_velocity, void) const {
+void Car::assert_check_velocity() const {
   assert(path_.size() >= velocity_);
 
   if (velocity_ > 0) {
@@ -218,7 +217,7 @@ FUNCTION_DEF(Car, assert_check_velocity, void) const {
   }
 }
 
-FUNCTION_DEF(Car, step_slow_down, void) {
+void Car::step_slow_down() {
   float rand_float = static_cast<float>(rand32())
       / static_cast<float>(RAND32_MAX);
   if (rand_float < 0.5 && velocity_ > 0) {
@@ -226,31 +225,31 @@ FUNCTION_DEF(Car, step_slow_down, void) {
   }
 }
 
-FUNCTION_DEF(Car, rand32, uint32_t) {
+uint32_t Car::rand32() {
   return ::rand32(&random_state_);
 }
 
-FUNCTION_DEF(SharedSignalGroup, signal_go, void) {
+void SharedSignalGroup::signal_go() {
   for (auto it = cells_.begin(); it != cells_.end(); ++it) {
     (*it)->remove_controller_max_velocity();
     assert((*it)->max_velocity() > 0);
   }
 }
 
-FUNCTION_DEF(SharedSignalGroup, signal_stop, void) {
+void SharedSignalGroup::signal_stop() {
   for (auto it = cells_.begin(); it != cells_.end(); ++it) {
     (*it)->set_controller_max_velocity(0);
   }
 }
 
-FUNCTION_DEF(TrafficLight, TrafficLight, ,
+TrafficLight::TrafficLight(
     int phase_time, std::vector<SharedSignalGroup*> signal_groups)
     : phase_time_(phase_time), signal_groups_(signal_groups) {
   // Initialize with random time.
   timer_ = rand() % phase_time_;
 }
 
-FUNCTION_DEF(TrafficLight, step, void) {
+void TrafficLight::step() {
   timer_ = (timer_ + 1) % phase_time_;
 
   if (timer_ == 0) {
@@ -260,13 +259,13 @@ FUNCTION_DEF(TrafficLight, step, void) {
   }
 }
 
-FUNCTION_DEF(TrafficLight, initialize, void) {
+void TrafficLight::initialize() {
   for (auto it = signal_groups_.begin(); it != signal_groups_.end(); ++it) {
     (*it)->signal_stop();
   }
 }
 
-FUNCTION_DEF(TrafficLight, assert_check_state, void) const {
+void TrafficLight::assert_check_state() const {
   bool found_green = false;
   for (auto it = signal_groups_.begin(); it != signal_groups_.end(); ++it) {
     auto& group = (*it)->cells();
@@ -284,10 +283,10 @@ FUNCTION_DEF(TrafficLight, assert_check_state, void) const {
   }
 }
 
-FUNCTION_DEF(PriorityYieldTrafficController, assert_check_state, void) const {}
+void PriorityYieldTrafficController::assert_check_state() const {}
 
-FUNCTION_DEF(PriorityYieldTrafficController, has_incoming_traffic, bool,
-    PTR(Cell) cell, int lookahead) const {
+bool PriorityYieldTrafficController::has_incoming_traffic(
+    Cell* cell, int lookahead) const {
   if (lookahead == 0) {
     return !cell->is_free();
   }
@@ -302,7 +301,7 @@ FUNCTION_DEF(PriorityYieldTrafficController, has_incoming_traffic, bool,
   return !cell->is_free();
 }
 
-FUNCTION_DEF(PriorityYieldTrafficController, has_incoming_traffic, bool,
+bool PriorityYieldTrafficController::has_incoming_traffic(
     SharedSignalGroup* group) const {
   for (auto it = group->cells().begin(); it != group->cells().end(); ++it) {
     // Report incoming traffic if at least one cells in the group reports
@@ -314,7 +313,7 @@ FUNCTION_DEF(PriorityYieldTrafficController, has_incoming_traffic, bool,
   return false;
 }
 
-FUNCTION_DEF(PriorityYieldTrafficController, step, void) {
+void PriorityYieldTrafficController::step() {
   bool found_traffic = false;
   // Cells are sorted by priority.
   for (int i = 0; i < groups_.size(); ++i) {
@@ -336,10 +335,10 @@ FUNCTION_DEF(PriorityYieldTrafficController, step, void) {
   }
 }
 
-FUNCTION_DEF(Simulation, step, void) {
+void Simulation::step() {
 #ifndef NDEBUG
   // Make sure that no two cars are on the same cell.
-  std::set<PTR(Cell)> occupied_cells;
+  std::set<Cell*> occupied_cells;
   for (int i = 0; i < cars_.size(); ++i) {
     if (cars_[i]->is_active()) {
       assert(occupied_cells.find(cars_[i]->position())
@@ -378,18 +377,18 @@ FUNCTION_DEF(Simulation, step, void) {
 
   // Reactivate cars.
   for (auto it = inactive_cars_.begin(); it != inactive_cars_.end(); ++it) {
-    PTR(Cell) new_start_cell = random_free_cell(&((*it)->random_state_));
+    Cell* new_start_cell = random_free_cell(&((*it)->random_state_));
     (*it)->set_position(new_start_cell);
     (*it)->set_active(true);
   }
   inactive_cars_.clear();
 }
 
-FUNCTION_DEF(Simulation, random_cell, PTR(Cell), uint32_t* state) const {
+Cell* Simulation::random_cell(uint32_t* state) const {
   return cells_[rand32(state) % cells_.size()];
 }
 
-FUNCTION_DEF(Simulation, random_free_cell, PTR(Cell), uint32_t* state) const {
+Cell* Simulation::random_free_cell(uint32_t* state) const {
   // Try max. of 100 times.
   for (int i = 0; i < 100; ++i) {
     int id = rand32(state) % cells_.size();
@@ -403,7 +402,7 @@ FUNCTION_DEF(Simulation, random_free_cell, PTR(Cell), uint32_t* state) const {
   return random_cell(state);
 }
 
-FUNCTION_DEF(Simulation, print_stats, void) const {
+void Simulation::print_stats() const {
   cout << "Number of cells: " << cells_.size() << "\n"
        << "Number of cars: " << cars_.size() << "\n"
        << "Number of streets: " << streets_.size() << "\n"
@@ -411,7 +410,7 @@ FUNCTION_DEF(Simulation, print_stats, void) const {
        << "\n";
 }
 
-FUNCTION_DEF(Simulation, checksum, uint64_t) const {
+uint64_t Simulation::checksum() const {
   uint64_t c = 17;
   for (int i = 0; i < cars_.size(); ++i) {
     c += cars_[i]->position()->x() + cars_[i]->position()->y();
@@ -420,7 +419,7 @@ FUNCTION_DEF(Simulation, checksum, uint64_t) const {
   return c;
 }
 
-FUNCTION_DEF(Simulation, initialize, void) {
+void Simulation::initialize() {
   for (int i = 0; i < traffic_controllers_.size(); ++i) {
     traffic_controllers_[i]->initialize();
   }

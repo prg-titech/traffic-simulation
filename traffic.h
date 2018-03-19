@@ -8,8 +8,6 @@
 #include <vector>
 #include <set>
 
-#define OPTION_CLASS 1
-#include "function_helper.h"
 #include "fixed_size_queue.h"
 
 
@@ -33,73 +31,73 @@ class Cell {
     kMaxType
   };
 
-  FUNCTION_DECL(Cell, , int max_velocity, double x, double y,
-      Type type = kResidential, uint32_t tag = 0);
+  Cell(int max_velocity, double x, double y,
+       Type type = kResidential, uint32_t tag = 0);
 
   // Returns true if the cell is free.
-  FUNCTION_DECL(is_free, bool) const;
+  bool is_free() const;
 
   // Returns the maximum velocity allowed on this cell at this moment. This
   // function takes into account velocity limitations due to traffic lights.
-  FUNCTION_DECL(max_velocity, int) const;
+  int max_velocity() const;
 
   // Return max. velocity regardless of traffic controllers.
-  FUNCTION_DECL(street_max_velocity, int) const;
+  int street_max_velocity() const;
 
   // Draw this cell on the GUI.
-  FUNCTION_DECL(draw, void) const;
+  void draw() const;
 
   // A car enters this cell.
-  FUNCTION_DECL(occupy, void, PTR(Car) car);
+  void occupy(Car* car);
 
   // A car leaves this cell.
-  FUNCTION_DECL(release, void);
+  void release();
 
   // Connects this cell to another cell.
-  FUNCTION_DECL(connect_to, void, PTR(Cell) other);
+  void connect_to(Cell* other);
 
-  FUNCTION_DECL(outgoing_cells, const std::vector<PTR(Cell)>&) const {
+  const std::vector<Cell*>& outgoing_cells() const {
     return outgoing_cells_;
   }
 
-  FUNCTION_DECL(incoming_cells, const std::vector<PTR(Cell)>&) const {
+  const std::vector<Cell*>& incoming_cells() const {
     return incoming_cells_;
   }
 
   // Return x and y coordinates of this cell. For rendering purposes only.
-  FUNCTION_DECL(x, double) const { return x_; }
-  FUNCTION_DECL(y, double) const { return y_; }
+  double x() const { return x_; }
+  double y() const { return y_; }
 
   // Returns the type of this cell.
-  FUNCTION_DECL(type, Type) const { return type_; }
+  Type type() const { return type_; }
 
   // Additional information can be stored in the tag.
-  FUNCTION_DECL(tag, uint32_t) const { return tag_; }
+  uint32_t tag() const { return tag_; }
 
   // Sets the maximum velocity allowed on this street. This function will
   // override any speed limits imposed by a traffic controller.
-  FUNCTION_DECL(set_max_velocity, void, int velocity) {
+  void set_max_velocity(int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
   }
 
   // Sets the maximum temporary speed limit (traffic controller).
-  FUNCTION_DECL(set_controller_max_velocity, void, int velocity) {
+  void set_controller_max_velocity(int velocity) {
     controller_max_velocity_ = velocity;
   }
 
   // Removes the maximum temporary speed limit.
-  FUNCTION_DECL(remove_controller_max_velocity, void) {
+  void remove_controller_max_velocity() {
     controller_max_velocity_ = max_velocity_;
   }
 
   // Returns the car that occupies this cell.
-  FUNCTION_DECL(car, PTR(Car)) const { return car_; }
+  Car* car() const { return car_; }
 
   // Make this cell a sink.
-  FUNCTION_DECL(set_sink, void, bool is_sink) { is_sink_ = is_sink; }
+  void set_sink(bool is_sink) { is_sink_ = is_sink; }
 
   // Returns true if this cell is a sink.
-  FUNCTION_DECL(is_sink, bool) const { return is_sink_; }
+  bool is_sink() const { return is_sink_; }
 
  private:
   Type type_;
@@ -108,10 +106,10 @@ class Cell {
   int max_velocity_;
   int controller_max_velocity_;
 
-  std::vector<PTR(Cell)> outgoing_cells_;
-  std::vector<PTR(Cell)> incoming_cells_;
+  std::vector<Cell*> outgoing_cells_;
+  std::vector<Cell*> incoming_cells_;
 
-  PTR(Car) car_ = nullptr;
+  Car* car_ = nullptr;
 
   // Coordinates on the map. Used for rendering.
   double x_, y_;
@@ -123,51 +121,50 @@ class Cell {
 
 class Car {
  public:
-  FUNCTION_DECL(Car, ,
-      int max_velocity, PTR(Cell) initial_position, uint32_t random_state)
+  Car(int max_velocity, Cell* initial_position, uint32_t random_state)
       : max_velocity_(max_velocity), path_(max_velocity),
         position_(initial_position), is_active_(true),
         random_state_(random_state) {
-    initial_position->occupy(THIS);
+    initial_position->occupy(this);
   }
 
-  FUNCTION_DECL(assert_check_velocity, void) const;
+  void assert_check_velocity() const;
 
-  FUNCTION_DECL(step_velocity, void);
+  void step_velocity();
 
-  FUNCTION_DECL(step_move, void);
+  void step_move();
 
-  FUNCTION_DECL(position, PTR(Cell)) const { return position_; }
+  Cell* position() const { return position_; }
 
-  FUNCTION_DECL(set_position, void, PTR(Cell) cell);
+  void set_position(Cell* cell);
 
-  FUNCTION_DECL(is_active, bool) const { return is_active_; }
+  bool is_active() const { return is_active_; }
 
-  FUNCTION_DECL(is_jammed, bool) const;
+  bool is_jammed() const;
 
-  FUNCTION_DECL(set_active, void, bool is_active) { is_active_ = is_active; }
+  void set_active(bool is_active) { is_active_ = is_active; }
 
-  FUNCTION_DECL(velocity, int) const { return velocity_; }
+  int velocity() const { return velocity_; }
 
   // Path cannot be modified using this API. It can only be modified from
   // within this class.
-  FUNCTION_DECL(path, const fixed_size_queue<PTR(Cell)>&) const { return path_; }
+  const fixed_size_queue<Cell*>& path() const { return path_; }
 
  protected:
   friend class Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
-  FUNCTION_DECL(next_step, PTR(Cell), PTR(Cell) position);
+  Cell* next_step(Cell* position);
 
-  FUNCTION_DECL(step_initialize_iteration, void);
+  void step_initialize_iteration();
 
-  FUNCTION_DECL(step_accelerate, void);
+  void step_accelerate();
 
-  FUNCTION_DECL(step_extend_path, void);
+  void step_extend_path();
 
-  FUNCTION_DECL(step_constraint_velocity, void);
+  void step_constraint_velocity();
 
-  FUNCTION_DECL(step_slow_down, void);
+  void step_slow_down();
 
  private:
   bool is_active_;
@@ -177,56 +174,54 @@ class Car {
   // Maintain max_velocity_ many cells in the queue. This is the path that the
   // car is going to take. The maximum movement speed is limited by the
   // maximum velocity of every path cell.
-  fixed_size_queue<PTR(Cell)> path_;
+  fixed_size_queue<Cell*> path_;
 
-  PTR(Cell) position_;
+  Cell* position_;
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
-  FUNCTION_DECL(rand32, uint32_t);
+  uint32_t rand32();
 };
 
 
 class SharedSignalGroup {
  public:
   // TODO: Use rvalue references.
-  FUNCTION_DECL(SharedSignalGroup, , std::vector<PTR(Cell)> cells)
-      : cells_(cells) {}
+  SharedSignalGroup(std::vector<Cell*> cells) : cells_(cells) {}
 
   // Sets traffic lights to green.
-  FUNCTION_DECL(signal_go, void);
+  void signal_go();
 
   // Sets traffic lights to red.
-  FUNCTION_DECL(signal_stop, void);
+  void signal_stop();
 
   // Returns a vector of cells that belong to this group.
-  FUNCTION_DECL(cells, const std::vector<PTR(Cell)>&) { return cells_; }
+  const std::vector<Cell*>& cells() { return cells_; }
 
  private:
-  const std::vector<PTR(Cell)> cells_;
+  const std::vector<Cell*> cells_;
 };
 
 
 class TrafficController {
  public:
-  virtual FUNCTION_DECL(initialize, void) = 0;
-  virtual FUNCTION_DECL(step, void) = 0;
-  virtual FUNCTION_DECL(assert_check_state, void) const = 0;
+  virtual void initialize() = 0;
+  virtual void step() = 0;
+  virtual void assert_check_state() const = 0;
 };
 
 
 class TrafficLight : public TrafficController {
  public:
-  FUNCTION_DECL(TrafficLight, ,
-                int phase_time, std::vector<SharedSignalGroup*> signal_groups);
+  TrafficLight(int phase_time, std::vector<SharedSignalGroup*> signal_groups);
 
   // Set all lights to red.
-  FUNCTION_DECL(initialize, void);
+  void initialize();
 
-  FUNCTION_DECL(step, void);
+  void step();
 
   // Make sure that only one group has green light.
-  FUNCTION_DECL(assert_check_state, void) const;
+  void assert_check_state() const;
 
  private:
   // This timer is increased with every step.
@@ -245,85 +240,84 @@ class TrafficLight : public TrafficController {
 
 class PriorityYieldTrafficController : public TrafficController {
  public:
-  FUNCTION_DECL(PriorityYieldTrafficController, ,
-                std::vector<SharedSignalGroup*> groups) : groups_(groups) {}
+  PriorityYieldTrafficController(
+      std::vector<SharedSignalGroup*> groups) : groups_(groups) {}
 
-  FUNCTION_DECL(initialize, void) {}
+  void initialize() {}
 
-  FUNCTION_DECL(step, void);
+  void step();
 
-  FUNCTION_DECL(assert_check_state, void) const;
+  void assert_check_state() const;
 
  private:
   const std::vector<SharedSignalGroup*> groups_;
 
   // Check if a car is coming from this group within the next iteration.
-  FUNCTION_DECL(has_incoming_traffic, bool, SharedSignalGroup* group) const;
-  FUNCTION_DECL(has_incoming_traffic, bool, PTR(Cell) cell, int lookahead) const;
+  bool has_incoming_traffic(SharedSignalGroup* group) const;
+  bool has_incoming_traffic(Cell* cell, int lookahead) const;
 };
 
 
 class Street {
  public:
-  FUNCTION_DECL(Street, , PTR(Cell) first, PTR(Cell) last,
-      Cell::Type type = Cell::kResidential)
+  Street(Cell* first, Cell* last, Cell::Type type = Cell::kResidential)
       : first_(first), last_(last), type_(type) {
     assert(type >= 0 && type < Cell::kMaxType);
   }
 
-  FUNCTION_DECL(first, PTR(Cell)) const { return first_; }
-  FUNCTION_DECL(last, PTR(Cell)) const { return last_; }
-  FUNCTION_DECL(type, Cell::Type) const { return type_; }
+  Cell* first() const { return first_; }
+  Cell* last() const { return last_; }
+  Cell::Type type() const { return type_; }
 
  private:
-  PTR(Cell) first_;
-  PTR(Cell) last_;
+  Cell* first_;
+  Cell* last_;
   Cell::Type type_;
 };
 
 class Simulation {
  public:
-  FUNCTION_DECL(Simulation,) {}
+  Simulation() {}
 
   // Initialize this traffic simulation. May be called only when all streets
   // cars, traffic controllers, etc. were added.
-  FUNCTION_DECL(initialize, void);
+  void initialize();
 
-  FUNCTION_DECL(random_cell, PTR(Cell), uint32_t* state) const;
+  Cell* random_cell(uint32_t* state) const;
 
-  FUNCTION_DECL(random_free_cell, PTR(Cell), uint32_t* state) const;
+  Cell* random_free_cell(uint32_t* state) const;
 
   // Simulate a single tick.
-  FUNCTION_DECL(step, void);
+  void step();
 
-  FUNCTION_DECL(add_street, void, Street* street) {
+  void add_street(Street* street) {
     streets_.push_back(street);
   }
 
-  FUNCTION_DECL(add_cell, void, PTR(Cell) cell) {
+  void add_cell(Cell* cell) {
     cells_.push_back(cell);
   }
   
-  FUNCTION_DECL(add_car, void, PTR(Car) car) {
+  void add_car(Car* car) {
     cars_.push_back(car);
   }
 
-  FUNCTION_DECL(add_traffic_controller, void, TrafficController* light) {
+  void add_traffic_controller(TrafficController* light) {
     traffic_controllers_.push_back(light);
   }
 
-  FUNCTION_DECL(add_inactive_car, void, PTR(Car) car) {
+  void add_inactive_car(Car* car) {
     inactive_cars_.push_back(car);
   }
 
   // Return a vector of all cars. Only used for debug output.
-  FUNCTION_DECL(cars, const std::vector<PTR(Car)>&) const { return cars_; }
+  const std::vector<Car*>& cars() const { return cars_; }
 
   // Print information about this simulation.
-  FUNCTION_DECL(print_stats, void) const;
+  void print_stats() const;
 
   // Calculate a checksum for the state of this simulation.
-  FUNCTION_DECL(checksum, uint64_t) const;
+  uint64_t checksum() const;
 
  private:
   friend class Renderer;
@@ -331,23 +325,23 @@ class Simulation {
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.
   std::vector<Street*> streets_;
-  FUNCTION_DECL(streets, const std::vector<Street*>&) const {
+  const std::vector<Street*>& streets() const {
     return streets_;
   }
 
   // A vector of all cells.
-  std::vector<PTR(Cell)> cells_;
-  FUNCTION_DECL(cells, const std::vector<PTR(Cell)>&) const { return cells_; }
+  std::vector<Cell*> cells_;
+  const std::vector<Cell*>& cells() const { return cells_; }
 
   // A vector of all cars.
-  std::vector<PTR(Car)> cars_;
+  std::vector<Car*> cars_;
 
   // A vector of all traffic controllers, e.g., traffic lights.
   std::vector<TrafficController*> traffic_controllers_;
 
   // A vector of all inactive cars. Used to keep track of cars that are
   // leaving the map.
-  std::vector<PTR(Car)> inactive_cars_;
+  std::vector<Car*> inactive_cars_;
 };
 
 #endif  // TRAFFIC_H
