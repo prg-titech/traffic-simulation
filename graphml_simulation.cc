@@ -13,7 +13,14 @@
 using namespace builder;
 using namespace std;
 
-Simulation* simulation;
+namespace simulation {
+namespace standard {
+Simulation* instance;
+}  // namespace standard
+}  // namespace simulation
+
+using namespace simulation::standard;
+
 Renderer* renderer;
 
 int num_cars = 20000;
@@ -55,7 +62,7 @@ int main(int argc, char** argv) {
   GraphmlNetworkBuilder graph_builder(filename);
   graph_builder.build_connections();
   graph_builder.build_traffic_controllers();
-  simulation = graph_builder.simulation();
+  instance = graph_builder.simulation();
 
   int window_x = 1600;
   int window_y = 1300;
@@ -63,7 +70,7 @@ int main(int argc, char** argv) {
   scale_factor = min(scale_factor, 1.0 * window_y / graph_builder.max_y());
   cout << "Using GUI scale factor " << scale_factor << "\n";
 
-  renderer = new Renderer(simulation, window_x, window_y, scale_factor);
+  renderer = new Renderer(instance, window_x, window_y, scale_factor);
   renderer->redraw_everything();
   cout << "First GUI update complete.\n";
 
@@ -71,15 +78,15 @@ int main(int argc, char** argv) {
   for (int i = 0; i < num_cars; ++i) {
     uint32_t state = (uint32_t) rand() + 1;
     uint32_t state2 = (uint32_t) rand() + 1;
-    simulation->add_car(new Car(20, simulation->random_free_cell(&state2),
-                                state));
+    instance->add_car(new Car(
+        i, 20, instance->random_free_cell(&state2), state));
   }
   renderer->update_gui();
 
   // Initialize simulation.
-  simulation->initialize();
-  simulation->print_stats();
-  cars = simulation->cars().data();
+  instance->initialize();
+  instance->print_stats();
+  cars = instance->cars().data();
 
   uint64_t iteration_counter = 0;
   auto last_time = std::chrono::steady_clock::now();
@@ -88,7 +95,7 @@ int main(int argc, char** argv) {
   fflush(stdout);
 
   while (true) {
-    simulation->step();
+    instance->step();
     renderer->update_gui();
 
     // Measure performance.
@@ -98,7 +105,7 @@ int main(int argc, char** argv) {
       auto current_time = std::chrono::steady_clock::now();
       double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
           current_time - last_time).count() / 1000.0;
-      print_stats(100.0/seconds, simulation->checksum());
+      print_stats(100.0/seconds, instance->checksum());
       
       last_time = std::chrono::steady_clock::now();
       iteration_counter = 0;

@@ -9,15 +9,20 @@
 #include <set>
 
 #include "fixed_size_queue.h"
+#include "span.h"
 
+
+namespace simulation {
+namespace aos_int {
 
 class Car;
 
-// Traffic simulation based on cellular automaton
+// Cell for traffic flow simulation based on cellular automaton.
 class Cell {
  public:
   static const uint32_t kTurnLane = 1;
 
+  // Cell type according to OSM data.
   enum Type {
     // Sorted from smallest to largest.
     kResidential,
@@ -30,99 +35,84 @@ class Cell {
     kMaxType
   };
 
-  Cell(int max_velocity, double x, double y, Type type = kResidential,
-       uint32_t tag = 0)
-      : is_free_(true), max_velocity_(max_velocity), type_(type),
-        controller_max_velocity_(max_velocity), x_(x), y_(y), tag_(tag) {
-    assert(type >= 0 && type < Type::kMaxType);
-    assert(max_velocity_ > 0);
-  }
+  Cell(simulation::standard::Cell* cell);
 
-  bool is_free() const {
-    assert(is_free_ == (car_ == nullptr));
-    return is_free_;
-  }
+  // Returns true if the cell is free.
+  bool is_free() const;
 
-  int max_velocity() const {
-    if (controller_max_velocity_ < max_velocity_) {
-      return controller_max_velocity_;
-    } else {
-      return max_velocity_;
-    }
-  }
+  // Returns the maximum velocity allowed on this cell at this moment. This
+  // function takes into account velocity limitations due to traffic lights.
+  int max_velocity() const;
 
   // Return max. velocity regardless of traffic controllers.
-  int street_max_velocity() {
-    return max_velocity_;
-  }
+  int street_max_velocity() const;
 
-  void draw();
+  // Draw this cell on the GUI.
+  void draw() const;
 
+  // A car enters this cell.
   void occupy(Car* car);
 
+  // A car leaves this cell.
   void release();
 
-  void connect_to(Cell* other) {
-    assert(other != this);
-    outgoing_cells_.push_back(other);
-    other->incoming_cells_.push_back(this);
+  const ArraySpan<IndexType> outgoing_cells() const {
+    return outgoing_cells_;
   }
 
-  int num_outgoing_cells() {
-    return outgoing_cells_.size();
+  const ArraySpan<IndexType> incoming_cells() const {
+    return incoming_cells_;
   }
 
-  Cell** outgoing_cells() {
-    return outgoing_cells_.data();
-  }
+  // Return x and y coordinates of this cell. For rendering purposes only.
+  double x() const { return x_; }
+  double y() const { return y_; }
 
-  int num_incoming_cells() {
-    return incoming_cells_.size();
-  }
+  // Returns the type of this cell.
+  Type type() const { return type_; }
 
-  Cell** incoming_cells() {
-    return incoming_cells_.data();
-  }
+  // Additional information can be stored in the tag.
+  uint32_t tag() const { return tag_; }
 
-  double x() { return x_; }
-  double y() { return y_; }
-
-  Type type() { return type_; }
-
-  uint32_t tag() { return tag_; }
-
+  // Sets the maximum velocity allowed on this street. This function will
+  // override any speed limits imposed by a traffic controller.
   void set_max_velocity(int velocity) {
     max_velocity_ = controller_max_velocity_ = velocity;
   }
 
+  // Sets the maximum temporary speed limit (traffic controller).
   void set_controller_max_velocity(int velocity) {
     controller_max_velocity_ = velocity;
   }
 
+  // Removes the maximum temporary speed limit.
   void remove_controller_max_velocity() {
     controller_max_velocity_ = max_velocity_;
   }
 
-  Car* car() { return car_; }
+  // Returns the car that occupies this cell.
+  IndexType car() const { return car_; }
 
+  // Make this cell a sink.
   void set_sink(bool is_sink) { is_sink_ = is_sink; }
 
-  bool is_sink() { return is_sink_; }
+  // Returns true if this cell is a sink.
+  bool is_sink() const { return is_sink_; }
 
  private:
-  Type type_;
+  const Type type_;
   bool is_free_;
-  bool is_sink_ = false;
-  int max_velocity_;
+  const bool is_sink_;
+  const int max_velocity_;
   int controller_max_velocity_;
 
-  std::vector<Cell*> outgoing_cells_;
-  std::vector<Cell*> incoming_cells_;
+  const ArraySpan<IndexType> outgoing_cells_;
+  const ArraySpan<IndexType> incoming_cells_;
 
-  Car* car_ = nullptr;
+  IndexType car_ = kMaxIndexType;
 
   // Coordinates on the map. Used for rendering.
-  double x_, y_;
+  const double x_, y_;
 
   // Debug information only.
   uint32_t tag_;
@@ -131,38 +121,35 @@ class Cell {
 
 class Car {
  public:
-  Car(int max_velocity, Cell* initial_position, uint32_t random_state)
-      : max_velocity_(max_velocity), path_(max_velocity),
-        position_(initial_position), is_active_(true),
-        random_state_(random_state) {
-    initial_position->occupy(this);
-  }
+  Car(simulation::standard::Car* car);
 
-  void assert_check_velocity();
+  void assert_check_velocity() const;
 
   void step_velocity();
 
   void step_move();
 
-  Cell* position() { return position_; }
+  IndexType position() const { return position_; }
 
-  bool is_jammed();
+  void set_position(IndexType cell);
+
+  bool is_active() const { return is_active_; }
+
+  bool is_jammed() const;
 
   void set_active(bool is_active) { is_active_ = is_active; }
 
-  bool is_active() { return is_active_; }
+  int velocity() const { return velocity_; }
 
-  int velocity() { return velocity_; }
-
-  fixed_size_queue<Cell*>& path() { return path_; }
-
-  void set_position(Cell* cell);
+  // Path cannot be modified using this API. It can only be modified from
+  // within this class.
+  const fixed_size_queue<IndexType>& path() const { return path_; }
 
  protected:
   friend class Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
-  Cell* next_step(Cell* position);
+  IndexType next_step(IndexType position);
 
   void step_initialize_iteration();
 
@@ -182,9 +169,9 @@ class Car {
   // Maintain max_velocity_ many cells in the queue. This is the path that the
   // car is going to take. The maximum movement speed is limited by the
   // maximum velocity of every path cell.
-  fixed_size_queue<Cell*> path_;
+  fixed_size_queue<IndexType> path_;
 
-  Cell* position_;
+  IndexType position_;
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
@@ -194,19 +181,19 @@ class Car {
 
 class SharedSignalGroup {
  public:
-  // TODO: Use rvalue references.
-  SharedSignalGroup(std::vector<Cell*> cells) : cells_(cells) {}
+  SharedSignalGroup(simulation::standard::SharedSignalGroup* group);
 
-  // Set traffic lights to green.
+  // Sets traffic lights to green.
   void signal_go();
 
-  // Set traffic lights to red.
+  // Sets traffic lights to red.
   void signal_stop();
 
-  std::vector<Cell*>& cells() { return cells_; }
+  // Returns a vector of cells that belong to this group.
+  const ArraySpan<IndexType>& cells() { return cells_; }
 
  private:
-  std::vector<Cell*> cells_;
+  const ArraySpan<IndexType> cells_;
 };
 
 
@@ -214,121 +201,85 @@ class TrafficController {
  public:
   virtual void initialize() = 0;
   virtual void step() = 0;
-  virtual void assert_check_state() = 0;
+  virtual void assert_check_state() const = 0;
 };
 
 
 class TrafficLight : public TrafficController {
  public:
-  TrafficLight(int phase_time,
-               std::vector<SharedSignalGroup*> signal_groups);
-  void step();
+  TrafficLight(simulation::standard::TrafficLight* light);
 
   // Set all lights to red.
   void initialize();
 
+  void step();
+
   // Make sure that only one group has green light.
-  void assert_check_state();
+  void assert_check_state() const;
 
  private:
+  // This timer is increased with every step.
   int timer_;
+
+  // The number of cycles in timer_ until the signal group is changed.
   const int phase_time_;
 
   // Index into groups_. The specified signal group has a green light.
   int phase_ = 0;
 
   // Cells which are set to "green" at the same time.
-  std::vector<SharedSignalGroup*> signal_groups_;
+  const ArraySpan<IndexType> signal_groups_;
 };
 
 
 class PriorityYieldTrafficController : public TrafficController {
  public:
-  PriorityYieldTrafficController(std::vector<SharedSignalGroup*> groups)
-      : groups_(groups) {}
+  PriorityYieldTrafficController(
+      simulation::standard::PriorityYieldTrafficController* controller);
 
   void initialize() {}
 
   void step();
 
-  void assert_check_state();
+  void assert_check_state() const;
 
  private:
-  std::vector<SharedSignalGroup*> groups_;
+  const ArraySpan<IndexType> groups_;
 
   // Check if a car is coming from this group within the next iteration.
-  bool has_incoming_traffic(SharedSignalGroup* group);
-  bool has_incoming_traffic(Cell* cell, int lookahead);
+  bool has_incoming_traffic(IndexType group) const;
+  bool has_incoming_traffic(IndexType cell, int lookahead) const;
 };
 
-
-class Street {
- public:
-  Street(Cell* first, Cell* last, Cell::Type type = Cell::kResidential)
-      : first_(first), last_(last), type_(type) {
-    assert(type >= 0 && type < Cell::kMaxType);
-  }
-
-  Cell* first() { return first_; }
-  Cell* last() { return last_; }
-  Cell::Type type() { return type_; }
-
- private:
-  Cell* first_;
-  Cell* last_;
-  Cell::Type type_;
-};
 
 class Simulation {
  public:
-  Simulation() {}
+  Simulation(simulation::standard::Simulation* simulation);
 
+  // Initialize this traffic simulation. May be called only when all streets
+  // cars, traffic controllers, etc. were added.
   void initialize();
 
-  Cell* random_cell(uint32_t* state);
+  IndexType random_cell(uint32_t* state) const;
 
-  Cell* random_free_cell(uint32_t* state);
+  IndexType random_free_cell(uint32_t* state) const;
 
+  // Simulate a single tick.
   void step();
 
-  void add_street(Street* street) { streets_.push_back(street); }
-  void add_cell(Cell* cell) { cells_.push_back(cell); }
-  void add_car(Car* car) { cars_.push_back(car); }
-  void add_traffic_controller(TrafficController* light) { 
-    traffic_controllers_.push_back(light);
-  }
-  void add_inactive_car(Car* car) { inactive_cars_.push_back(car); }
-
-  // Return a vector of all cars. Only used for debug output.
-  std::vector<Car*>& cars() { return cars_; }
+  void add_inactive_car(IndexType car);
 
   // Print information about this simulation.
-  void print_stats();
+  void print_stats() const;
 
   // Calculate a checksum for the state of this simulation.
-  uint64_t checksum();
+  uint64_t checksum() const;
 
  private:
   friend class Renderer;
-
-  // A vector of all streets. Contains only the cells of start and
-  // end points. Only used for GUI purposes.
-  std::vector<Street*> streets_;
-  std::vector<Street*>& streets() { return streets_; }
-
-  // A vector of all cells.
-  std::vector<Cell*> cells_;
-  std::vector<Cell*>& cells() { return cells_; }
-
-  // A vector of all cars.
-  std::vector<Car*> cars_;
-
-  // A vector of all traffic controllers, e.g., traffic lights.
-  std::vector<TrafficController*> traffic_controllers_;
-
-  // A vector of all inactive cars. Used to keep track of cars that are
-  // leaving the map.
-  std::vector<Car*> inactive_cars_;
 };
 
-#endif  // TRAFFIC_AOS_INT_H
+}  // namespace aos_int
+}  // namespace simulation
+
+#endif  // TRAFFIC_H

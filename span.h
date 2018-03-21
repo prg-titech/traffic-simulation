@@ -3,23 +3,22 @@
 
 #include <vector>
 
-template<typename T, typename IndexType = unsigned int>
-class Span {
+template<typename IndexType = unsigned int>
+class ArraySpan {
  public:
-  Span(T* data, IndexType size) : size_(size), data_(data) {}
-  Span(const std::vector<T>& vec) : size_(vec.size()), data_(vec.data()) {}
+  ArraySpan(IndexType start, IndexType size) : start_(start), size_(size) {}
 
-  IndexType size() {
+  IndexType size() const {
     return size_;
   }
 
-  T operator[](IndexType index) {
-    return data_[index];
+  IndexType start() const {
+    return start_;
   }
 
  private:
   const IndexType size_;
-  const T* data_;
+  const IndexType start_;
 };
 
 #endif  // SPAN_H

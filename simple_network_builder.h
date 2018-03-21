@@ -6,6 +6,8 @@
 
 #include "traffic.h"
 
+using namespace simulation::standard;
+
 namespace builder {
 
 class SimpleNetworkBuilder;
@@ -164,6 +166,7 @@ class SimpleNetworkBuilder {
   int num_intersections_without_edges_ = 0;
 
   int cell_size_;
+  unsigned int cell_counter_ = 0;
 
   Simulation* simulation_;
 

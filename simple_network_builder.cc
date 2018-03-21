@@ -184,7 +184,7 @@ Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
     ++num_cells_out_of_range_;
   }
 
-  auto* cell = new Cell(max_velocity, x, y, type, tag);
+  auto* cell = new Cell(cell_counter_++, max_velocity, x, y, type, tag);
   simulation_->add_cell(cell);
   return cell;
 }
@@ -195,9 +195,8 @@ Street* SimpleNetworkBuilder::build_street(Intersection* from, Intersection* to,
   streets_.push_back(street);
 
   // Currently only for rendering purposes...
-  simulation_->add_street(new ::Street(street->first_cell(),
-                                       street->last_cell(),
-                                       type));
+  simulation_->add_street(new simulation::standard::Street(
+      street->first_cell(), street->last_cell(), type));
   return street;
 }
 

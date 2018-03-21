@@ -348,7 +348,8 @@ TrafficController* GraphmlNetworkBuilder::build_traffic_light(
   vector<SharedSignalGroup*> signal_groups;
   for (int j = 0; j < incoming.size(); ++j) {
     signal_groups.push_back(
-        new SharedSignalGroup(incoming[j]->last_cells()));
+        new SharedSignalGroup(signal_group_counter_++,
+                              incoming[j]->last_cells()));
 
 #ifndef NDEBUG
     for (int i = 0; i < incoming[j]->last_cells().size(); ++i) {
@@ -360,7 +361,7 @@ TrafficController* GraphmlNetworkBuilder::build_traffic_light(
 
   int phase_len = 20 + rand() % 20;
   simulation_->add_traffic_controller(new TrafficLight(
-      phase_len, signal_groups));
+      traffic_light_counter_++, phase_len, signal_groups));
   ++num_traffic_lights_;
 }
 
@@ -373,15 +374,17 @@ TrafficController*
   // TODO: Support more than two incoming streets.
   assert(incoming.size() == 2);
 
-  auto* in_0_cells = new SharedSignalGroup(incoming[0]->last_cells());
-  auto* in_1_cells = new SharedSignalGroup(incoming[1]->last_cells());
+  auto* in_0_cells = new SharedSignalGroup(signal_group_counter_++,
+                                           incoming[0]->last_cells());
+  auto* in_1_cells = new SharedSignalGroup(signal_group_counter_++,
+                                           incoming[1]->last_cells());
 
   if (cell_type(incoming[0]) > cell_type(incoming[1])) {
     simulation_->add_traffic_controller(new PriorityYieldTrafficController(
-        { in_0_cells, in_1_cells } ));
+        priority_controller_counter_++, { in_0_cells, in_1_cells } ));
   } else {
     simulation_->add_traffic_controller(new PriorityYieldTrafficController(
-        { in_1_cells, in_0_cells } ));
+        priority_controller_counter_++, { in_1_cells, in_0_cells } ));
   }
   ++num_priority_yield_traffic_controllers_;
 }

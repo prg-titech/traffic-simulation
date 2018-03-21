@@ -9,9 +9,8 @@
 #include "simple_network_builder.h"
 #include "traffic.h"
 
-class Cell;
-
 using namespace std;
+using namespace simulation::standard;
 
 namespace builder {
 
@@ -38,6 +37,11 @@ class GraphmlNetworkBuilder {
   // Only for debugging purposes.
   int num_traffic_lights_ = 0;
   int num_priority_yield_traffic_controllers_ = 0;
+
+  // These counters are used to give unique IDs to those entities.
+  unsigned int signal_group_counter_ = 0;
+  unsigned int traffic_light_counter_ = 0;
+  unsigned int priority_controller_counter_ = 0;
 
   Simulation* simulation_;
 

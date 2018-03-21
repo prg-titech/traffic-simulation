@@ -5,7 +5,7 @@ OBJS=drawing.o simple_network_builder.o graphml_network_builder.o traffic.o rand
 %.o: %.cc %.h
 	$(CXX) $(CPPFLAGS) -c $<
 
-graphml: $(OBJS) graphml_simulation.o
+graphml: $(OBJS) graphml_simulation.o traffic_logic.inc
 	$(CXX) -I. -Ilib/rapidxml-1.13 -o simulation $(OBJS) graphml_simulation.o $(LDLIBS) $(LDFLAGS)
 
 clean:

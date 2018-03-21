@@ -5,9 +5,16 @@
 
 class SDL_Window;
 class SDL_Renderer;
+
+namespace simulation {
+namespace standard {
 class Cell;
 class Street;
 class Simulation;
+}  // namespace standard
+}  // namespace simulation
+
+using namespace simulation::standard;
 
 class Renderer {
  public:

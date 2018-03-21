@@ -10,6 +10,12 @@
 
 #include "fixed_size_queue.h"
 
+class Renderer;
+
+namespace simulation {
+namespace standard {
+
+using IndexType = unsigned int;
 
 class Car;
 
@@ -31,7 +37,7 @@ class Cell {
     kMaxType
   };
 
-  Cell(int max_velocity, double x, double y,
+  Cell(IndexType id, int max_velocity, double x, double y,
        Type type = kResidential, uint32_t tag = 0);
 
   // Returns true if the cell is free.
@@ -99,7 +105,11 @@ class Cell {
   // Returns true if this cell is a sink.
   bool is_sink() const { return is_sink_; }
 
+  IndexType id() const { return id_; }
+
  private:
+  const IndexType id_;
+
   Type type_;
   bool is_free_;
   bool is_sink_ = false;
@@ -121,8 +131,9 @@ class Cell {
 
 class Car {
  public:
-  Car(int max_velocity, Cell* initial_position, uint32_t random_state)
-      : max_velocity_(max_velocity), path_(max_velocity),
+  Car(IndexType id, int max_velocity, Cell* initial_position,
+      uint32_t random_state)
+      : id_(id), max_velocity_(max_velocity), path_(max_velocity),
         position_(initial_position), is_active_(true),
         random_state_(random_state) {
     initial_position->occupy(this);
@@ -150,6 +161,8 @@ class Car {
   // within this class.
   const fixed_size_queue<Cell*>& path() const { return path_; }
 
+  IndexType id() const { return id_; }
+
  protected:
   friend class Simulation;
 
@@ -167,6 +180,8 @@ class Car {
   void step_slow_down();
 
  private:
+  const IndexType id_;
+
   bool is_active_;
   int velocity_ = 0;
   int max_velocity_;
@@ -187,7 +202,8 @@ class Car {
 class SharedSignalGroup {
  public:
   // TODO: Use rvalue references.
-  SharedSignalGroup(std::vector<Cell*> cells) : cells_(cells) {}
+  SharedSignalGroup(IndexType id, std::vector<Cell*> cells)
+      : id_(id), cells_(cells) {}
 
   // Sets traffic lights to green.
   void signal_go();
@@ -198,7 +214,11 @@ class SharedSignalGroup {
   // Returns a vector of cells that belong to this group.
   const std::vector<Cell*>& cells() { return cells_; }
 
+  IndexType id() const { return id_; }
+
  private:
+  const IndexType id_;
+
   const std::vector<Cell*> cells_;
 };
 
@@ -213,7 +233,8 @@ class TrafficController {
 
 class TrafficLight : public TrafficController {
  public:
-  TrafficLight(int phase_time, std::vector<SharedSignalGroup*> signal_groups);
+  TrafficLight(IndexType id, int phase_time,
+               std::vector<SharedSignalGroup*> signal_groups);
 
   // Set all lights to red.
   void initialize();
@@ -223,7 +244,11 @@ class TrafficLight : public TrafficController {
   // Make sure that only one group has green light.
   void assert_check_state() const;
 
+  IndexType id() { return id_; }
+
  private:
+  const IndexType id_;
+
   // This timer is increased with every step.
   int timer_;
 
@@ -241,7 +266,8 @@ class TrafficLight : public TrafficController {
 class PriorityYieldTrafficController : public TrafficController {
  public:
   PriorityYieldTrafficController(
-      std::vector<SharedSignalGroup*> groups) : groups_(groups) {}
+      IndexType id, std::vector<SharedSignalGroup*> groups)
+      : id_(id), groups_(groups) {}
 
   void initialize() {}
 
@@ -249,7 +275,11 @@ class PriorityYieldTrafficController : public TrafficController {
 
   void assert_check_state() const;
 
+  IndexType id() const { return id_; }
+
  private:
+  const IndexType id_;
+
   const std::vector<SharedSignalGroup*> groups_;
 
   // Check if a car is coming from this group within the next iteration.
@@ -320,7 +350,7 @@ class Simulation {
   uint64_t checksum() const;
 
  private:
-  friend class Renderer;
+  friend class ::Renderer;
 
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.
@@ -343,5 +373,8 @@ class Simulation {
   // leaving the map.
   std::vector<Car*> inactive_cars_;
 };
+
+}  // namespace standard
+}  // namespace simulation
 
 #endif  // TRAFFIC_H
