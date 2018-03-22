@@ -9,6 +9,7 @@
 #include <set>
 
 #include "fixed_size_queue.h"
+#include "span.h"
 
 class Renderer;
 
@@ -62,12 +63,12 @@ class Cell {
   // Connects this cell to another cell.
   void connect_to(Cell* other);
 
-  const std::vector<Cell*>& outgoing_cells() const {
-    return outgoing_cells_;
+  const Span<Cell*> outgoing_cells() const {
+    return Span<Cell*>(outgoing_cells_.data(), outgoing_cells_.size());
   }
 
-  const std::vector<Cell*>& incoming_cells() const {
-    return incoming_cells_;
+  const Span<Cell*> incoming_cells() const {
+    return Span<Cell*>(incoming_cells_.data(), incoming_cells_.size());
   }
 
   // Return x and y coordinates of this cell. For rendering purposes only.
@@ -196,6 +197,7 @@ class Car {
   // Every car has a state for its random number generator.
   uint32_t random_state_;
   uint32_t rand32();
+  uint32_t& random_state() { return random_state_; }
 };
 
 
@@ -351,6 +353,10 @@ class Simulation {
 
  private:
   friend class ::Renderer;
+
+  void step_cells();
+  void step_traffic_controllers();
+  void step_cars();
 
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.

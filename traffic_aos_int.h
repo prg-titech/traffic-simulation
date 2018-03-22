@@ -11,7 +11,6 @@
 #include "fixed_size_queue.h"
 #include "span.h"
 
-
 namespace simulation {
 namespace aos_int {
 
@@ -46,9 +45,6 @@ class Cell {
 
   // Return max. velocity regardless of traffic controllers.
   int street_max_velocity() const;
-
-  // Draw this cell on the GUI.
-  void draw() const;
 
   // A car enters this cell.
   void occupy(Car* car);
@@ -276,7 +272,9 @@ class Simulation {
   uint64_t checksum() const;
 
  private:
-  friend class Renderer;
+  void step_cells();
+  void step_traffic_controllers();
+  void step_cars();
 };
 
 }  // namespace aos_int

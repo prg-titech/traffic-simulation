@@ -45,7 +45,26 @@ void Cell::draw() const {
 }
 
 // Simulation logic.
+#include "option_standard.inc"
 #include "traffic_logic.inc"
+
+void Simulation::step_traffic_controllers() {
+  for (int i = 0; i < traffic_controllers_.size(); ++i) {
+    traffic_controllers_[i]->step();
+  }
+
+#ifndef NDEBUG
+  for (int i = 0; i < traffic_controllers_.size(); ++i) {
+    traffic_controllers_[i]->assert_check_state();
+  }
+#endif  // NDEBUG
+}
+
+void Simulation::initialize() {
+  for (int i = 0; i < traffic_controllers_.size(); ++i) {
+    traffic_controllers_[i]->initialize();
+  }
+}
 
 }  // namespace standard
 }  // namespace simulation
