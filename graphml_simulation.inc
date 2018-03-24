@@ -1,3 +1,11 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <vector>
+#include "lib/rapidxml-1.13/rapidxml.hpp"
+#include <chrono>
+
 #include "traffic.h"
 #include "graphml_network_builder.h"
 #include "drawing.h"
@@ -18,15 +26,15 @@ void print_stats(float iterations_per_second, uint64_t checksum) {
   int num_cars_turning = 0;
   
   for (int i = 0; i < num_cars; ++i) {
-    if (instance->cars()[i]->is_active()) {
+    if (instance->car(i)->is_active()) {
       num_cars_active++;
 
-      if (instance->cars()[i]->position()->tag() && Cell::kTurnLane) {
+      if (instance->car(i)->position()->tag() && Cell::kTurnLane) {
         num_cars_turning++;
       }
     }
 
-    if (instance->cars()[i]->is_jammed()) {
+    if (instance->car(i)->is_jammed()) {
       num_cars_jammed++;
     }
   }
@@ -72,4 +80,25 @@ simulation::standard::Simulation* build_simulation(int argc, char** argv) {
   instance->print_stats();
 
   return instance;
+}
+
+auto last_time = std::chrono::steady_clock::now();
+int iteration_counter = 0;
+
+template<typename T>
+void step(T* instance) {
+  instance->step();
+
+  // Measure performance.
+  ++iteration_counter;
+
+  if (iteration_counter == 100) {
+    auto current_time = std::chrono::steady_clock::now();
+    double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+        current_time - last_time).count() / 1000.0;
+    print_stats(100.0/seconds, instance->checksum());
+    
+    last_time = std::chrono::steady_clock::now();
+    iteration_counter = 0;
+  }
 }

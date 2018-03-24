@@ -3,7 +3,7 @@ LDFLAGS=-lSDL2 -lSDL2_gfx
 OBJS=drawing.o simple_network_builder.o graphml_network_builder.o random.o
 
 STANDARD=traffic.o graphml_simulation.o
-AOS_INT=traffic_aos_int graphml_simulation_aos_int.o
+AOS_INT=traffic_aos_int.o traffic.o graphml_simulation_aos_int.o
 
 %.o: %.cc %.h
 	$(CXX) $(CPPFLAGS) -c $<

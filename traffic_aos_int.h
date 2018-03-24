@@ -10,6 +10,9 @@
 
 #include "fixed_size_queue.h"
 #include "span.h"
+#include "traffic.h"
+
+#include "option_aos_int.inc"
 
 namespace simulation {
 namespace aos_int {
@@ -19,20 +22,8 @@ class Car;
 // Cell for traffic flow simulation based on cellular automaton.
 class Cell {
  public:
+  using Type = simulation::standard::Cell::Type;
   static const uint32_t kTurnLane = 1;
-
-  // Cell type according to OSM data.
-  enum Type {
-    // Sorted from smallest to largest.
-    kResidential,
-    kTertiary,
-    kSecondary,
-    kPrimary,
-    kMotorwayLink,
-    kMotorway,
-
-    kMaxType
-  };
 
   Cell(simulation::standard::Cell* cell);
 
@@ -47,18 +38,18 @@ class Cell {
   int street_max_velocity() const;
 
   // A car enters this cell.
-  void occupy(Car* car);
+  void occupy(IndexType car);
 
   // A car leaves this cell.
   void release();
 
-  const ArraySpan<IndexType> outgoing_cells() const {
-    return outgoing_cells_;
-  }
+  IndexType num_outgoing_cells() const;
 
-  const ArraySpan<IndexType> incoming_cells() const {
-    return incoming_cells_;
-  }
+  IndexType outgoing_cell(IndexType index) const;
+
+  IndexType num_incoming_cells() const;
+
+  IndexType incoming_cell(IndexType index) const;
 
   // Return x and y coordinates of this cell. For rendering purposes only.
   double x() const { return x_; }
@@ -69,12 +60,6 @@ class Cell {
 
   // Additional information can be stored in the tag.
   uint32_t tag() const { return tag_; }
-
-  // Sets the maximum velocity allowed on this street. This function will
-  // override any speed limits imposed by a traffic controller.
-  void set_max_velocity(int velocity) {
-    max_velocity_ = controller_max_velocity_ = velocity;
-  }
 
   // Sets the maximum temporary speed limit (traffic controller).
   void set_controller_max_velocity(int velocity) {
@@ -89,21 +74,24 @@ class Cell {
   // Returns the car that occupies this cell.
   IndexType car() const { return car_; }
 
-  // Make this cell a sink.
-  void set_sink(bool is_sink) { is_sink_ = is_sink; }
-
   // Returns true if this cell is a sink.
   bool is_sink() const { return is_sink_; }
 
+  IndexType id() const { return id_; }
+
  private:
+  const IndexType id_;
+
   const Type type_;
   bool is_free_;
   const bool is_sink_;
   const int max_velocity_;
   int controller_max_velocity_;
 
-  const ArraySpan<IndexType> outgoing_cells_;
-  const ArraySpan<IndexType> incoming_cells_;
+  const IndexType num_incoming_cells_;
+  const IndexType num_outgoing_cells_;
+  const IndexType first_incoming_cell_idx_;
+  const IndexType first_outgoing_cell_idx_;
 
   IndexType car_ = kMaxIndexType;
 
@@ -141,6 +129,8 @@ class Car {
   // within this class.
   const fixed_size_queue<IndexType>& path() const { return path_; }
 
+  IndexType id() const { return id_; }
+
  protected:
   friend class Simulation;
 
@@ -158,6 +148,8 @@ class Car {
   void step_slow_down();
 
  private:
+  const IndexType id_;
+
   bool is_active_;
   int velocity_ = 0;
   int max_velocity_;
@@ -172,6 +164,7 @@ class Car {
   // Every car has a state for its random number generator.
   uint32_t random_state_;
   uint32_t rand32();
+  uint32_t& random_state() { return random_state_; }
 };
 
 
@@ -185,11 +178,16 @@ class SharedSignalGroup {
   // Sets traffic lights to red.
   void signal_stop();
 
-  // Returns a vector of cells that belong to this group.
-  const ArraySpan<IndexType>& cells() { return cells_; }
+  IndexType num_cells() const;
+
+  IndexType cell(IndexType index) const;
+
+  IndexType id() const { return id_; }
 
  private:
-  const ArraySpan<IndexType> cells_;
+  const IndexType id_;
+  const IndexType num_cells_;
+  const IndexType first_cell_idx_;
 };
 
 
@@ -213,7 +211,11 @@ class TrafficLight : public TrafficController {
   // Make sure that only one group has green light.
   void assert_check_state() const;
 
+  IndexType id() const { return id_; }
+
  private:
+  const IndexType id_;
+
   // This timer is increased with every step.
   int timer_;
 
@@ -224,7 +226,11 @@ class TrafficLight : public TrafficController {
   int phase_ = 0;
 
   // Cells which are set to "green" at the same time.
-  const ArraySpan<IndexType> signal_groups_;
+  const IndexType num_signal_groups_;
+  const IndexType first_signal_group_idx_;
+
+  IndexType num_signal_groups() const;
+  IndexType signal_group(IndexType index) const;
 };
 
 
@@ -239,8 +245,16 @@ class PriorityYieldTrafficController : public TrafficController {
 
   void assert_check_state() const;
 
+  IndexType id() const { return id_; }
+
  private:
-  const ArraySpan<IndexType> groups_;
+  const IndexType id_;
+
+  const IndexType num_groups_;
+  const IndexType first_group_idx_;
+
+  IndexType num_groups() const;
+  IndexType group(IndexType index) const;
 
   // Check if a car is coming from this group within the next iteration.
   bool has_incoming_traffic(IndexType group) const;
@@ -271,10 +285,18 @@ class Simulation {
   // Calculate a checksum for the state of this simulation.
   uint64_t checksum() const;
 
+  // Accessor methods for cars.
+  IndexType num_cars() const;
+  IndexType car(IndexType index) const;
+
  private:
   void step_cells();
   void step_traffic_controllers();
   void step_cars();
+  void reactivate_cars();
+
+  IndexType num_cells() const;
+  IndexType cell(IndexType index) const;
 };
 
 }  // namespace aos_int

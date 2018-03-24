@@ -66,5 +66,16 @@ void Simulation::initialize() {
   }
 }
 
+void Simulation::reactivate_cars() {
+  for (auto it = inactive_cars_.begin(); it != inactive_cars_.end(); ++it) {
+    PTR(Cell) new_start_cell = random_free_cell(&(*it)->random_state());
+    (*it)->set_position(new_start_cell);
+    (*it)->set_active(true);
+  }
+  inactive_cars_.clear();
+}
+
+#include "option_undo.inc"
+
 }  // namespace standard
 }  // namespace simulation

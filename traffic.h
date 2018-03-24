@@ -10,6 +10,7 @@
 
 #include "fixed_size_queue.h"
 #include "span.h"
+#include "traffic_predeclarations.h"
 
 class Renderer;
 
@@ -63,12 +64,20 @@ class Cell {
   // Connects this cell to another cell.
   void connect_to(Cell* other);
 
-  const Span<Cell*> outgoing_cells() const {
-    return Span<Cell*>(outgoing_cells_.data(), outgoing_cells_.size());
+  IndexType num_outgoing_cells() const {
+    return outgoing_cells_.size();
   }
 
-  const Span<Cell*> incoming_cells() const {
-    return Span<Cell*>(incoming_cells_.data(), incoming_cells_.size());
+  Cell* outgoing_cell(IndexType index) const {
+    return outgoing_cells_[index];
+  }
+
+  IndexType num_incoming_cells() const {
+    return incoming_cells_.size();
+  }
+
+  Cell* incoming_cell(IndexType index) const {
+    return incoming_cells_[index];
   }
 
   // Return x and y coordinates of this cell. For rendering purposes only.
@@ -109,6 +118,9 @@ class Cell {
   IndexType id() const { return id_; }
 
  private:
+  friend class simulation::aos_int::Cell;
+  friend class simulation::aos_int::Simulation;
+
   const IndexType id_;
 
   Type type_;
@@ -166,6 +178,8 @@ class Car {
 
  protected:
   friend class Simulation;
+  friend class simulation::aos_int::Car;
+  friend class simulation::aos_int::Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
   Cell* next_step(Cell* position);
@@ -213,12 +227,16 @@ class SharedSignalGroup {
   // Sets traffic lights to red.
   void signal_stop();
 
-  // Returns a vector of cells that belong to this group.
-  const std::vector<Cell*>& cells() { return cells_; }
+  IndexType num_cells() const { return cells_.size(); }
+
+  Cell* cell(IndexType index) { return cells_[index]; }
 
   IndexType id() const { return id_; }
 
  private:
+  friend class simulation::aos_int::SharedSignalGroup;
+  friend class simulation::aos_int::Simulation;
+
   const IndexType id_;
 
   const std::vector<Cell*> cells_;
@@ -249,6 +267,9 @@ class TrafficLight : public TrafficController {
   IndexType id() { return id_; }
 
  private:
+  friend class simulation::aos_int::TrafficLight;
+  friend class simulation::aos_int::Simulation;
+
   const IndexType id_;
 
   // This timer is increased with every step.
@@ -262,6 +283,12 @@ class TrafficLight : public TrafficController {
 
   // Cells which are set to "green" at the same time.
   const std::vector<SharedSignalGroup*> signal_groups_;
+
+  IndexType num_signal_groups() const { return signal_groups_.size(); }
+
+  SharedSignalGroup* signal_group(IndexType index) const {
+    return signal_groups_[index];
+  }
 };
 
 
@@ -280,9 +307,18 @@ class PriorityYieldTrafficController : public TrafficController {
   IndexType id() const { return id_; }
 
  private:
+  friend class simulation::aos_int::PriorityYieldTrafficController;
+  friend class simulation::aos_int::Simulation;
+
   const IndexType id_;
 
   const std::vector<SharedSignalGroup*> groups_;
+
+  IndexType num_groups() const { return groups_.size(); }
+
+  SharedSignalGroup* group(IndexType index) const {
+    return groups_[index];
+  }
 
   // Check if a car is coming from this group within the next iteration.
   bool has_incoming_traffic(SharedSignalGroup* group) const;
@@ -342,21 +378,24 @@ class Simulation {
     inactive_cars_.push_back(car);
   }
 
-  // Return a vector of all cars. Only used for debug output.
-  const std::vector<Car*>& cars() const { return cars_; }
-
   // Print information about this simulation.
   void print_stats() const;
 
   // Calculate a checksum for the state of this simulation.
   uint64_t checksum() const;
 
+  // Accessor methods for cars.
+  IndexType num_cars() const { return cars_.size(); }
+  Car* car(IndexType index) const { return cars_[index]; }
+
  private:
   friend class ::Renderer;
+  friend class simulation::aos_int::Simulation;
 
   void step_cells();
   void step_traffic_controllers();
   void step_cars();
+  void reactivate_cars();
 
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.
@@ -367,7 +406,8 @@ class Simulation {
 
   // A vector of all cells.
   std::vector<Cell*> cells_;
-  const std::vector<Cell*>& cells() const { return cells_; }
+  IndexType num_cells() const { return cells_.size(); }
+  Cell* cell(IndexType index) const { return cells_[index]; }
 
   // A vector of all cars.
   std::vector<Car*> cars_;

@@ -2,5 +2,6 @@
 
 #define OPTION_STANDARD 1
 #define PTR(class) class*
+#define CPTR(class) class* const
 #define THIS this
 #define METHOD_CALL(class, ptr, name, ...) (ptr)->name(__VA_ARGS__)

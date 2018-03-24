@@ -42,17 +42,17 @@ vector<Cell*> n_previous_cells(Cell* start, int n) {
   result.push_back(start);
 
   for (int i = 0; i < n; ++i) {
-    if (cell->incoming_cells().size() == 0) {
+    if (cell->num_incoming_cells() == 0) {
       //printf("Warning: Cell has no incoming cells.\n");
       return result;
     }
 
-    if (cell->incoming_cells().size() > 1) {
+    if (cell->num_incoming_cells() > 1) {
       // Reached an intersection. Stop here.
       return result;
     }
 
-    cell = cell->incoming_cells()[0];
+    cell = cell->incoming_cell(0);
     result.insert(result.begin(), cell);
   }
   return result;

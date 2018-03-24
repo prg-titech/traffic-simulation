@@ -16,6 +16,47 @@ class ArraySpan {
     return start_;
   }
 
+  IndexType operator[](IndexType index) const {
+    return start_ + index;
+  }
+
+  class iterator {
+   public:
+    typedef IndexType value_type;
+    typedef IndexType reference;
+
+    iterator(IndexType state) : state_(state) {}
+
+    iterator operator++() {
+      iterator it = *this;
+      ++state_;
+      return it;
+    }
+
+    reference operator*() const {
+      return state_;
+    }
+
+    bool operator==(const iterator& other) const {
+      return state_ == other.state_;
+    }
+
+    bool operator!=(const iterator& other) const {
+      return !(operator==(other));
+    }
+
+   private:
+    IndexType state_;
+  };
+
+  iterator begin() const {
+    return iterator(start_);
+  }
+
+  iterator end() const {
+    return iterator(start_ + size_);
+  }
+
  private:
   const IndexType size_;
   const IndexType start_;
@@ -28,7 +69,7 @@ class Span {
  public:
   Span(const T* data, IndexType size) : data_(data), size_(size) {}
 
-  T* data() const { return data_; }
+  const T* data() const { return data_; }
 
   IndexType size() const { return size_; }
 

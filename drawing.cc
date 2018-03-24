@@ -16,8 +16,8 @@ Renderer::Renderer(Simulation* simulation, int window_size_x,
     : min_scale_factor_(scale_factor), scale_factor_(scale_factor),
       window_size_x_(window_size_x), window_size_y_(window_size_y),
       num_free_cells_(0), num_occupied_cells_(0), simulation_(simulation),
-      free_cells_(new const Cell*[simulation->cells().size()]),
-      occupied_cells_(new const Cell*[simulation->cells().size()]) {
+      free_cells_(new const Cell*[simulation->num_cells()]),
+      occupied_cells_(new const Cell*[simulation->num_cells()]) {
 
   if (!gui_output) return;
 
@@ -101,15 +101,14 @@ void Renderer::redraw_everything() {
     }
   } else {
     // Draw all segments.
-    Cell* const * cells = simulation_->cells().data();
-    for (int i = 0; i < simulation_->cells().size(); ++i) {
-      Cell* cell = cells[i];
+    for (int i = 0; i < simulation_->num_cells(); ++i) {
+      Cell* cell = simulation_->cell(i);
       int pos1_x = (cell->x() - origin_x_)*scale_factor_;
       int pos1_y = window_size_y_ - ((cell->y() - origin_y_)
                                      * scale_factor_);
 
-      for (int j = 0; j < cell->outgoing_cells().size(); ++j) {
-        Cell* next_cell = cell->outgoing_cells()[j];
+      for (int j = 0; j < cell->num_outgoing_cells(); ++j) {
+        Cell* next_cell = cell->outgoing_cell(j);
         int pos2_x = (next_cell->x() - origin_x_)*scale_factor_;
         int pos2_y = window_size_y_ - ((next_cell->y() - origin_y_)
                                        * scale_factor_);
@@ -125,10 +124,10 @@ void Renderer::redraw_everything() {
     }
   }
 
-  for (int i = 0; i < simulation_->cells().size(); ++i) {
+  for (int i = 0; i < simulation_->num_cells(); ++i) {
     // Only draw occupied cells.
-    if (!simulation_->cells()[i]->is_free()) {
-      simulation_->cells()[i]->draw();
+    if (!simulation_->cell(i)->is_free()) {
+      simulation_->cell(i)->draw();
     }
   }
 }
