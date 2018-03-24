@@ -127,7 +127,7 @@ class Car {
 
   // Path cannot be modified using this API. It can only be modified from
   // within this class.
-  const fixed_size_queue<IndexType>& path() const { return path_; }
+  const fixed_size_queue<IndexType, false>& path() const { return path_; }
 
   IndexType id() const { return id_; }
 
@@ -157,7 +157,7 @@ class Car {
   // Maintain max_velocity_ many cells in the queue. This is the path that the
   // car is going to take. The maximum movement speed is limited by the
   // maximum velocity of every path cell.
-  fixed_size_queue<IndexType> path_;
+  fixed_size_queue<IndexType, false> path_;
 
   IndexType position_;
 

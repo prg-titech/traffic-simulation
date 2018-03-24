@@ -22,6 +22,9 @@ IndexType s_size_incoming_cells = 0;
 Car* s_Car;
 IndexType s_size_Car = 0;
 
+IndexType* s_car_paths;
+IndexType s_size_car_paths = 0;
+
 IndexType* s_inactive_cars;
 IndexType s_size_inactive_cars = 0;
 
@@ -75,10 +78,10 @@ Cell::Cell(simulation::standard::Cell* cell)
 Car::Car(simulation::standard::Car* car)
     : is_active_(car->is_active_), velocity_(car->velocity_), id_(car->id_),
       max_velocity_(car->max_velocity_), position_(car->position_->id()),
-      random_state_(car->random_state_), path_(car->max_velocity_) {
+      random_state_(car->random_state_),
+      path_(&s_car_paths[s_size_car_paths], car->max_velocity_) {
   assert(car->path_.size() == 0);
-  // TODO: Path must be re-initialized on the GPU!
-  // Or better: Concatenate ringbuffers!
+  s_size_car_paths += car->max_velocity_ + 1;
 }
 
 SharedSignalGroup::SharedSignalGroup(
@@ -143,6 +146,14 @@ Simulation::Simulation(simulation::standard::Simulation* simulation) {
 
   printf("AOS_INT: Created cells.\n");
   fflush(stdout);
+
+  // Determine length of global path array.
+  IndexType num_path_array = 0;
+  s_size_car_paths = 0;
+  for (int i = 0; i < simulation->cars_.size(); ++i) {
+    num_path_array += 1 + simulation->cars_[i]->max_velocity_;
+  }
+  s_car_paths = new IndexType[num_path_array];
 
   // Create cars.
   s_size_Car = simulation->cars_.size();

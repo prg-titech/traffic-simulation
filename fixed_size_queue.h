@@ -4,15 +4,24 @@
 #include <cassert>
 #include <memory>
 
-template<typename T>
+template<typename T, bool OwnMemory = true>
 class fixed_size_queue {
  public:
   // Use one larger capacity to work well iterators.
   fixed_size_queue(int capacity)
-      : capacity_(capacity + 1), buffer_(new T[capacity + 1]()) {}
+      : capacity_(capacity + 1), buffer_(new T[capacity + 1]()) {
+    static_assert(OwnMemory, "Must provide external storage or set OwnMemory");
+  }
+
+  fixed_size_queue(T* buffer, int capacity)
+      : capacity_(capacity), buffer_(buffer) {
+    static_assert(!OwnMemory, "Cannot provide buffer with OwnMemory");
+  }
 
   ~fixed_size_queue() {
-    delete[] buffer_;
+    if (OwnMemory) {
+      delete[] buffer_;
+    }
   }
 
   void push(T element) {
@@ -72,7 +81,7 @@ class fixed_size_queue {
     typedef T value_type;
     typedef T& reference;
 
-    iterator(const fixed_size_queue<T>& container, int index)
+    iterator(const fixed_size_queue<T, OwnMemory>& container, int index)
         : container_(container), index_(index) {}
 
     iterator(const iterator& other)
@@ -99,7 +108,7 @@ class fixed_size_queue {
     }
 
    private:
-    const fixed_size_queue<T>& container_;
+    const fixed_size_queue<T, OwnMemory>& container_;
     int index_;
   };
 
