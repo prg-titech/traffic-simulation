@@ -8,6 +8,7 @@
 #include <vector>
 #include <set>
 
+#include "option_standard.inc"
 #include "fixed_size_queue.h"
 #include "span.h"
 #include "traffic_predeclarations.h"
@@ -298,7 +299,7 @@ class PriorityYieldTrafficController : public TrafficController {
       IndexType id, std::vector<SharedSignalGroup*> groups)
       : id_(id), groups_(groups) {}
 
-  void initialize() {}
+  void initialize();
 
   void step();
 

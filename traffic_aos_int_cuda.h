@@ -11,11 +11,11 @@
 #include "span.h"
 #include "traffic.h"
 
-#include "option_aos_int.inc"
+#include "option_aos_int_cuda.inc"
 #include "fixed_size_queue.h"
 
 namespace simulation {
-namespace aos_int {
+namespace aos_int_cuda {
 
 class Car;
 
@@ -25,59 +25,57 @@ class Cell {
   using Type = simulation::standard::Cell::Type;
   static const uint32_t kTurnLane = 1;
 
-  Cell(simulation::standard::Cell* cell);
-
   // Returns true if the cell is free.
-  bool is_free() const;
+  __device__ bool is_free() const;
 
   // Returns the maximum velocity allowed on this cell at this moment. This
   // function takes into account velocity limitations due to traffic lights.
-  int max_velocity() const;
+  __device__ int max_velocity() const;
 
   // Return max. velocity regardless of traffic controllers.
-  int street_max_velocity() const;
+  __device__ int street_max_velocity() const;
 
   // A car enters this cell.
-  void occupy(IndexType car);
+  __device__ void occupy(IndexType car);
 
   // A car leaves this cell.
-  void release();
+  __device__ void release();
 
-  IndexType num_outgoing_cells() const;
+  __device__ IndexType num_outgoing_cells() const;
 
-  IndexType outgoing_cell(IndexType index) const;
+  __device__ IndexType outgoing_cell(IndexType index) const;
 
-  IndexType num_incoming_cells() const;
+  __device__ IndexType num_incoming_cells() const;
 
-  IndexType incoming_cell(IndexType index) const;
+  __device__ IndexType incoming_cell(IndexType index) const;
 
   // Return x and y coordinates of this cell. For rendering purposes only.
-  double x() const { return x_; }
-  double y() const { return y_; }
+  __device__ double x() const { return x_; }
+  __device__ double y() const { return y_; }
 
   // Returns the type of this cell.
-  Type type() const { return type_; }
+  __device__ Type type() const { return type_; }
 
   // Additional information can be stored in the tag.
-  uint32_t tag() const { return tag_; }
+  __device__ uint32_t tag() const { return tag_; }
 
   // Sets the maximum temporary speed limit (traffic controller).
-  void set_controller_max_velocity(int velocity) {
+  __device__ void set_controller_max_velocity(int velocity) {
     controller_max_velocity_ = velocity;
   }
 
   // Removes the maximum temporary speed limit.
-  void remove_controller_max_velocity() {
+  __device__ void remove_controller_max_velocity() {
     controller_max_velocity_ = max_velocity_;
   }
 
   // Returns the car that occupies this cell.
-  IndexType car() const { return car_; }
+  __device__ IndexType car() const { return car_; }
 
   // Returns true if this cell is a sink.
-  bool is_sink() const { return is_sink_; }
+  __device__ bool is_sink() const { return is_sink_; }
 
-  IndexType id() const { return id_; }
+  __device__ IndexType id() const { return id_; }
 
  private:
   const IndexType id_;
@@ -105,47 +103,47 @@ class Cell {
 
 class Car {
  public:
-  Car(simulation::standard::Car* car);
+  __device__ void assert_check_velocity() const;
 
-  void assert_check_velocity() const;
+  __device__ void step_velocity();
 
-  void step_velocity();
+  __device__ void step_move();
 
-  void step_move();
+  __device__ IndexType position() const { return position_; }
 
-  IndexType position() const { return position_; }
+  __device__ void set_position(IndexType cell);
 
-  void set_position(IndexType cell);
+  __device__ bool is_active() const { return is_active_; }
 
-  bool is_active() const { return is_active_; }
+  __device__ bool is_jammed() const;
 
-  bool is_jammed() const;
+  __device__ void set_active(bool is_active) { is_active_ = is_active; }
 
-  void set_active(bool is_active) { is_active_ = is_active; }
-
-  int velocity() const { return velocity_; }
+  __device__ int velocity() const { return velocity_; }
 
   // Path cannot be modified using this API. It can only be modified from
   // within this class.
-  const fixed_size_queue<IndexType, false>& path() const { return path_; }
+  __host__ __device__ const fixed_size_queue<IndexType, false>& path() const {
+    return path_;
+  }
 
-  IndexType id() const { return id_; }
+  __device__ IndexType id() const { return id_; }
 
  protected:
   friend class Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
-  IndexType next_step(IndexType position);
+  __device__ IndexType next_step(IndexType position);
 
-  void step_initialize_iteration();
+  __device__ void step_initialize_iteration();
 
-  void step_accelerate();
+  __device__ void step_accelerate();
 
-  void step_extend_path();
+  __device__ void step_extend_path();
 
-  void step_constraint_velocity();
+  __device__ void step_constraint_velocity();
 
-  void step_slow_down();
+  __device__ void step_slow_down();
 
  private:
   const IndexType id_;
@@ -163,26 +161,24 @@ class Car {
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
-  uint32_t rand32();
-  uint32_t& random_state() { return random_state_; }
+  __device__ uint32_t rand32();
+  __device__ uint32_t& random_state() { return random_state_; }
 };
 
 
 class SharedSignalGroup {
  public:
-  SharedSignalGroup(simulation::standard::SharedSignalGroup* group);
-
   // Sets traffic lights to green.
-  void signal_go();
+  __device__ void signal_go();
 
   // Sets traffic lights to red.
-  void signal_stop();
+  __device__ void signal_stop();
 
-  IndexType num_cells() const;
+  __device__ IndexType num_cells() const;
 
-  IndexType cell(IndexType index) const;
+  __device__ IndexType cell(IndexType index) const;
 
-  IndexType id() const { return id_; }
+  __device__ IndexType id() const { return id_; }
 
  private:
   const IndexType id_;
@@ -193,25 +189,23 @@ class SharedSignalGroup {
 
 class TrafficController {
  public:
-  // virtual void initialize() = 0;
-  // virtual void step() = 0;
-  // virtual void assert_check_state() const = 0;
+  // __device__ virtual void initialize() = 0;
+  // __device__ virtual void step() = 0;
+  // __device__ virtual void assert_check_state() const = 0;
 };
 
 
 class TrafficLight : public TrafficController {
  public:
-  TrafficLight(simulation::standard::TrafficLight* light);
-
   // Set all lights to red.
-  void initialize();
+  __device__ void initialize();
 
-  void step();
+  __device__ void step();
 
   // Make sure that only one group has green light.
-  void assert_check_state() const;
+  __device__ void assert_check_state() const;
 
-  IndexType id() const { return id_; }
+  __device__ IndexType id() const { return id_; }
 
  private:
   const IndexType id_;
@@ -229,23 +223,20 @@ class TrafficLight : public TrafficController {
   const IndexType num_signal_groups_;
   const IndexType first_signal_group_idx_;
 
-  IndexType num_signal_groups() const;
-  IndexType signal_group(IndexType index) const;
+  __device__ IndexType num_signal_groups() const;
+  __device__ IndexType signal_group(IndexType index) const;
 };
 
 
 class PriorityYieldTrafficController : public TrafficController {
  public:
-  PriorityYieldTrafficController(
-      simulation::standard::PriorityYieldTrafficController* controller);
+  __device__ void initialize();
 
-  void initialize();
+  __device__ void step();
 
-  void step();
+  __device__ void assert_check_state() const;
 
-  void assert_check_state() const;
-
-  IndexType id() const { return id_; }
+  __device__ IndexType id() const { return id_; }
 
  private:
   const IndexType id_;
@@ -253,53 +244,51 @@ class PriorityYieldTrafficController : public TrafficController {
   const IndexType num_groups_;
   const IndexType first_group_idx_;
 
-  IndexType num_groups() const;
-  IndexType group(IndexType index) const;
+  __device__ IndexType num_groups() const;
+  __device__ IndexType group(IndexType index) const;
 
   // Check if a car is coming from this group within the next iteration.
-  bool has_incoming_traffic(IndexType group) const;
-  bool has_incoming_traffic(IndexType cell, int lookahead) const;
+  __device__ bool has_incoming_traffic(IndexType group) const;
+  __device__ bool has_incoming_traffic(IndexType cell, int lookahead) const;
 };
 
 
 class Simulation {
  public:
-  Simulation(simulation::standard::Simulation* simulation);
-
   // Initialize this traffic simulation. May be called only when all streets
   // cars, traffic controllers, etc. were added.
-  void initialize();
+  __device__ void initialize();
 
-  IndexType random_cell(uint32_t* state) const;
+  __device__ IndexType random_cell(uint32_t* state) const;
 
-  IndexType random_free_cell(uint32_t* state) const;
+  __device__ IndexType random_free_cell(uint32_t* state) const;
 
   // Simulate a single tick.
-  void step();
+  __device__ void step();
 
-  void add_inactive_car(IndexType car);
+  __device__ void add_inactive_car(IndexType car);
 
   // Print information about this simulation.
-  void print_stats() const;
+  __device__ void print_stats() const;
 
   // Calculate a checksum for the state of this simulation.
-  uint64_t checksum() const;
+  __device__ uint64_t checksum() const;
 
   // Accessor methods for cars.
-  IndexType num_cars() const;
-  IndexType car(IndexType index) const;
+  __device__ IndexType num_cars() const;
+  __device__ IndexType car(IndexType index) const;
 
  private:
-  void step_cells();
-  void step_traffic_controllers();
-  void step_cars();
-  void reactivate_cars();
+  __device__ void step_cells();
+  __device__ void step_traffic_controllers();
+  __device__ void step_cars();
+  __device__ void reactivate_cars();
 
-  IndexType num_cells() const;
-  IndexType cell(IndexType index) const;
+  __device__ IndexType num_cells() const;
+  __device__ IndexType cell(IndexType index) const;
 };
 
-}  // namespace aos_int
+}  // namespace aos_int_cuda
 }  // namespace simulation
 
 #endif  // TRAFFIC_H

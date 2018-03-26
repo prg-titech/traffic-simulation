@@ -5,3 +5,4 @@
 #define CPTR(class) class* const
 #define THIS this
 #define METHOD_CALL(class, ptr, name, ...) (ptr)->name(__VA_ARGS__)
+#define DEVICE_MODE

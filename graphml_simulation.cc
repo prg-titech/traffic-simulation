@@ -13,7 +13,7 @@ using namespace std;
 int main(int argc, char** argv) {
   instance = build_simulation(argc, argv);
 
-  printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)");
+  printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)\n");
   fflush(stdout);
 
   last_time = std::chrono::steady_clock::now();

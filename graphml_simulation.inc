@@ -39,7 +39,7 @@ void print_stats(float iterations_per_second, uint64_t checksum) {
     }
   }
 
-  printf("\r| %9.4f | %6d | %6d | %6d | %lu",
+  printf("| %9.4f | %6d | %6d | %6d | %lu\n",
          iterations_per_second, num_cars_active, num_cars_jammed,
          num_cars_turning, checksum % 1234567);
   fflush(stdout);
@@ -87,12 +87,7 @@ int iteration_counter = 0;
 
 template<typename T>
 void step(T* instance) {
-  instance->step();
-
-  // Measure performance.
-  ++iteration_counter;
-
-  if (iteration_counter == 100) {
+  if (iteration_counter % 100 == 0) {
     auto current_time = std::chrono::steady_clock::now();
     double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
         current_time - last_time).count() / 1000.0;
@@ -101,4 +96,9 @@ void step(T* instance) {
     last_time = std::chrono::steady_clock::now();
     iteration_counter = 0;
   }
+
+  instance->step();
+
+  // Measure performance.
+  ++iteration_counter;
 }

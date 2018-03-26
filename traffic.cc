@@ -45,7 +45,6 @@ void Cell::draw() const {
 }
 
 // Simulation logic.
-#include "option_standard.inc"
 #include "traffic_logic.inc"
 
 void Simulation::step_traffic_controllers() {

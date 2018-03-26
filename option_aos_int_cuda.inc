@@ -10,4 +10,4 @@ const IndexType kMaxIndexType = std::numeric_limits<IndexType>::max();
 #define CPTR(class) const IndexType
 #define THIS id_
 #define METHOD_CALL(class, ptr, name, ...) s_ ## class [ptr].name(__VA_ARGS__)
-#define DEVICE_MODE
+#define DEVICE_MODE __device__

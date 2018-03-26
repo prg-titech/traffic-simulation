@@ -2,21 +2,21 @@
 
 #include "random.h"
 
-bool Cell::is_free() const {
+DEVICE_MODE bool Cell::is_free() const {
 #ifdef OPTION_STANDARD
   assert(is_free_ == (car_ == nullptr));
 #endif  // OPTION_STANDARD
   return is_free_;
 }
 
-bool Car::is_jammed() const {
+DEVICE_MODE bool Car::is_jammed() const {
   if (path_.size() == 0) return false;
 
   assert(path_[0] != position_);
   return !METHOD_CALL(Cell, path_[0], is_free);
 }
 
-int Cell::max_velocity() const {
+DEVICE_MODE int Cell::max_velocity() const {
   if (controller_max_velocity_ < max_velocity_) {
     return controller_max_velocity_;
   } else {
@@ -24,11 +24,11 @@ int Cell::max_velocity() const {
   }
 }
 
-int Cell::street_max_velocity() const {
+DEVICE_MODE int Cell::street_max_velocity() const {
   return max_velocity_;
 }
 
-void Cell::occupy(PTR(Car) car) {
+DEVICE_MODE void Cell::occupy(PTR(Car) car) {
   assert(is_free_);
 #ifdef OPTION_STANDARD
   assert(car_ == nullptr);
@@ -42,7 +42,7 @@ void Cell::occupy(PTR(Car) car) {
 #endif  // OPTION_STANDARD
 }
 
-void Cell::release() {
+DEVICE_MODE void Cell::release() {
   assert(!is_free_);
 #ifdef OPTION_STANDARD
   assert(car_ != nullptr);
@@ -56,7 +56,7 @@ void Cell::release() {
 #endif  // OPTION_STANDARD
 }
 
-PTR(Cell) Car::next_step(PTR(Cell) position) {
+DEVICE_MODE PTR(Cell) Car::next_step(PTR(Cell) position) {
   // Random walk.
   const IndexType num_outgoing =
       METHOD_CALL(Cell, position, num_outgoing_cells);
@@ -68,14 +68,14 @@ PTR(Cell) Car::next_step(PTR(Cell) position) {
   return next_cell;
 }
 
-void Car::step_velocity() {
+DEVICE_MODE void Car::step_velocity() {
   step_initialize_iteration();
   step_accelerate();
   step_extend_path();
   step_constraint_velocity();
 }
 
-void Car::step_move() {
+DEVICE_MODE void Car::step_move() {
   PTR(Cell) next_cell = position_;
   assert(velocity_ <= METHOD_CALL(Cell, next_cell, max_velocity));
 
@@ -96,17 +96,17 @@ void Car::step_move() {
     set_active(false);
 
     // Add car at random cell.
-    instance->add_inactive_car(THIS);
+    // instance->add_inactive_car(THIS);
   }
 }
 
-void Car::step_initialize_iteration() {
+DEVICE_MODE void Car::step_initialize_iteration() {
   if (velocity_ == 0) {
     path_.shrink_to_size(0);
   }
 }
 
-void Car::step_accelerate() {
+DEVICE_MODE void Car::step_accelerate() {
   if (velocity_ < max_velocity_) {
     ++velocity_;
   }
@@ -115,7 +115,7 @@ void Car::step_accelerate() {
   assert(velocity_ <= path_.capacity());
 }
 
-void Car::step_constraint_velocity() {
+DEVICE_MODE void Car::step_constraint_velocity() {
   // This is actually only needed for the very first iteration, because a car
   // may be positioned on a traffic light cell.
   if (velocity_ > METHOD_CALL(Cell, position_, max_velocity)) {
@@ -160,7 +160,7 @@ void Car::step_constraint_velocity() {
   assert(distance <= velocity_);
 }
 
-void Car::step_extend_path() {
+DEVICE_MODE void Car::step_extend_path() {
   assert(path_.capacity() >= velocity_);
 
   const int num_steps = velocity_ - path_.size();
@@ -184,13 +184,13 @@ void Car::step_extend_path() {
   assert(path_.size() >= velocity_);
 }
 
-void Car::set_position(PTR(Cell) cell) {
+DEVICE_MODE void Car::set_position(PTR(Cell) cell) {
   path_.shrink_to_size(0);
   METHOD_CALL(Cell, cell, occupy, THIS);
   position_ = cell;
 }
 
-void Car::assert_check_velocity() const {
+DEVICE_MODE void Car::assert_check_velocity() const {
   assert(path_.size() >= velocity_);
 
   if (velocity_ > 0) {
@@ -203,7 +203,7 @@ void Car::assert_check_velocity() const {
   }
 }
 
-void Car::step_slow_down() {
+DEVICE_MODE void Car::step_slow_down() {
   const float rand_float = static_cast<float>(rand32())
       / static_cast<float>(RAND32_MAX);
   if (rand_float < 0.5 && velocity_ > 0) {
@@ -211,11 +211,11 @@ void Car::step_slow_down() {
   }
 }
 
-uint32_t Car::rand32() {
+DEVICE_MODE uint32_t Car::rand32() {
   return ::rand32(&random_state_);
 }
 
-void SharedSignalGroup::signal_go() {
+DEVICE_MODE void SharedSignalGroup::signal_go() {
   for (IndexType i = 0; i < num_cells(); ++i) {
     CPTR(Cell) next_cell = cell(i);
     METHOD_CALL(Cell, next_cell, remove_controller_max_velocity);
@@ -223,14 +223,14 @@ void SharedSignalGroup::signal_go() {
   }
 }
 
-void SharedSignalGroup::signal_stop() {
+DEVICE_MODE void SharedSignalGroup::signal_stop() {
   for (IndexType i = 0; i < num_cells(); ++i) {
     CPTR(Cell) next_cell = cell(i);
     METHOD_CALL(Cell, next_cell, set_controller_max_velocity, 0);
   }
 }
 
-void TrafficLight::step() {
+DEVICE_MODE void TrafficLight::step() {
   timer_ = (timer_ + 1) % phase_time_;
 
   if (timer_ == 0) {
@@ -240,14 +240,21 @@ void TrafficLight::step() {
   }
 }
 
-void TrafficLight::initialize() {
+DEVICE_MODE void TrafficLight::initialize() {
   for (IndexType i = 0; i < num_signal_groups(); ++i) {
     CPTR(SharedSignalGroup) next_group = signal_group(i);
     METHOD_CALL(SharedSignalGroup, next_group, signal_stop);
   }
 }
 
-void TrafficLight::assert_check_state() const {
+DEVICE_MODE void PriorityYieldTrafficController::initialize() {
+  for (IndexType i = 0; i < num_groups(); ++i) {
+    CPTR(SharedSignalGroup) next_group = group(i);
+    METHOD_CALL(SharedSignalGroup, next_group, signal_stop);
+  }
+}
+
+DEVICE_MODE void TrafficLight::assert_check_state() const {
 #ifndef NDEBUG
   bool found_green = false;
   for (IndexType i = 0; i < num_signal_groups(); ++i) {
@@ -270,9 +277,9 @@ void TrafficLight::assert_check_state() const {
 #endif  // NDEBUG
 }
 
-void PriorityYieldTrafficController::assert_check_state() const {}
+DEVICE_MODE void PriorityYieldTrafficController::assert_check_state() const {}
 
-bool PriorityYieldTrafficController::has_incoming_traffic(
+DEVICE_MODE bool PriorityYieldTrafficController::has_incoming_traffic(
     PTR(Cell) cell, int lookahead) const {
   if (lookahead == 0) {
     return !METHOD_CALL(Cell, cell, is_free);
@@ -290,7 +297,7 @@ bool PriorityYieldTrafficController::has_incoming_traffic(
   return !METHOD_CALL(Cell, cell, is_free);
 }
 
-bool PriorityYieldTrafficController::has_incoming_traffic(
+DEVICE_MODE bool PriorityYieldTrafficController::has_incoming_traffic(
     PTR(SharedSignalGroup) group) const {
   const IndexType num_cells = METHOD_CALL(SharedSignalGroup, group, num_cells);
   for (IndexType i = 0; i < num_cells; ++i) {
@@ -306,7 +313,7 @@ bool PriorityYieldTrafficController::has_incoming_traffic(
   return false;
 }
 
-void PriorityYieldTrafficController::step() {
+DEVICE_MODE void PriorityYieldTrafficController::step() {
   bool found_traffic = false;
   // Cells are sorted by priority.
   for (int i = 0; i < num_groups(); ++i) {
@@ -332,14 +339,15 @@ void PriorityYieldTrafficController::step() {
   }
 }
 
-void Simulation::step() {
+DEVICE_MODE void Simulation::step() {
   step_cells();
   step_traffic_controllers();
   step_cars();
 }
 
-void Simulation::step_cells() {
+DEVICE_MODE void Simulation::step_cells() {
 #ifndef NDEBUG
+#ifdef OPTION_STANDARD
   // Make sure that no two cars are on the same cell.
   std::set<PTR(Cell)> occupied_cells;
   for (IndexType i = 0; i < num_cars(); ++i) {
@@ -349,10 +357,11 @@ void Simulation::step_cells() {
       occupied_cells.insert(METHOD_CALL(Car, car(i), position));
     }
   }
+#endif  // OPTION_STANDARD
 #endif  // NDEBUG
 }
 
-void Simulation::step_cars() {
+DEVICE_MODE void Simulation::step_cars() {
   for (int i = 0; i < num_cars(); ++i) {
     if (METHOD_CALL(Car, car(i), is_active))
         METHOD_CALL(Car, car(i), step_velocity);
@@ -370,14 +379,14 @@ void Simulation::step_cars() {
         METHOD_CALL(Car, car(i), step_move);
   }
 
-  reactivate_cars();
+  // reactivate_cars();
 }
 
-PTR(Cell) Simulation::random_cell(uint32_t* state) const {
+DEVICE_MODE PTR(Cell) Simulation::random_cell(uint32_t* state) const {
   return cell(rand32(state) % num_cells());
 }
 
-PTR(Cell) Simulation::random_free_cell(uint32_t* state) const {
+DEVICE_MODE PTR(Cell) Simulation::random_free_cell(uint32_t* state) const {
   // Try max. of 100 times.
   for (int i = 0; i < 100; ++i) {
     int id = rand32(state) % num_cells();
@@ -391,7 +400,7 @@ PTR(Cell) Simulation::random_free_cell(uint32_t* state) const {
   return random_cell(state);
 }
 
-void Simulation::print_stats() const {
+DEVICE_MODE void Simulation::print_stats() const {
 #ifdef OPTION_STANDARD
   cout << "Number of cells: " << num_cells() << "\n"
        << "Number of cars: " << num_cars() << "\n"
@@ -401,7 +410,7 @@ void Simulation::print_stats() const {
 #endif  // OPTION_STANDARD
 }
 
-uint64_t Simulation::checksum() const {
+DEVICE_MODE uint64_t Simulation::checksum() const {
   uint64_t c = 17;
   for (int i = 0; i < num_cars(); ++i) {
     auto position = METHOD_CALL(Car, car(i), position);

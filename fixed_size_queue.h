@@ -4,6 +4,12 @@
 #include <cassert>
 #include <memory>
 
+#if defined(__CUDA_ARCH__)
+#define HOST_DEVICE __host__ __device__
+#else
+#define HOST_DEVICE
+#endif
+
 template<typename T, bool OwnMemory = true>
 class fixed_size_queue {
  public:
@@ -24,7 +30,7 @@ class fixed_size_queue {
     }
   }
 
-  void push(T element) {
+  HOST_DEVICE void push(T element) {
     assert(size_ < capacity_ - 1);
     int index = (start_ + size_++) % capacity_;
     assert(index >= 0);
@@ -32,7 +38,7 @@ class fixed_size_queue {
     buffer_[index] = element;
   }
 
-  T pop() {
+  HOST_DEVICE T pop() {
     assert(size_ > 0);
     assert(size_ < capacity_);
     assert(start_ >= 0);
@@ -44,35 +50,35 @@ class fixed_size_queue {
     return result;
   }
 
-  T back() const {
+  HOST_DEVICE T back() const {
     int index = (start_ + size_ - 1) % capacity_;
     assert(index >= 0);
     assert(index < capacity_);
     return buffer_[index];
   }
 
-  T front() const {
+  HOST_DEVICE T front() const {
     assert(start_ >= 0);
     assert(start_ < capacity_);
     return buffer_[start_];
   }
 
-  int size() const { return size_; }
+  HOST_DEVICE int size() const { return size_; }
 
-  void shrink_to_size(int size) {
+  HOST_DEVICE void shrink_to_size(int size) {
     assert(size_ >= size);
     size_ = size;
   }
 
-  int capacity() const { return capacity_ - 1; }
+  HOST_DEVICE int capacity() const { return capacity_ - 1; }
 
-  T get(int index) const {
+  HOST_DEVICE T get(int index) const {
     assert(index >= 0);
     assert(index < capacity_);
     return buffer_[(start_ + index) % capacity_];
   }
 
-  T operator[](int index) const {
+  HOST_DEVICE T operator[](int index) const {
     return get(index);
   }
 
@@ -81,29 +87,31 @@ class fixed_size_queue {
     typedef T value_type;
     typedef T& reference;
 
-    iterator(const fixed_size_queue<T, OwnMemory>& container, int index)
+    HOST_DEVICE iterator(const fixed_size_queue<T, OwnMemory>& container,
+                         int index)
         : container_(container), index_(index) {}
 
-    iterator(const iterator& other)
+    HOST_DEVICE iterator(const iterator& other)
         : container_(other.container_), index_(other.index_) {}
 
-    iterator operator++() {
+    HOST_DEVICE iterator operator++() {
       iterator it = *this;
       ++index_;
       return it;
     }
 
-    reference operator*() const {
+    HOST_DEVICE reference operator*() const {
       assert(index_ >= 0);
       assert(index_ < container_.size_);
-      return container_.buffer_[(container_.start_ + index_) % container_.capacity_];
+      return container_.buffer_[(container_.start_ + index_)
+          % container_.capacity_];
     }
 
-    bool operator==(const iterator& other) const {
+    HOST_DEVICE bool operator==(const iterator& other) const {
       return &container_ == &other.container_ && index_ == other.index_;
     }
 
-    bool operator!=(const iterator& other) const {
+    HOST_DEVICE bool operator!=(const iterator& other) const {
       return !(operator==(other));
     }
 
@@ -112,19 +120,23 @@ class fixed_size_queue {
     int index_;
   };
 
-  iterator begin() const {
+  HOST_DEVICE iterator begin() const {
     return iterator(*this, 0);
   }
 
-  iterator end() const {
+  HOST_DEVICE iterator end() const {
     return iterator(*this, size_);
+  }
+
+  HOST_DEVICE T* buffer() const {
+    return buffer_;
   }
 
  private:
   const int capacity_;
   int size_ = 0;
   int start_ = 0;
-  T* buffer_;
+  T* const buffer_;
 };
 
 #endif  // FIXED_SIZE_QUEUE_H

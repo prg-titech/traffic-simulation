@@ -199,8 +199,11 @@ Simulation::Simulation(simulation::standard::Simulation* simulation) {
       exit(1);
     }
   }
+
+  s_size_SharedSignalGroup = num_traffic_light_signal_groups +
+                             num_priority_ctrl_signal_groups;
   s_SharedSignalGroup = (SharedSignalGroup*) new char[sizeof(SharedSignalGroup)
-      * (num_traffic_light_signal_groups + num_priority_ctrl_signal_groups)];
+      * s_size_SharedSignalGroup];
   s_traffic_light_signal_groups =
       new IndexType[num_traffic_light_signal_groups];
   s_priority_ctrl_signal_groups =
@@ -248,6 +251,7 @@ void Simulation::reactivate_cars() {
 }
 
 void Simulation::step_traffic_controllers() {
+  //printf("NUM LIGHTS: %i\n", s_size_TrafficLight);
   for (int i = 0; i < s_size_TrafficLight; ++i) {
     s_TrafficLight[i].step();
   }
