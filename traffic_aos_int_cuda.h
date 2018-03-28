@@ -131,6 +131,8 @@ class Car {
 
   __device__ IndexType id() const { return id_; }
 
+  __device__ uint32_t rand32();
+
  protected:
   friend class Simulation;
 
@@ -165,7 +167,6 @@ class Car {
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
-  __device__ uint32_t rand32();
   __device__ uint32_t& random_state() { return random_state_; }
 };
 

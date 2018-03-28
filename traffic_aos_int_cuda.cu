@@ -222,7 +222,7 @@ __global__ void step_move() {
   if (id < s_size_Car) {
     int realid = s_Car_reorder[id];
     if (s_Car[realid].is_active()) {
-      s_Car[id].step_move();
+      s_Car[realid].step_move();
     }
   }
 }
@@ -253,7 +253,7 @@ __global__ void step_prepare_reorder() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
     s_Car_reorder_in[id] = id;
-    s_Car_reorder_keys_in[id] = s_Car[id].velocity();
+    s_Car_reorder_keys_in[id] = s_Car[id].rand32();//s_Car[id].velocity();
   }
 }
 
@@ -318,7 +318,7 @@ void step() {
     step_move<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
-    if (i % 7 == 0) {
+    if (i % 5 == 0) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();
