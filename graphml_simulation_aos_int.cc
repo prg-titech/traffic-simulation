@@ -22,15 +22,21 @@ int main(int argc, char** argv) {
   simulation::aos_int::instance = new simulation::aos_int::Simulation(
       simulation::standard::instance);
 
-  printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)");
+  printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)\n");
   fflush(stdout);
 
-  last_time = std::chrono::steady_clock::now();
+  auto t1 = std::chrono::steady_clock::now();
 
-  while (true) {
-    step(simulation::aos_int::instance);
-    renderer->update_gui();
+  for (int i = 0; i < 1000; ++i) {
+    instance->step();
+    // renderer->update_gui();
   }
+  auto t2 = std::chrono::steady_clock::now();
+  unsigned long millis = std::chrono::duration_cast<std::chrono::milliseconds>(
+      t2 - t1).count();
+  auto checksum = instance->checksum();
+
+  printf("Checksum: %lu, CPU Time (millis): %lu\n", checksum, millis);
 
   delete renderer;
 

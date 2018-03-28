@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "traffic_aos_int_cuda.h"
 #include "random.h"
 
@@ -232,20 +234,13 @@ void step() {
   IndexType num_priority_ctrl =
       simulation::aos_int::s_size_PriorityYieldTrafficController;
 
-  for (int i = 0; i < 1000; ++i) {
-    if (i % 100 == 0) {
-      uint64_t chk = checksum() % 1234567;
-      printf("Checksum: %lu\n", chk);
-    }
+  auto t1 = std::chrono::steady_clock::now();
 
+  for (int i = 0; i < 1000; ++i) {
     step_random_state<<<1, 1>>>();
-    gpuErrchk(cudaDeviceSynchronize());
     step_traffic_lights<<<num_traffic_lights / 1024 + 1, 1024>>>();
-    gpuErrchk(cudaDeviceSynchronize());
     step_priority_ctrl<<<num_priority_ctrl / 1024 + 1, 1024>>>();
-    gpuErrchk(cudaDeviceSynchronize());
     step_velocity<<<num_cars / 1024 + 1, 1024>>>();
-    gpuErrchk(cudaDeviceSynchronize());
 
 #ifndef NDEBUG
     step_assert_check_velocity<<<num_cars / 1024 + 1, 1024>>>();
@@ -253,11 +248,21 @@ void step() {
 #endif
 
     step_move<<<num_cars / 1024 + 1, 1024>>>();
-    gpuErrchk(cudaDeviceSynchronize());
-
     step_reactivate<<<num_cars / 1024 + 1, 1024>>>();
+
+#ifndef NDEBUG
     gpuErrchk(cudaDeviceSynchronize());
+#else
+    cudaDeviceSynchronize();
+#endif  // NDEBUG
   }
+
+  auto t2 = std::chrono::steady_clock::now();
+  unsigned long millis = std::chrono::duration_cast<std::chrono::milliseconds>(
+      t2 - t1).count();
+  auto cs = checksum();
+
+  printf("Checksum: %lu, GPU Time (millis): %lu\n", cs, millis);
 }
 
 __device__ void Simulation::add_inactive_car(IndexType car) {

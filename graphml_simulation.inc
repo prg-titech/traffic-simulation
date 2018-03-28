@@ -12,7 +12,7 @@
 
 using builder::GraphmlNetworkBuilder;
 
-const unsigned int num_cars = 20000;
+const unsigned int num_cars = 40000;
 
 Renderer* renderer;
 
@@ -86,16 +86,6 @@ int iteration_counter = 0;
 
 template<typename T>
 void step(T* instance) {
-  if (iteration_counter % 100 == 0) {
-    auto current_time = std::chrono::steady_clock::now();
-    double seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
-        current_time - last_time).count() / 1000.0;
-    print_stats(100.0/seconds, instance->checksum());
-    
-    last_time = std::chrono::steady_clock::now();
-    iteration_counter = 0;
-  }
-
   instance->step();
 
   // Measure performance.

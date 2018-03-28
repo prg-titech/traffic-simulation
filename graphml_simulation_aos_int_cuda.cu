@@ -32,12 +32,18 @@ int main(int argc, char** argv) {
   printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)");
   fflush(stdout);
 
-  last_time = std::chrono::steady_clock::now();
+  auto t1 = std::chrono::steady_clock::now();
 
-  while (true) {
-    step(simulation::aos_int::instance);
-    renderer->update_gui();
+  for (int i = 0; i < 1000; ++i) {
+    simulation::aos_int::instance->step();
+    //renderer->update_gui();
   }
+  auto t2 = std::chrono::steady_clock::now();
+  unsigned long millis = std::chrono::duration_cast<std::chrono::milliseconds>(
+      t2 - t1).count();
+  auto checksum = simulation::aos_int::instance->checksum();
+
+  printf("Checksum: %lu, GPU Time (millis): %lu\n", checksum, millis);
 
   delete renderer;
 
