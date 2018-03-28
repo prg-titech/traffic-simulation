@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
       t2 - t1).count();
   auto checksum = simulation::aos_int::instance->checksum();
 
-  printf("Checksum: %lu, GPU Time (millis): %lu\n", checksum, millis);
+  printf("Checksum: %lu, CPU Time (millis): %lu\n", checksum, millis);
 
   delete renderer;
 

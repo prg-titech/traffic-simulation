@@ -3,6 +3,11 @@
 #include "traffic_aos_int_cuda.h"
 #include "random.h"
 
+#include "cub-1.8.0/cub/util_allocator.cuh"
+#include "cub-1.8.0/cub/device/device_radix_sort.cuh"
+
+using namespace cub;
+
 using namespace std;
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
@@ -98,6 +103,16 @@ __device__ IndexType s_size_priority_ctrl_signal_groups = 0;
 __device__ IndexType* s_signal_group_cells;
 __device__ IndexType s_size_signal_group_cells = 0;
 
+__device__ IndexType* s_Car_reorder_in;
+__device__ IndexType* s_Car_reorder_keys_in;
+
+__device__ IndexType* s_Car_reorder;
+__device__ IndexType* s_Car_reorder_keys;
+
+IndexType* d_car_reorder_in;
+IndexType* d_car_reorder_keys_in;
+IndexType* d_car_reorder;
+IndexType* d_car_reorder_keys;
 
 #define MEMCPY_TO_DEVICE(class, var) \
   class* dev_ ## var; \
@@ -159,6 +174,25 @@ void initialize() {
   gpuErrchk(cudaMemcpy((void*) dev_simulation,
                        (void*) simulation::aos_int::instance,
                        sizeof(Simulation), cudaMemcpyHostToDevice));
+
+  IndexType* h_car_reorder = new IndexType[simulation::aos_int::s_size_Car];
+  for (int i = 0; i < simulation::aos_int::s_size_Car; ++i) {
+    h_car_reorder[i] = i;
+  }
+  cudaMalloc((void**) &d_car_reorder, sizeof(IndexType)*simulation::aos_int::s_size_Car);
+  cudaMemcpyToSymbol(s_Car_reorder, &d_car_reorder, sizeof(IndexType*));
+  cudaMemcpy(d_car_reorder, h_car_reorder, sizeof(IndexType)*simulation::aos_int::s_size_Car,
+             cudaMemcpyHostToDevice);
+  cudaMalloc((void**) &d_car_reorder_keys, sizeof(IndexType)*simulation::aos_int::s_size_Car);
+  cudaMemcpyToSymbol(s_Car_reorder_keys, &d_car_reorder_keys, sizeof(IndexType*));
+
+  cudaMalloc((void**) &d_car_reorder_in, sizeof(IndexType)*simulation::aos_int::s_size_Car);
+  cudaMemcpyToSymbol(s_Car_reorder_in, &d_car_reorder_in, sizeof(IndexType*));
+
+  cudaMalloc((void**) &d_car_reorder_keys_in, sizeof(IndexType)*simulation::aos_int::s_size_Car);
+  cudaMemcpyToSymbol(s_Car_reorder_keys_in, &d_car_reorder_keys_in, sizeof(IndexType*));
+
+  gpuErrchk(cudaDeviceSynchronize());
 }
 
 #undef MEMCPY_TO_DEVICE
@@ -166,8 +200,9 @@ void initialize() {
 __global__ void step_velocity() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    if (s_Car[id].is_active()) {
-      s_Car[id].step_velocity();
+    int realid = s_Car_reorder[id];
+    if (s_Car[realid].is_active()) {
+      s_Car[realid].step_velocity();
     }
   }
 }
@@ -175,8 +210,9 @@ __global__ void step_velocity() {
 __global__ void step_assert_check_velocity() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    if (s_Car[id].is_active()) {
-      s_Car[id].assert_check_velocity();
+    int realid = s_Car_reorder[id];
+    if (s_Car[realid].is_active()) {
+      s_Car[realid].assert_check_velocity();
     }
   }
 }
@@ -184,7 +220,8 @@ __global__ void step_assert_check_velocity() {
 __global__ void step_move() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    if (s_Car[id].is_active()) {
+    int realid = s_Car_reorder[id];
+    if (s_Car[realid].is_active()) {
       s_Car[id].step_move();
     }
   }
@@ -193,6 +230,7 @@ __global__ void step_move() {
 __global__ void step_reactivate() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
+    int realid = s_Car_reorder[id];
     s_Car[id].step_reactivate();
   }
 }
@@ -208,6 +246,14 @@ __global__ void step_priority_ctrl() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_PriorityYieldTrafficController) {
     s_PriorityYieldTrafficController[id].step();
+  }
+}
+
+__global__ void step_prepare_reorder() {
+  IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
+  if (id < s_size_Car) {
+    s_Car_reorder_in[id] = id;
+    s_Car_reorder_keys_in[id] = s_Car[id].velocity();
   }
 }
 
@@ -228,6 +274,27 @@ uint64_t checksum() {
   return result;
 }
 
+#define BLOCK_S 768
+
+void step_reorder() {
+  IndexType num_cars = simulation::aos_int::s_size_Car;
+  step_prepare_reorder<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+
+  // Determine temporary device storage requirements
+  void     *d_temp_storage = NULL;
+  size_t   temp_storage_bytes = 0;
+  cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
+      d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
+  // Allocate temporary storage
+  cudaMalloc(&d_temp_storage, temp_storage_bytes);
+  // Run sorting operation
+  cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
+      d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
+  // d_keys_out            <-- [0, 3, 5, 6, 7, 8, 9]
+  // d_values_out          <-- [5, 4, 3, 1, 2, 0, 6]
+  gpuErrchk(cudaDeviceSynchronize());
+}
+
 void step() {
   IndexType num_cars = simulation::aos_int::s_size_Car;
   IndexType num_traffic_lights = simulation::aos_int::s_size_TrafficLight;
@@ -235,21 +302,30 @@ void step() {
       simulation::aos_int::s_size_PriorityYieldTrafficController;
 
   auto t1 = std::chrono::steady_clock::now();
+  unsigned long reorder_time =0;
 
   for (int i = 0; i < 1000; ++i) {
     step_random_state<<<1, 1>>>();
-    step_traffic_lights<<<num_traffic_lights / 1024 + 1, 1024>>>();
-    step_priority_ctrl<<<num_priority_ctrl / 1024 + 1, 1024>>>();
-    step_velocity<<<num_cars / 1024 + 1, 1024>>>();
+    step_traffic_lights<<<num_traffic_lights / BLOCK_S + 1, BLOCK_S>>>();
+    step_priority_ctrl<<<num_priority_ctrl / BLOCK_S + 1, BLOCK_S>>>();
+    step_velocity<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
 #ifndef NDEBUG
-    step_assert_check_velocity<<<num_cars / 1024 + 1, 1024>>>();
+    step_assert_check_velocity<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     gpuErrchk(cudaDeviceSynchronize());
 #endif
 
-    step_move<<<num_cars / 1024 + 1, 1024>>>();
-    step_reactivate<<<num_cars / 1024 + 1, 1024>>>();
+    step_move<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+    step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
+    if (i % 7 == 0) {
+      auto t3 = std::chrono::steady_clock::now();
+      step_reorder();
+      auto t4 = std::chrono::steady_clock::now();
+
+      reorder_time += std::chrono::duration_cast<std::chrono::milliseconds>(
+        t4 - t3).count();
+    }
 #ifndef NDEBUG
     gpuErrchk(cudaDeviceSynchronize());
 #else
@@ -262,7 +338,7 @@ void step() {
       t2 - t1).count();
   auto cs = checksum();
 
-  printf("Checksum: %lu, GPU Time (millis): %lu\n", cs, millis);
+  printf("Checksum: %lu, GPU Time (millis): %lu, Reorder time: %lu\n", cs, millis,reorder_time);
 }
 
 __device__ void Simulation::add_inactive_car(IndexType car) {
