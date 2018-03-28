@@ -3,9 +3,7 @@
 #include "random.h"
 
 DEVICE_MODE bool Cell::is_free() const {
-#ifdef OPTION_STANDARD
-  assert(is_free_ == (car_ == nullptr));
-#endif  // OPTION_STANDARD
+  assert(is_free_ == (car_ == PNULL));
   return is_free_;
 }
 
@@ -30,9 +28,7 @@ DEVICE_MODE int Cell::street_max_velocity() const {
 
 DEVICE_MODE void Cell::occupy(PTR(Car) car) {
   assert(is_free_);
-#ifdef OPTION_STANDARD
-  assert(car_ == nullptr);
-#endif  // OPTION_STANDARD
+  assert(car_ == PNULL);
 
   is_free_ = false;
   car_ = car;
@@ -44,11 +40,8 @@ DEVICE_MODE void Cell::occupy(PTR(Car) car) {
 
 DEVICE_MODE void Cell::release() {
   assert(!is_free_);
-#ifdef OPTION_STANDARD
-  assert(car_ != nullptr);
-  car_ = nullptr;
-#endif  // OPTION_STANDARD
-
+  assert(car_ != PNULL);
+  car_ = PNULL;
   is_free_ = true;
 
 #ifdef OPTION_STANDARD
@@ -90,13 +83,11 @@ DEVICE_MODE void Car::step_move() {
   position_ = next_cell;
 
   if (METHOD_CALL(Cell, position_, is_sink)) {
-    // Remove car from the simulation.
+    // Remove car from the simulation. Will be added again in the next
+    // iteration.
     METHOD_CALL(Cell, position_, release);
     path_.shrink_to_size(0);
     set_active(false);
-
-    // Add car at random cell.
-    // instance->add_inactive_car(THIS);
   }
 }
 
@@ -211,7 +202,43 @@ DEVICE_MODE void Car::step_slow_down() {
   }
 }
 
+DEVICE_MODE PTR(Cell) Car::random_free_cell() const {
+  uint64_t state = instance->random_state();
+  uint64_t num_cars = instance->num_cars();
+  uint64_t num_cells = instance->num_cells();
+  uint32_t max_tries = num_cells / num_cars;
+
+  // Try max. of 100 times.
+  for (uint32_t i = 0; i < max_tries; ++i) {
+    uint64_t cell_id = (num_cells * (id() + state) / num_cars + i)
+                       % num_cells;
+    PTR(Cell) next_cell = instance->cell(cell_id);
+    if (METHOD_CALL(Cell, next_cell, is_free)) {
+      return next_cell;
+    }
+  }
+
+  // Could not find free cell. Try again in next iteration.
+  return PNULL;
+}
+
+DEVICE_MODE void Car::step_reactivate() {
+  // Set to random position if car is not active.
+  if (!is_active_) {
+    PTR(Cell) free_cell = random_free_cell();
+
+    if (free_cell != PNULL) {
+      set_position(free_cell);
+      set_active(true);
+    }
+  }
+}
+
 DEVICE_MODE uint32_t Car::rand32() {
+  return ::rand32(&random_state_);
+}
+
+DEVICE_MODE uint32_t Simulation::rand32() {
   return ::rand32(&random_state_);
 }
 
@@ -339,7 +366,12 @@ DEVICE_MODE void PriorityYieldTrafficController::step() {
   }
 }
 
+DEVICE_MODE void Simulation::step_random_state() {
+  rand32();
+}
+
 DEVICE_MODE void Simulation::step() {
+  step_random_state();
   step_cells();
   step_traffic_controllers();
   step_cars();
@@ -379,17 +411,21 @@ DEVICE_MODE void Simulation::step_cars() {
         METHOD_CALL(Car, car(i), step_move);
   }
 
-  // reactivate_cars();
+  for (int i = 0; i < num_cars(); ++i) {
+    if (!METHOD_CALL(Car, car(i), is_active))
+        METHOD_CALL(Car, car(i), step_reactivate);
+  }
 }
 
-DEVICE_MODE PTR(Cell) Simulation::random_cell(uint32_t* state) const {
-  return cell(rand32(state) % num_cells());
+// TODO: These functions are only required in host mode!
+DEVICE_MODE PTR(Cell) Simulation::random_cell() {
+  return cell(rand32() % num_cells());
 }
 
-DEVICE_MODE PTR(Cell) Simulation::random_free_cell(uint32_t* state) const {
+DEVICE_MODE PTR(Cell) Simulation::random_free_cell() {
   // Try max. of 100 times.
   for (int i = 0; i < 100; ++i) {
-    int id = rand32(state) % num_cells();
+    int id = rand32() % num_cells();
     if (METHOD_CALL(Cell, cell(id), is_free)) {
       return cell(id);
     }
@@ -397,7 +433,7 @@ DEVICE_MODE PTR(Cell) Simulation::random_free_cell(uint32_t* state) const {
 
   // Could not find free cell.
   assert(false);
-  return random_cell(state);
+  return random_cell();
 }
 
 DEVICE_MODE void Simulation::print_stats() const {

@@ -108,7 +108,7 @@ class TwoWayStreet {
 class SimpleNetworkBuilder {
  public:
   SimpleNetworkBuilder(int cell_size) : cell_size_(cell_size) {
-    simulation_ = new Simulation();
+    simulation_ = new Simulation(17);
   }
 
   ~SimpleNetworkBuilder() {

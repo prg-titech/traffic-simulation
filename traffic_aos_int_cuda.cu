@@ -153,7 +153,7 @@ void initialize() {
   Simulation* dev_simulation;
   gpuErrchk(cudaMalloc((void**) &dev_simulation, sizeof(Simulation)));
   gpuErrchk(cudaMemcpyToSymbol(instance, &dev_simulation,
-                     sizeof(Simulation)));
+                     sizeof(Simulation*)));
   gpuErrchk(cudaMemcpy((void*) dev_simulation,
                        (void*) simulation::aos_int::instance,
                        sizeof(Simulation), cudaMemcpyHostToDevice));
@@ -188,6 +188,13 @@ __global__ void step_move() {
   }
 }
 
+__global__ void step_reactivate() {
+  IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
+  if (id < s_size_Car) {
+    s_Car[id].step_reactivate();
+  }
+}
+
 __global__ void step_traffic_lights() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_TrafficLight) {
@@ -202,9 +209,21 @@ __global__ void step_priority_ctrl() {
   }
 }
 
-__global__ void print_checksum() {
-  uint64_t value = instance->checksum();
-  printf("CHECKSUM: %lu\n", value % 1234567);
+__device__ uint64_t s_checksum;
+
+__global__ void checksum_kernel() {
+  s_checksum = instance->checksum();
+}
+
+__global__ void step_random_state() {
+  instance->step_random_state();
+}
+
+uint64_t checksum() {
+  checksum_kernel<<<1, 1>>>();
+  uint64_t result;
+  cudaMemcpyFromSymbol(&result, s_checksum, sizeof(uint64_t));
+  return result;
 }
 
 void step() {
@@ -215,41 +234,34 @@ void step() {
 
   for (int i = 0; i < 1000; ++i) {
     if (i % 100 == 0) {
-      print_checksum<<<1, 1>>>();
+      uint64_t chk = checksum() % 1234567;
+      printf("Checksum: %lu\n", chk);
     }
 
-    //printf("NUM LIGHTS: %i\n", num_traffic_lights);
-    
+    step_random_state<<<1, 1>>>();
+    gpuErrchk(cudaDeviceSynchronize());
     step_traffic_lights<<<num_traffic_lights / 1024 + 1, 1024>>>();
     gpuErrchk(cudaDeviceSynchronize());
-
     step_priority_ctrl<<<num_priority_ctrl / 1024 + 1, 1024>>>();
     gpuErrchk(cudaDeviceSynchronize());
-
-    //printf("ITERATION %i\n", i);
     step_velocity<<<num_cars / 1024 + 1, 1024>>>();
     gpuErrchk(cudaDeviceSynchronize());
 
+#ifndef NDEBUG
     step_assert_check_velocity<<<num_cars / 1024 + 1, 1024>>>();
     gpuErrchk(cudaDeviceSynchronize());
+#endif
 
     step_move<<<num_cars / 1024 + 1, 1024>>>();
+    gpuErrchk(cudaDeviceSynchronize());
+
+    step_reactivate<<<num_cars / 1024 + 1, 1024>>>();
     gpuErrchk(cudaDeviceSynchronize());
   }
 }
 
 __device__ void Simulation::add_inactive_car(IndexType car) {
   s_inactive_cars[s_size_inactive_cars++] = car;
-}
-
-__device__ void Simulation::reactivate_cars() {
-  for (IndexType i = 0; i < s_size_inactive_cars; ++i) {
-    Car* car = &s_Car[s_inactive_cars[i]];
-    IndexType new_start_cell = random_free_cell(&car->random_state());
-    car->set_position(new_start_cell);
-    car->set_active(true);
-  }
-  s_size_inactive_cars = 0;
 }
 
 __device__ void Simulation::step_traffic_controllers() {

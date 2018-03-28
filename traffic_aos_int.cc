@@ -70,8 +70,10 @@ Cell::Cell(simulation::standard::Cell* cell)
         cell->incoming_cells_[i]->id();
   }
 
-  if (!cell->is_free_) {
+  if (cell->car_ != nullptr) {
     car_ = cell->car_->id();
+  } else {
+    car_ = kMaxIndexType;
   }
 }
 
@@ -121,7 +123,8 @@ PriorityYieldTrafficController::PriorityYieldTrafficController(
   }
 }
 
-Simulation::Simulation(simulation::standard::Simulation* simulation) {
+Simulation::Simulation(simulation::standard::Simulation* simulation)
+    : random_state_(simulation->random_state_) {
   printf("Converting to AOS_INT...\n");
   fflush(stdout);
 
@@ -238,16 +241,6 @@ Simulation::Simulation(simulation::standard::Simulation* simulation) {
 
 void Simulation::add_inactive_car(IndexType car) {
   s_inactive_cars[s_size_inactive_cars++] = car;
-}
-
-void Simulation::reactivate_cars() {
-  for (IndexType i = 0; i < s_size_inactive_cars; ++i) {
-    Car* car = &s_Car[s_inactive_cars[i]];
-    IndexType new_start_cell = random_free_cell(&car->random_state());
-    car->set_position(new_start_cell);
-    car->set_active(true);
-  }
-  s_size_inactive_cars = 0;
 }
 
 void Simulation::step_traffic_controllers() {

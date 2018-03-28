@@ -109,6 +109,8 @@ class Car {
 
   __device__ void step_move();
 
+  __device__ void step_reactivate();
+
   __device__ IndexType position() const { return position_; }
 
   __device__ void set_position(IndexType cell);
@@ -144,6 +146,8 @@ class Car {
   __device__ void step_constraint_velocity();
 
   __device__ void step_slow_down();
+
+  __device__ IndexType random_free_cell() const;
 
  private:
   const IndexType id_;
@@ -259,9 +263,9 @@ class Simulation {
   // cars, traffic controllers, etc. were added.
   __device__ void initialize();
 
-  __device__ IndexType random_cell(uint32_t* state) const;
+  IndexType random_cell();
 
-  __device__ IndexType random_free_cell(uint32_t* state) const;
+  IndexType random_free_cell();
 
   // Simulate a single tick.
   __device__ void step();
@@ -278,14 +282,23 @@ class Simulation {
   __device__ IndexType num_cars() const;
   __device__ IndexType car(IndexType index) const;
 
+  __device__ uint32_t& random_state() { return random_state_; }
+
+  __device__ void step_random_state();
+
  private:
+  friend class Car;
+
   __device__ void step_cells();
   __device__ void step_traffic_controllers();
   __device__ void step_cars();
-  __device__ void reactivate_cars();
 
   __device__ IndexType num_cells() const;
   __device__ IndexType cell(IndexType index) const;
+
+  // Every simulation has a state for its random number generator.
+  uint32_t random_state_;
+  __device__ uint32_t rand32();
 };
 
 }  // namespace aos_int_cuda

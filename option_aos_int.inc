@@ -6,6 +6,7 @@ using IndexType = unsigned int;
 const IndexType kMaxIndexType = std::numeric_limits<IndexType>::max();
 
 #undef OPTION_STANDARD
+#define PNULL kMaxIndexType
 #define PTR(class) IndexType
 #define CPTR(class) const IndexType
 #define THIS id_

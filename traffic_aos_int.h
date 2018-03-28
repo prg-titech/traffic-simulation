@@ -147,6 +147,10 @@ class Car {
 
   void step_slow_down();
 
+  void step_reactivate();
+
+  IndexType random_free_cell() const;
+
  private:
   const IndexType id_;
 
@@ -270,9 +274,9 @@ class Simulation {
   // cars, traffic controllers, etc. were added.
   void initialize();
 
-  IndexType random_cell(uint32_t* state) const;
+  IndexType random_cell();
 
-  IndexType random_free_cell(uint32_t* state) const;
+  IndexType random_free_cell();
 
   // Simulate a single tick.
   void step();
@@ -289,14 +293,22 @@ class Simulation {
   IndexType num_cars() const;
   IndexType car(IndexType index) const;
 
+  uint32_t& random_state() { return random_state_; }
+
  private:
+  friend class Car;
+
   void step_cells();
   void step_traffic_controllers();
   void step_cars();
-  void reactivate_cars();
+  void step_random_state();
 
   IndexType num_cells() const;
   IndexType cell(IndexType index) const;
+
+  // Every simulation has a state for its random number generator.
+  uint32_t random_state_;
+  uint32_t rand32();
 };
 
 }  // namespace aos_int

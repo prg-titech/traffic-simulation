@@ -195,6 +195,10 @@ class Car {
 
   void step_slow_down();
 
+  void step_reactivate();
+
+  Cell* random_free_cell() const;
+
  private:
   const IndexType id_;
 
@@ -346,15 +350,15 @@ class Street {
 
 class Simulation {
  public:
-  Simulation() {}
+  Simulation(uint32_t seed) : random_state_(seed) {}
 
   // Initialize this traffic simulation. May be called only when all streets
   // cars, traffic controllers, etc. were added.
   void initialize();
 
-  Cell* random_cell(uint32_t* state) const;
+  Cell* random_cell();
 
-  Cell* random_free_cell(uint32_t* state) const;
+  Cell* random_free_cell();
 
   // Simulate a single tick.
   void step();
@@ -389,14 +393,17 @@ class Simulation {
   IndexType num_cars() const { return cars_.size(); }
   Car* car(IndexType index) const { return cars_[index]; }
 
+  uint32_t& random_state() { return random_state_; }
+
  private:
   friend class ::Renderer;
   friend class simulation::aos_int::Simulation;
+  friend class Car;
 
   void step_cells();
   void step_traffic_controllers();
   void step_cars();
-  void reactivate_cars();
+  void step_random_state();
 
   // A vector of all streets. Contains only the cells of start and
   // end points. Only used for GUI purposes.
@@ -419,6 +426,10 @@ class Simulation {
   // A vector of all inactive cars. Used to keep track of cars that are
   // leaving the map.
   std::vector<Car*> inactive_cars_;
+
+  // Every simulation has a state for its random number generator.
+  uint32_t random_state_;
+  uint32_t rand32();
 };
 
 }  // namespace standard

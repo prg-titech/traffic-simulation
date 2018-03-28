@@ -67,9 +67,8 @@ simulation::standard::Simulation* build_simulation(int argc, char** argv) {
   // Build cars.
   for (int i = 0; i < num_cars; ++i) {
     uint32_t state = (uint32_t) rand() + 1;
-    uint32_t state2 = (uint32_t) rand() + 1;
     instance->add_car(new Car(
-        i, 20, instance->random_free_cell(&state2), state));
+        i, 20, instance->random_free_cell(), state));
   }
 
   // Render initial state only.

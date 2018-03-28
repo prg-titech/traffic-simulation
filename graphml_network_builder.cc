@@ -98,7 +98,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
                                              int cell_size,
                                              double default_speed_limit,
                                              double iteration_length)
-    : simulation_(new Simulation()), builder_(simulation_, cell_size) {
+    : simulation_(new Simulation(17)), builder_(simulation_, cell_size) {
   // Max. velocity is measured in cells / iteration length.
   int max_velocity = default_speed_limit / cell_size * iteration_length;
   if (max_velocity == 0) {
