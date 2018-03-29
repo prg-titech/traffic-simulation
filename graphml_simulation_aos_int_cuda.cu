@@ -29,6 +29,8 @@ int main(int argc, char** argv) {
   simulation::aos_int_cuda::initialize();
   simulation::aos_int_cuda::step();
 
+  return 0;
+
   printf("|      it/s | active | jammed |   turn | checksum \nPerformance: (computing)");
   fflush(stdout);
 

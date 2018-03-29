@@ -55,10 +55,10 @@ DEVICE_MODE PTR(Cell) Car::next_step(PTR(Cell) position) {
       METHOD_CALL(Cell, position, num_outgoing_cells);
   assert(num_outgoing > 0);
 
-  if (rand32() % 1000 < 750) {
+  if (rand32() % 1000 < 800) {
     for (int i = 0; i < num_outgoing; ++i) {
       CPTR(Cell) candidate = METHOD_CALL(Cell, position, outgoing_cell, i);
-      if (METHOD_CALL(Cell, candidate, type) ==
+      if (METHOD_CALL(Cell, candidate, type) >=
           METHOD_CALL(Cell, position, type)) {
         return candidate;
       }

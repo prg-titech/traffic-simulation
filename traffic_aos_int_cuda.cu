@@ -359,7 +359,7 @@ void step() {
     step_move<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
-    if ( true /* i % 2 == 0*/ ) {
+    if (false && i % 5 == 0 ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();
