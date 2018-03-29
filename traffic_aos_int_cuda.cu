@@ -77,6 +77,7 @@ __device__ IndexType* s_incoming_cells;
 __device__ IndexType s_size_incoming_cells = 0;
 
 __device__ Car* s_Car;
+__device__ Car* s_tmp_Car;  // temp array used for changing physical order
 __device__ IndexType s_size_Car = 0;
 
 __device__ IndexType* s_car_paths;
@@ -192,15 +193,21 @@ void initialize() {
   cudaMalloc((void**) &d_car_reorder_keys_in, sizeof(IndexType)*simulation::aos_int::s_size_Car);
   cudaMemcpyToSymbol(s_Car_reorder_keys_in, &d_car_reorder_keys_in, sizeof(IndexType*));
 
+  Car* d_tmp_car;
+  cudaMalloc((void**) &d_tmp_car, sizeof(Car)*simulation::aos_int::s_size_Car);
+  cudaMemcpyToSymbol(s_tmp_Car, &d_tmp_car, sizeof(Car*));
+
   gpuErrchk(cudaDeviceSynchronize());
 }
 
 #undef MEMCPY_TO_DEVICE
 
+#define PHYSICAL_REORDER true
+
 __global__ void step_velocity() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    int realid = s_Car_reorder[id];
+    int realid = PHYSICAL_REORDER ? id : s_Car_reorder[id];
     if (s_Car[realid].is_active()) {
       s_Car[realid].step_velocity();
     }
@@ -210,7 +217,7 @@ __global__ void step_velocity() {
 __global__ void step_assert_check_velocity() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    int realid = s_Car_reorder[id];
+    int realid = PHYSICAL_REORDER ? id : s_Car_reorder[id];
     if (s_Car[realid].is_active()) {
       s_Car[realid].assert_check_velocity();
     }
@@ -220,7 +227,7 @@ __global__ void step_assert_check_velocity() {
 __global__ void step_move() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    int realid = s_Car_reorder[id];
+    int realid = PHYSICAL_REORDER ? id : s_Car_reorder[id];
     if (s_Car[realid].is_active()) {
       s_Car[realid].step_move();
     }
@@ -230,8 +237,8 @@ __global__ void step_move() {
 __global__ void step_reactivate() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
-    int realid = s_Car_reorder[id];
-    s_Car[id].step_reactivate();
+    int realid = PHYSICAL_REORDER ? id : s_Car_reorder[id];
+    s_Car[realid].step_reactivate();
   }
 }
 
@@ -253,8 +260,32 @@ __global__ void step_prepare_reorder() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
     s_Car_reorder_in[id] = id;
-    s_Car_reorder_keys_in[id] = s_Car[id].rand32();//s_Car[id].velocity();
+    s_Car_reorder_keys_in[id] = s_Car[id].velocity();
+//    s_Car_reorder_keys_in[id] = (s_Car[id].velocity() + 1) * s_size_Car + id;
+//    s_Car_reorder_keys_in[id] = s_Cell[s_Car[id].position()].type();
+//    s_Car_reorder_keys_in[id] = s_Cell[s_Car[id].position()].type()* s_size_Car + id;
+//    s_Car_reorder_keys_in[id] = s_Car[id].rand32();
+
   }
+}
+
+__global__ void step_physical_reorder() {
+  IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
+  if (id < s_size_Car) {
+    //cudaMemcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car), cudaMemcpyDeviceToDevice);
+    //memcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car));
+    int* target = (int*) (&s_tmp_Car[id]);
+    int* from = (int*) (&s_Car[id]);
+    for (int i = 0; i < sizeof(Car)/sizeof(int); ++i) {
+      *(target + i) = *(from + i);
+    }
+  }
+}
+
+__global__ void step_swap_car_arrays() {
+  Car* tmp = s_Car;
+  s_Car = s_tmp_Car;
+  s_tmp_Car = tmp;
 }
 
 __device__ uint64_t s_checksum;
@@ -292,10 +323,20 @@ void step_reorder() {
       d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
   // d_keys_out            <-- [0, 3, 5, 6, 7, 8, 9]
   // d_values_out          <-- [5, 4, 3, 1, 2, 0, 6]
+
+
+  // Now physical reordering
+  if (PHYSICAL_REORDER) {
+    step_physical_reorder<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+    step_swap_car_arrays<<<1, 1>>>();
+  }
+
   gpuErrchk(cudaDeviceSynchronize());
 }
 
 void step() {
+  printf("CAR SIZE: %i\n", sizeof(Car));
+
   IndexType num_cars = simulation::aos_int::s_size_Car;
   IndexType num_traffic_lights = simulation::aos_int::s_size_TrafficLight;
   IndexType num_priority_ctrl =
@@ -318,7 +359,7 @@ void step() {
     step_move<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
-    if (i % 5 == 0) {
+    if ( true /* i % 2 == 0*/ ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();
