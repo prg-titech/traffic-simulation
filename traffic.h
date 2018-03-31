@@ -30,11 +30,13 @@ class Cell {
   // Cell type according to OSM data.
   enum Type {
     // Sorted from smallest to largest.
+    kService,
     kResidential,
+    kUnclassified,
     kTertiary,
     kSecondary,
     kPrimary,
-    kMotorwayLink,
+    kTrunk,
     kMotorway,
 
     kMaxType
@@ -388,6 +390,8 @@ class Simulation {
 
   // Calculate a checksum for the state of this simulation.
   uint64_t checksum() const;
+
+  void print_velocity_histgram();
 
   // Accessor methods for cars.
   IndexType num_cars() const { return cars_.size(); }

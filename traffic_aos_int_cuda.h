@@ -133,6 +133,8 @@ class Car {
 
   __device__ uint32_t rand32();
 
+  __device__ uint32_t& random_state() { return random_state_; }
+
  protected:
   friend class Simulation;
 
@@ -167,7 +169,6 @@ class Car {
 
   // Every car has a state for its random number generator.
   uint32_t random_state_;
-  __device__ uint32_t& random_state() { return random_state_; }
 };
 
 
@@ -278,6 +279,8 @@ class Simulation {
 
   // Calculate a checksum for the state of this simulation.
   __device__ uint64_t checksum() const;
+
+  __device__ void print_velocity_histgram();
 
   // Accessor methods for cars.
   __device__ IndexType num_cars() const;

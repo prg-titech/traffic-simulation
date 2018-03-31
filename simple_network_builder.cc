@@ -1,4 +1,5 @@
 #include <math.h>
+#include <map>
 #include <utility>
 
 #include "simple_network_builder.h"
@@ -10,13 +11,13 @@ namespace builder {
 bool make_turn_lanes = true;
 
 Street* Intersection::connect_one_way(Intersection* other,
-                                      double max_velocity,
+                                      int max_velocity,
                                       Cell::Type type) {
   return builder_->build_street(this, other, max_velocity, type);
 }
 
 TwoWayStreet* Intersection::connect_two_way(Intersection* other,
-                                            double max_velocity,
+                                            int max_velocity,
                                             Cell::Type type) {
   auto* first = this->connect_one_way(other, max_velocity, type);
   auto* second = other->connect_one_way(this, max_velocity, type);
@@ -126,18 +127,16 @@ void Intersection::build_connections(int turn_lane_length) {
 
         (*in)->add_turn_lane_last_cell(prev_cell);
         prev_cell->connect_to((*out)->first_cell());
-        (*out)->first_cell()->set_max_velocity(max_velocity_);
       } else {
         // No lane for this one. Just use the existing street.
         (*in)->last_cell()->connect_to((*out)->first_cell());
-        (*out)->first_cell()->set_max_velocity(max_velocity_);
       }     
     }
   }
 }
 
 Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
-               Intersection* to, double max_velocity, Cell::Type type) {
+               Intersection* to, int max_velocity, Cell::Type type) {
   if (from == to) {
     printf("Warning: Detected self-loop during street construction.\n");
   }
@@ -178,8 +177,18 @@ Street::Street(SimpleNetworkBuilder* builder, Intersection* from,
   all_last_cells_.push_back(last_cell_);
 }
 
-Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
+std::map<int, int> cell_velocity_histogram;
+
+void print_stats() {
+  printf("Cell velocity histogram:\n");
+  for (auto it = cell_velocity_histogram.begin();
+       it != cell_velocity_histogram.end(); ++it) {
+    printf("%i     %i\n", it->first, it->second);
+  }
+}
+Cell* SimpleNetworkBuilder::build_cell(double x, double y, int max_velocity,
                                        Cell::Type type, uint32_t tag) {
+  cell_velocity_histogram[max_velocity]++;
   if (x < 0 || y < 0) {
     ++num_cells_out_of_range_;
   }
@@ -190,7 +199,7 @@ Cell* SimpleNetworkBuilder::build_cell(double x, double y, double max_velocity,
 }
 
 Street* SimpleNetworkBuilder::build_street(Intersection* from, Intersection* to,
-                                           double max_velocity, Cell::Type type) {
+                                           int max_velocity, Cell::Type type) {
   auto* street = new Street(this, from, to, max_velocity, type);
   streets_.push_back(street);
 

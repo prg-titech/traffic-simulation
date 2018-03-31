@@ -55,20 +55,39 @@ DEVICE_MODE PTR(Cell) Car::next_step(PTR(Cell) position) {
       METHOD_CALL(Cell, position, num_outgoing_cells);
   assert(num_outgoing > 0);
 
-  if (rand32() % 1000 < 800) {
-    for (int i = 0; i < num_outgoing; ++i) {
-      CPTR(Cell) candidate = METHOD_CALL(Cell, position, outgoing_cell, i);
-      if (METHOD_CALL(Cell, candidate, type) >=
-          METHOD_CALL(Cell, position, type)) {
-        return candidate;
-      }
+  // Collect probabilities of outgoing cells.
+  int prob_sum = 0;
+  for (int i = 0; i < num_outgoing; ++i) {
+    CPTR(Cell) candidate = METHOD_CALL(Cell, position, outgoing_cell, i);
+    if (METHOD_CALL(Cell, candidate, type) >=
+        METHOD_CALL(Cell, position, type)) {
+      // More likely to drive onto larger roads.
+      prob_sum += 20;
+    } else {
+      prob_sum += 10;
     }
   }
 
-  CPTR(Cell) next_cell =
-      METHOD_CALL(Cell, position, outgoing_cell, rand32() % num_outgoing);
-  assert(next_cell != position);
-  return next_cell;
+  // Now choose a path randomly.
+  int rand_select = rand32() % prob_sum;
+  int threshold = 0;
+  for (int i = 0; i < num_outgoing; ++i) {
+    CPTR(Cell) candidate = METHOD_CALL(Cell, position, outgoing_cell, i);
+    if (METHOD_CALL(Cell, candidate, type) >=
+        METHOD_CALL(Cell, position, type)) {
+      threshold += 20;
+    } else {
+      threshold += 10;
+    }
+
+    if (rand_select < threshold) {
+      assert(candidate != position);
+      return candidate;
+    }
+  }
+
+  // We should never end up here.
+  assert(false);
 }
 
 DEVICE_MODE void Car::step_velocity() {
@@ -460,8 +479,23 @@ DEVICE_MODE uint64_t Simulation::checksum() const {
   uint64_t c = 17;
   for (int i = 0; i < num_cars(); ++i) {
     auto position = METHOD_CALL(Car, car(i), position);
-    c += METHOD_CALL(Cell, position, x) + METHOD_CALL(Cell, position, y);
-    c %= UINT64_MAX;
+    int tmp = METHOD_CALL(Cell, position, x) * METHOD_CALL(Cell, position, y) * METHOD_CALL(Car, car(i), id);
+    c += tmp % 139;
   }
   return c;
+}
+
+DEVICE_MODE void Simulation::print_velocity_histgram() {
+  int counter[100];
+  for (int i = 0; i < 100; ++i) {
+    counter[i] = 0;
+  }
+
+  for (int i = 0; i < num_cars(); ++i) {
+    counter[METHOD_CALL(Car, car(i), velocity)]++;
+  }
+
+  for (int i = 0; i < 100; ++i) {
+    printf("velocity[%i] = %i\n", i, counter[i]);
+  }  
 }

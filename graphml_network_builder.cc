@@ -82,12 +82,19 @@ vector<string> split(const string& str, const string& delim)
 
 map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
   map<string, Cell::Type> result;
+  result["service"] = Cell::kService;
   result["residential"] = Cell::kResidential;
+  result["unclassfied"] = Cell::kUnclassified;
   result["tertiary"] = Cell::kTertiary;
+  result["tertiary_link"] = Cell::kTertiary;
   result["secondary"] = Cell::kSecondary;
+  result["secondary_link"] = Cell::kSecondary;
   result["primary"] = Cell::kPrimary;
+  result["primary_link"] = Cell::kPrimary;
+  result["trunk"] = Cell::kTrunk;
+  result["trunk_link"] = Cell::kTrunk;
   result["motorway"] = Cell::kMotorway;
-  result["motorway_link"] = Cell::kMotorwayLink;
+  result["motorway_link"] = Cell::kMotorway;
   return result;
 }
 
@@ -105,15 +112,12 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
     cout << "Invalid configuration: Resolution is too small.\n";
     exit(1);
   }
-  int intersection_speed_limit = max_velocity / 2;
 
   cout << "Reading graphml file: " << filename << "\n";
   cout << "Iteration length = " << iteration_length << " s\n";
   cout << "Cell size = " << cell_size << " m\n";
   cout << "Default speed = " << default_speed_limit << " m/s\n";
   cout << "              = " << max_velocity << " cells/iteration\n";
-  cout << "Intersection speed limit = " << intersection_speed_limit
-       << " cells/iteration\n";
 
   ifstream xml_stream(filename.c_str());
   string xml_content;
@@ -198,7 +202,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
   CoordinateTranslator ctrans(min_long, min_lat, max_long, max_lat);
   for (auto it = nodes.begin(); it != nodes.end(); ++it) {
     intersections[it->first] = builder_.build_intersection(
-        intersection_speed_limit, ctrans.x(it->second.second),
+        ctrans.x(it->second.second),
         ctrans.y(it->second.first),
         it->second.first, it->second.second);
   }
@@ -253,8 +257,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
             auto long_lat = split(coordinates[i], " ");
             double pos_x = ctrans.x(atof(long_lat[0].c_str()));
             double pos_y = ctrans.y(atof(long_lat[1].c_str()));
-            shape.push_back(builder_.build_intersection(
-                intersection_speed_limit, pos_x, pos_y));
+            shape.push_back(builder_.build_intersection(pos_x, pos_y));
           }
         } else {
           cout << "Warning: Expected LINESTRING but found: \n" << linestring
@@ -272,22 +275,35 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
           string speed_limit_string = limitstring.substr(
               0, limitstring.size() - suffix.size());
           int limit_mph = atoi(speed_limit_string.c_str());
-          int speed_limit = 0.44704*limit_mph*iteration_length/cell_size;
+          speed_limit = 0.44704*limit_mph*iteration_length/cell_size;
 
           if (speed_limit == 0) {
             cout << "Warning: Resolution not high enough for speed limit "
                  << speed_limit_string << " mph. Setting to 1 cell/iteration = "
                  << (cell_size * 1.0/iteration_length) << " m/s.";
+            speed_limit = 1;
           }
         } else {
-          cout << "Warning: Expected speed limit in mph but found: "
-               << limitstring << "\n";
+          int limit_mph = atoi(limitstring.c_str());
+          if (limit_mph > 0 && limit_mph <= 200) {
+            // Seems like valid speed limit.
+            speed_limit = 0.44704*limit_mph*iteration_length/cell_size;
+            if (speed_limit == 0) {
+              speed_limit = 1;
+            }
+          } else {
+            cout << "Warning: Expected speed limit in mph but found: "
+                 << limitstring << "\n";
+          }
         }
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
                edge_data_ids["highway"].c_str()) == 0) {
         if (cell_types_.find(data_edge->value()) != cell_types_.end()) {
           street_type = cell_types_.at(data_edge->value());
+        } else {
+          cout << "Warning: Unknown cell type: "
+               << data_edge->value() << "\n";
         }
       }
     }
@@ -305,7 +321,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
       assert(int_start != NULL);
       assert(int_end != NULL);
       assert(street_type >= 0 && street_type < Cell::kMaxType);
-      int_start->connect_one_way(int_end, max_velocity, street_type);
+      int_start->connect_one_way(int_end, speed_limit, street_type);
 
       // Check if shape matches length.
       double dx = int_end->x() - int_start->x();
@@ -320,6 +336,7 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
     }
   }
 
+  builder::print_stats();
   cout << num_streets << " streets.\n";
   cout << "Content within (" << ctrans.min_x() << ", " << ctrans.min_y()
        << ") and (" << ctrans.max_x() << ", " << ctrans.max_y() << ")\n";
@@ -359,7 +376,7 @@ TrafficController* GraphmlNetworkBuilder::build_traffic_light(
 #endif
   }
 
-  int phase_len = 20 + rand() % 20;
+  int phase_len = 40 + rand() % 20;
   simulation_->add_traffic_controller(new TrafficLight(
       traffic_light_counter_++, phase_len, signal_groups));
   ++num_traffic_lights_;

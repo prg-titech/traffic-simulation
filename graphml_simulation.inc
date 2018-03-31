@@ -12,7 +12,7 @@
 
 using builder::GraphmlNetworkBuilder;
 
-const unsigned int num_cars = 400000;
+const unsigned int num_cars = 10000;
 
 Renderer* renderer;
 

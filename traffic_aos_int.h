@@ -289,6 +289,8 @@ class Simulation {
   // Calculate a checksum for the state of this simulation.
   uint64_t checksum() const;
 
+  void print_velocity_histgram();
+
   // Accessor methods for cars.
   IndexType num_cars() const;
   IndexType car(IndexType index) const;

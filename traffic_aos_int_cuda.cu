@@ -260,25 +260,30 @@ __global__ void step_prepare_reorder() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
     s_Car_reorder_in[id] = id;
+//    s_Car_reorder_keys_in[id] = 0;
+//    s_Car_reorder_keys_in[id] = id;
+//    s_Car_reorder_keys_in[id] = s_Car[id].path().size();
     s_Car_reorder_keys_in[id] = s_Car[id].velocity();
 //    s_Car_reorder_keys_in[id] = (s_Car[id].velocity() + 1) * s_size_Car + id;
 //    s_Car_reorder_keys_in[id] = s_Cell[s_Car[id].position()].type();
-//    s_Car_reorder_keys_in[id] = s_Cell[s_Car[id].position()].type()* s_size_Car + id;
-//    s_Car_reorder_keys_in[id] = s_Car[id].rand32();
+//    s_Car_reorder_keys_in[id] = (s_Cell[s_Car[id].position()].type()+1)* s_size_Car + id;
+//    s_Car_reorder_keys_in[id] = s_Car[id].random_state();
 
   }
 }
+
+struct DUMMY {
+  char x[sizeof(Car)];
+};
 
 __global__ void step_physical_reorder() {
   IndexType id = blockIdx.x * blockDim.x + threadIdx.x;
   if (id < s_size_Car) {
     //cudaMemcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car), cudaMemcpyDeviceToDevice);
     //memcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car));
-    int* target = (int*) (&s_tmp_Car[id]);
-    int* from = (int*) (&s_Car[id]);
-    for (int i = 0; i < sizeof(Car)/sizeof(int); ++i) {
-      *(target + i) = *(from + i);
-    }
+    DUMMY* target = (DUMMY*) (&s_tmp_Car[id]);
+    DUMMY* from = (DUMMY*) (&s_Car[id]);
+      *target = *from;
   }
 }
 
@@ -296,6 +301,10 @@ __global__ void checksum_kernel() {
 
 __global__ void step_random_state() {
   instance->step_random_state();
+}
+
+__global__ void step_print_histogram() {
+  instance->print_velocity_histgram();
 }
 
 uint64_t checksum() {
@@ -358,8 +367,9 @@ void step() {
 
     step_move<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+    cudaDeviceSynchronize();
 
-    if (false && i % 5 == 0 ) {
+    if (i % 1 == 0 ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();
@@ -374,10 +384,16 @@ void step() {
 #endif  // NDEBUG
   }
 
+  gpuErrchk(cudaDeviceSynchronize());
+  
   auto t2 = std::chrono::steady_clock::now();
   unsigned long millis = std::chrono::duration_cast<std::chrono::milliseconds>(
       t2 - t1).count();
   auto cs = checksum();
+  gpuErrchk(cudaDeviceSynchronize());
+
+  step_print_histogram<<<1, 1>>>();
+  gpuErrchk(cudaDeviceSynchronize());
 
   printf("Checksum: %lu, GPU Time (millis): %lu, Reorder time: %lu\n", cs, millis,reorder_time);
 }
