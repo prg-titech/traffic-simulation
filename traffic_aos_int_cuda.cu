@@ -316,23 +316,29 @@ uint64_t checksum() {
 
 #define BLOCK_S 768
 
-void step_reorder() {
-  IndexType num_cars = simulation::aos_int::s_size_Car;
-  step_prepare_reorder<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+// Temp storage for reordering,
+void     *d_temp_storage = NULL;
+size_t   temp_storage_bytes = 0;
 
+void init_sort() {
+  IndexType num_cars = simulation::aos_int::s_size_Car;
   // Determine temporary device storage requirements
-  void     *d_temp_storage = NULL;
-  size_t   temp_storage_bytes = 0;
   cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
       d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
   // Allocate temporary storage
   cudaMalloc(&d_temp_storage, temp_storage_bytes);
+  gpuErrchk(cudaDeviceSynchronize());
+}
+
+void step_reorder() {
+  IndexType num_cars = simulation::aos_int::s_size_Car;
+  step_prepare_reorder<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+
   // Run sorting operation
   cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
       d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
   // d_keys_out            <-- [0, 3, 5, 6, 7, 8, 9]
   // d_values_out          <-- [5, 4, 3, 1, 2, 0, 6]
-
 
   // Now physical reordering
   if (PHYSICAL_REORDER) {
@@ -350,6 +356,8 @@ void step() {
   IndexType num_traffic_lights = simulation::aos_int::s_size_TrafficLight;
   IndexType num_priority_ctrl =
       simulation::aos_int::s_size_PriorityYieldTrafficController;
+
+  init_sort();
 
   auto t1 = std::chrono::steady_clock::now();
   unsigned long reorder_time =0;
@@ -369,7 +377,7 @@ void step() {
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     cudaDeviceSynchronize();
 
-    if (i % 1 == 0 ) {
+    if (false && i % 5 == 0 ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();

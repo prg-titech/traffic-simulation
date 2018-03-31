@@ -84,7 +84,7 @@ map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
   map<string, Cell::Type> result;
   result["service"] = Cell::kService;
   result["residential"] = Cell::kResidential;
-  result["unclassfied"] = Cell::kUnclassified;
+  result["unclassified"] = Cell::kUnclassified;
   result["tertiary"] = Cell::kTertiary;
   result["tertiary_link"] = Cell::kTertiary;
   result["secondary"] = Cell::kSecondary;
