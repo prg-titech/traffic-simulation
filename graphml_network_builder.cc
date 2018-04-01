@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <fstream>
 #include <streambuf>
@@ -8,9 +9,11 @@
 #include <limits>
 
 #include "graphml_network_builder.h"
+#include "lib/json.hpp"
 
 using namespace std;
 using namespace rapidxml;
+using nlohmann::json;
 
 namespace builder {
 
@@ -83,7 +86,11 @@ vector<string> split(const string& str, const string& delim)
 map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
   map<string, Cell::Type> result;
   result["service"] = Cell::kService;
+  result["elevator"] = Cell::kService;  // why is this even here?
+  result["corridor"] = Cell::kService;  // why is this even here?
   result["residential"] = Cell::kResidential;
+  result["living_street"] = Cell::kResidential;
+  result["road"] = Cell::kUnclassified;   // means unknown type
   result["unclassified"] = Cell::kUnclassified;
   result["tertiary"] = Cell::kTertiary;
   result["tertiary_link"] = Cell::kTertiary;
@@ -100,6 +107,67 @@ map<string, Cell::Type> GraphmlNetworkBuilder::create_cell_types_map() {
 
 const map<string, Cell::Type> GraphmlNetworkBuilder::cell_types_ =
     GraphmlNetworkBuilder::create_cell_types_map();
+
+Cell::Type GraphmlNetworkBuilder::parse_cell_type(string str) {
+  for (auto it = cell_types_.begin(); it != cell_types_.end(); ++it) {
+    string next_type = it->first;
+    if (str.find(next_type) != string::npos) {
+      return cell_types_.at(next_type);
+    }
+  }
+
+  cout << "Warning: Unknown cell type: " << str << "\n";
+  return Cell::kResidential;
+}
+
+int parse_single_speed_string(string str) {
+  string suffix = " mph";
+
+  if (str.size() > suffix.size()
+      && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0) {
+    string speed_limit_string = str.substr(0, str.size() - suffix.size());
+    return atoi(speed_limit_string.c_str());
+  } else {
+    int limit_mph = atoi(str.c_str());
+    if (limit_mph > 0 && limit_mph <= 200) {
+      // Seems like a valid speed limit in mph.
+      return limit_mph;
+    } else {
+      cout << "Warning: Expected speed limit in mph but found: "
+           << str << "\n";
+      return 50;
+    }
+  }
+}
+
+int GraphmlNetworkBuilder::parse_speed_limit(string str_in) {
+  string str = str_in;
+  std::replace(str.begin(), str.end(), '\'', '"');
+
+  try {
+    auto j = json::parse(str);
+    if (j.is_array()) {
+      int largest_limit = 0;
+      for (int i = 0; i < j.size(); ++i) {
+        int parsed = parse_single_speed_string(j[i]);
+        if (parsed > largest_limit) {
+          largest_limit = parsed;
+        }
+      }
+      return largest_limit;
+    } else if (j.is_number()) {
+      return parse_single_speed_string(str);
+    } else {
+      cout << "Unknown JSON for speed limit: " << str_in << "\n";
+      return 50;
+    }
+  } catch (...) {
+    // Invalid JSON. Probably a single value.
+    return parse_single_speed_string(str);
+  }
+
+  assert(false);
+}
 
 GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
                                              int cell_size,
@@ -266,45 +334,19 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
                edge_data_ids["maxspeed"].c_str()) == 0) {
-        string suffix = " mph";
-        string limitstring = data_edge->value();
+        int parsed_limit_mph = parse_speed_limit(data_edge->value());
+        speed_limit = ((0.44704*parsed_limit_mph)*iteration_length)/cell_size;
 
-        if (limitstring.size() > suffix.size()
-            && limitstring.compare(limitstring.size() - suffix.size(), 
-                                   suffix.size(), suffix) == 0) {
-          string speed_limit_string = limitstring.substr(
-              0, limitstring.size() - suffix.size());
-          int limit_mph = atoi(speed_limit_string.c_str());
-          speed_limit = 0.44704*limit_mph*iteration_length/cell_size;
-
-          if (speed_limit == 0) {
-            cout << "Warning: Resolution not high enough for speed limit "
-                 << speed_limit_string << " mph. Setting to 1 cell/iteration = "
-                 << (cell_size * 1.0/iteration_length) << " m/s.";
-            speed_limit = 1;
-          }
-        } else {
-          int limit_mph = atoi(limitstring.c_str());
-          if (limit_mph > 0 && limit_mph <= 200) {
-            // Seems like valid speed limit.
-            speed_limit = 0.44704*limit_mph*iteration_length/cell_size;
-            if (speed_limit == 0) {
-              speed_limit = 1;
-            }
-          } else {
-            cout << "Warning: Expected speed limit in mph but found: "
-                 << limitstring << "\n";
-          }
+        if (speed_limit == 0) {
+          cout << "Warning: Resolution not high enough for speed limit "
+               << data_edge->value() << " mph. Setting to 1 cell/iteration = "
+               << (cell_size * 1.0/iteration_length) << " m/s.";
+          speed_limit = 1;
         }
       }
       else if (strcmp(data_edge->first_attribute("key")->value(),
                edge_data_ids["highway"].c_str()) == 0) {
-        if (cell_types_.find(data_edge->value()) != cell_types_.end()) {
-          street_type = cell_types_.at(data_edge->value());
-        } else {
-          cout << "Warning: Unknown cell type: "
-               << data_edge->value() << "\n";
-        }
+        street_type = parse_cell_type(data_edge->value());
       }
     }
 
@@ -329,8 +371,8 @@ GraphmlNetworkBuilder::GraphmlNetworkBuilder(string filename,
       calculated_len += sqrt(dx*dx + dy*dy);
     }
 
-    // Print warning if length differs by more than 2 meters.
-    if (fabs(calculated_len - length) > 2) {
+    // Print warning if length differs by more than 10 meters.
+    if (fabs(calculated_len - length) > 10) {
       cout << "Warning: Stored length of street " << length << " differs from "
            << "calulated one " << calculated_len << "\n";
     }

@@ -82,6 +82,7 @@ Car::Car(simulation::standard::Car* car)
       max_velocity_(car->max_velocity_), position_(car->position_->id()),
       random_state_(car->random_state_),
       path_(&s_car_paths[s_size_car_paths], car->max_velocity_) {
+  assert(car->max_velocity_ == path_.capacity());
   assert(car->path_.size() == 0);
   s_size_car_paths += car->max_velocity_ + 1;
 }
@@ -154,6 +155,7 @@ Simulation::Simulation(simulation::standard::Simulation* simulation)
   IndexType num_path_array = 0;
   s_size_car_paths = 0;
   for (int i = 0; i < simulation->cars_.size(); ++i) {
+    // path_ buffer must be one larger than max_velocity_ for iterator.
     num_path_array += 1 + simulation->cars_[i]->max_velocity_;
   }
   s_car_paths = new IndexType[num_path_array];

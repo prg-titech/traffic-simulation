@@ -53,6 +53,9 @@ class GraphmlNetworkBuilder {
   TrafficController* build_priority_yield_traffic_controller(
       Intersection* intersection);
 
+  static Cell::Type parse_cell_type(string str);
+  static int parse_speed_limit(string str);
+
   // Mapping from XML values to cell types.
   static const map<string, Cell::Type> cell_types_;
 

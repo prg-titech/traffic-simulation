@@ -127,8 +127,12 @@ DEVICE_MODE void Car::step_initialize_iteration() {
 }
 
 DEVICE_MODE void Car::step_accelerate() {
-  if (velocity_ < max_velocity_) {
-    ++velocity_;
+  // Speedup up to 2 units, at least 1.
+  int speedup_factor = rand32() % 2 + 1;
+  for (int i = 0; i < speedup_factor; i++) {
+    if (velocity_ < max_velocity_) {
+      ++velocity_;
+    }
   }
 
   assert(velocity_ <= max_velocity_);
@@ -286,7 +290,69 @@ DEVICE_MODE void SharedSignalGroup::signal_stop() {
   }
 }
 
+/*
+  bool found_traffic = false;
+  // Cells are sorted by priority.
+  for (int i = 0; i < num_groups(); ++i) {
+    CPTR(SharedSignalGroup) next_group = group(i);
+    bool has_incoming = has_incoming_traffic(group(i));
+    IndexType num_cells = METHOD_CALL(SharedSignalGroup,
+                                      next_group, num_cells);
+
+    if (!found_traffic && has_incoming) {
+      found_traffic = true;
+      // Allow traffic to flow.
+      for (IndexType i = 0; i < num_cells; ++i) {
+        METHOD_CALL(Cell, METHOD_CALL(SharedSignalGroup, next_group, cell, i),
+                    remove_controller_max_velocity);
+      }
+    } else if (has_incoming) {
+      // Traffic with higher priority is incoming.
+      for (IndexType i = 0; i < num_cells; ++i) {
+        METHOD_CALL(Cell, METHOD_CALL(SharedSignalGroup, next_group, cell, i),
+                    set_controller_max_velocity, 0);
+      }
+    }
+  }
+*/
+
 DEVICE_MODE void TrafficLight::step() {
+#ifdef SMART_TRAFFIC_LIGHT
+  // This is a smart traffic light. If there are cars coming from only one
+  // street, give them a green light.
+  int num_found_traffic = 0;
+  int index_last_found = 0;
+  for (int i = 0; i < num_signal_groups(); ++i) {
+    bool has_incoming = has_incoming_traffic(signal_group(i));
+    if (has_incoming) {
+      num_found_traffic++;
+      index_last_found = i;
+    }
+
+    if (num_found_traffic > 1) break;
+  }
+
+  if (num_found_traffic == 1) {
+    // Set this one to green.
+    for (int i = 0; i < num_signal_groups(); ++i) {
+      if (i == index_last_found) {
+        METHOD_CALL(SharedSignalGroup, signal_group(i), signal_go);
+      } else {
+        METHOD_CALL(SharedSignalGroup, signal_group(i), signal_stop);
+      }
+    }
+    timer_ = 0;
+    phase_ = index_last_found;
+  } else {
+    timer_ = (timer_ + 1) % phase_time_;
+
+    if (timer_ == 0) {
+      METHOD_CALL(SharedSignalGroup, signal_group(phase_), signal_stop);
+      phase_ = (phase_ + 1) % num_signal_groups();
+      METHOD_CALL(SharedSignalGroup, signal_group(phase_), signal_go);
+    }
+  }
+#else
   timer_ = (timer_ + 1) % phase_time_;
 
   if (timer_ == 0) {
@@ -294,6 +360,7 @@ DEVICE_MODE void TrafficLight::step() {
     phase_ = (phase_ + 1) % num_signal_groups();
     METHOD_CALL(SharedSignalGroup, signal_group(phase_), signal_go);
   }
+#endif  // SMART_TRAFFIC_LIGHT
 }
 
 DEVICE_MODE void TrafficLight::initialize() {
@@ -354,6 +421,40 @@ DEVICE_MODE bool PriorityYieldTrafficController::has_incoming_traffic(
 }
 
 DEVICE_MODE bool PriorityYieldTrafficController::has_incoming_traffic(
+    PTR(SharedSignalGroup) group) const {
+  const IndexType num_cells = METHOD_CALL(SharedSignalGroup, group, num_cells);
+  for (IndexType i = 0; i < num_cells; ++i) {
+    CPTR(Cell) next_cell = METHOD_CALL(SharedSignalGroup, group, cell, i);
+
+    // Report incoming traffic if at least one cells in the group reports
+    // incoming traffic.
+    if (has_incoming_traffic(
+        next_cell, METHOD_CALL(Cell, next_cell, street_max_velocity))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+DEVICE_MODE bool TrafficLight::has_incoming_traffic(
+    PTR(Cell) cell, int lookahead) const {
+  if (lookahead == 0) {
+    return !METHOD_CALL(Cell, cell, is_free);
+  }
+
+  // Check incoming cells. This is BFS.
+  const IndexType num_incoming = METHOD_CALL(Cell, cell, num_incoming_cells);
+  for (IndexType i = 0; i < num_incoming; ++i) {
+    CPTR(Cell) next_cell = METHOD_CALL(Cell, cell, incoming_cell, i);
+    if (has_incoming_traffic(next_cell, lookahead - 1)) {
+      return true;
+    }
+  }
+
+  return !METHOD_CALL(Cell, cell, is_free);
+}
+
+DEVICE_MODE bool TrafficLight::has_incoming_traffic(
     PTR(SharedSignalGroup) group) const {
   const IndexType num_cells = METHOD_CALL(SharedSignalGroup, group, num_cells);
   for (IndexType i = 0; i < num_cells; ++i) {

@@ -20,7 +20,7 @@ class fixed_size_queue {
   }
 
   fixed_size_queue(T* buffer, int capacity)
-      : capacity_(capacity), buffer_(buffer) {
+      : capacity_(capacity + 1), buffer_(buffer) {
     static_assert(!OwnMemory, "Cannot provide buffer with OwnMemory");
   }
 

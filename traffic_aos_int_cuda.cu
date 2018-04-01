@@ -361,11 +361,18 @@ void step() {
 
   auto t1 = std::chrono::steady_clock::now();
   unsigned long reorder_time =0;
+  unsigned long traffic_ctrl_time = 0;
 
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 10; ++i) {
+    auto t5 = std::chrono::steady_clock::now();
     step_random_state<<<1, 1>>>();
     step_traffic_lights<<<num_traffic_lights / BLOCK_S + 1, BLOCK_S>>>();
     step_priority_ctrl<<<num_priority_ctrl / BLOCK_S + 1, BLOCK_S>>>();
+    cudaDeviceSynchronize();
+    auto t6 = std::chrono::steady_clock::now();
+    traffic_ctrl_time += std::chrono::duration_cast<std::chrono::milliseconds>(
+        t6 - t5).count();
+
     step_velocity<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
 
 #ifndef NDEBUG
@@ -377,7 +384,7 @@ void step() {
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     cudaDeviceSynchronize();
 
-    if (false && i % 5 == 0 ) {
+    if (false && i % 3 == 0 ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();
@@ -403,7 +410,7 @@ void step() {
   step_print_histogram<<<1, 1>>>();
   gpuErrchk(cudaDeviceSynchronize());
 
-  printf("Checksum: %lu, GPU Time (millis): %lu, Reorder time: %lu\n", cs, millis,reorder_time);
+  printf("Checksum: %lu, GPU Time (millis): %lu, Reorder time: %lu, Traffic ctrl time: %lu\n", cs, millis, reorder_time, traffic_ctrl_time);
 }
 
 __device__ void Simulation::add_inactive_car(IndexType car) {

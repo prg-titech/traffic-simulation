@@ -231,6 +231,10 @@ class TrafficLight : public TrafficController {
 
   __device__ IndexType num_signal_groups() const;
   __device__ IndexType signal_group(IndexType index) const;
+
+  // Check if a car is coming from this group within the next iteration.
+  __device__ bool has_incoming_traffic(IndexType group) const;
+  __device__ bool has_incoming_traffic(IndexType cell, int lookahead) const;
 };
 
 

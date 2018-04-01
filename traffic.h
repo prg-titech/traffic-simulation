@@ -296,6 +296,10 @@ class TrafficLight : public TrafficController {
   SharedSignalGroup* signal_group(IndexType index) const {
     return signal_groups_[index];
   }
+
+  // Check if a car is coming from this group within the next iteration.
+  bool has_incoming_traffic(SharedSignalGroup* group) const;
+  bool has_incoming_traffic(Cell* cell, int lookahead) const;
 };
 
 
