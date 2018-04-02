@@ -1,4 +1,4 @@
-CPPFLAGS=-std=c++11 -O3 -DNDEBUG
+CPPFLAGS=-std=c++11 -lineinfo -O3 -DNDEBUG
 LDFLAGS=-lSDL2 -lSDL2_gfx
 OBJS=drawing.o simple_network_builder.o graphml_network_builder.o random.o
 

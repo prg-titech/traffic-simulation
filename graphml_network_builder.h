@@ -21,7 +21,7 @@ class GraphmlNetworkBuilder {
   // Iteration length in seconds: Higher length means better resolution, but
   // also higher safety distance to previous vehicle. Def.: 2s.
   // Assuming a speed limit of 50 km/h, this implies a safety distance of 25 m.
-  GraphmlNetworkBuilder(string filename, int cell_size = 5,
+  GraphmlNetworkBuilder(string filename, int cell_size = 4,
                         double default_speed_limit = 13.8,
                         double iteration_length = 2);
 

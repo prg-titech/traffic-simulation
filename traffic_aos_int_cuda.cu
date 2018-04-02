@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cuda_profiler_api.h>
 
 #include "traffic_aos_int_cuda.h"
 #include "random.h"
@@ -267,7 +268,7 @@ __global__ void step_prepare_reorder() {
 //    s_Car_reorder_keys_in[id] = (s_Car[id].velocity() + 1) * s_size_Car + id;
 //    s_Car_reorder_keys_in[id] = s_Cell[s_Car[id].position()].type();
 //    s_Car_reorder_keys_in[id] = (s_Cell[s_Car[id].position()].type()+1)* s_size_Car + id;
-//    s_Car_reorder_keys_in[id] = s_Car[id].random_state();
+ //   s_Car_reorder_keys_in[id] = s_Car[id].random_state();
 
   }
 }
@@ -282,7 +283,7 @@ __global__ void step_physical_reorder() {
     //cudaMemcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car), cudaMemcpyDeviceToDevice);
     //memcpy(&s_tmp_Car[id], &s_Car[s_Car_reorder[id]], sizeof(Car));
     DUMMY* target = (DUMMY*) (&s_tmp_Car[id]);
-    DUMMY* from = (DUMMY*) (&s_Car[id]);
+    DUMMY* from = (DUMMY*) (&s_Car[s_Car_reorder[id]]);
       *target = *from;
   }
 }
@@ -339,10 +340,12 @@ void step_reorder() {
       d_car_reorder_keys_in, d_car_reorder_keys, d_car_reorder_in, d_car_reorder, num_cars);
   // d_keys_out            <-- [0, 3, 5, 6, 7, 8, 9]
   // d_values_out          <-- [5, 4, 3, 1, 2, 0, 6]
+  cudaDeviceSynchronize();
 
   // Now physical reordering
   if (PHYSICAL_REORDER) {
     step_physical_reorder<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
+    cudaDeviceSynchronize();
     step_swap_car_arrays<<<1, 1>>>();
   }
 
@@ -363,7 +366,11 @@ void step() {
   unsigned long reorder_time =0;
   unsigned long traffic_ctrl_time = 0;
 
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < 40; ++i) {
+    if (i % 10 == 0) {
+      cudaProfilerStart();
+    }
+
     auto t5 = std::chrono::steady_clock::now();
     step_random_state<<<1, 1>>>();
     step_traffic_lights<<<num_traffic_lights / BLOCK_S + 1, BLOCK_S>>>();
@@ -384,7 +391,11 @@ void step() {
     step_reactivate<<<num_cars / BLOCK_S + 1, BLOCK_S>>>();
     cudaDeviceSynchronize();
 
-    if (false && i % 3 == 0 ) {
+    if (i % 10 == 0) {
+      cudaProfilerStop();
+    }
+
+    if (i % 1 == 0 ) {
       auto t3 = std::chrono::steady_clock::now();
       step_reorder();
       auto t4 = std::chrono::steady_clock::now();

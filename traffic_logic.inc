@@ -121,9 +121,9 @@ DEVICE_MODE void Car::step_move() {
 }
 
 DEVICE_MODE void Car::step_initialize_iteration() {
-  if (velocity_ == 0) {
+//  if (velocity_ == 0) {
     path_.shrink_to_size(0);
-  }
+//  }
 }
 
 DEVICE_MODE void Car::step_accelerate() {
@@ -315,6 +315,8 @@ DEVICE_MODE void SharedSignalGroup::signal_stop() {
     }
   }
 */
+
+#define SMART_TRAFFIC_LIGHT 1
 
 DEVICE_MODE void TrafficLight::step() {
 #ifdef SMART_TRAFFIC_LIGHT
