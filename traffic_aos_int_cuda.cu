@@ -13,6 +13,8 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
    }
 }
 
+__device__ int dummy_x = 123;
+
 namespace simulation {
 namespace aos_int {
 extern Cell* s_Cell;
@@ -60,45 +62,56 @@ namespace aos_int_cuda {
 __device__ Simulation* instance;
 
 // Data storage.
+Cell* dev_Cell;
 __device__ Cell* s_Cell;
 __device__ IndexType s_size_Cell = 0;
 
+IndexType* dev_outgoing_cells;
 __device__ IndexType* s_outgoing_cells;
 __device__ IndexType s_size_outgoing_cells = 0;
 
+IndexType* dev_incoming_cells;
 __device__ IndexType* s_incoming_cells;
 __device__ IndexType s_size_incoming_cells = 0;
 
+Car* dev_Car;
 __device__ Car* s_Car;
 __device__ IndexType s_size_Car = 0;
 
+IndexType* dev_car_paths;
 __device__ IndexType* s_car_paths;
 __device__ IndexType s_size_car_paths = 0;
 
+IndexType* dev_inactive_cars;
 __device__ IndexType* s_inactive_cars;
 __device__ IndexType s_size_inactive_cars = 0;
 
+TrafficLight* dev_TrafficLight;
 __device__ TrafficLight* s_TrafficLight;
 __device__ IndexType s_size_TrafficLight = 0;
 
+PriorityYieldTrafficController* dev_PriorityYieldTrafficController;
 __device__ PriorityYieldTrafficController* s_PriorityYieldTrafficController;
 __device__ IndexType s_size_PriorityYieldTrafficController = 0;
 
+SharedSignalGroup* dev_SharedSignalGroup;
 __device__ SharedSignalGroup* s_SharedSignalGroup;
 __device__ IndexType s_size_SharedSignalGroup = 0;
 
+IndexType* dev_traffic_light_signal_groups;
 __device__ IndexType* s_traffic_light_signal_groups;
 __device__ IndexType s_size_traffic_light_signal_groups = 0;
 
+IndexType* dev_priority_ctrl_signal_groups;
 __device__ IndexType* s_priority_ctrl_signal_groups;
 __device__ IndexType s_size_priority_ctrl_signal_groups = 0;
 
+IndexType* dev_signal_group_cells;
 __device__ IndexType* s_signal_group_cells;
 __device__ IndexType s_size_signal_group_cells = 0;
 
 
 #define MEMCPY_TO_DEVICE(class, var) \
-  class* dev_ ## var; \
   gpuErrchk(cudaMalloc((void**) &dev_ ## var, \
              sizeof(class)*simulation::aos_int::s_size_ ## var)); \
   printf("GPU allocation for " STRINGIFY(var) ": %i bytes, %i objects\n", \

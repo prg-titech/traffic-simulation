@@ -79,7 +79,6 @@ class Cell {
 
   IndexType id() const { return id_; }
 
- private:
   const IndexType id_;
 
   const Type type_;
@@ -131,7 +130,6 @@ class Car {
 
   IndexType id() const { return id_; }
 
- protected:
   friend class Simulation;
 
   // Assuming that the car is located at position, determine where to go next.
@@ -151,7 +149,6 @@ class Car {
 
   IndexType random_free_cell() const;
 
- private:
   const IndexType id_;
 
   bool is_active_;
