@@ -60,6 +60,7 @@ void Simulation::step_traffic_controllers() {
 }
 
 void Simulation::initialize() {
+  printf("Initializing simulation...\n");
   for (int i = 0; i < traffic_controllers_.size(); ++i) {
     traffic_controllers_[i]->initialize();
   }

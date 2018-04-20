@@ -12,7 +12,7 @@
 
 using builder::GraphmlNetworkBuilder;
 
-const unsigned int num_cars = 20000;
+static unsigned int kNumCars = 250000;
 
 Renderer* renderer;
 
@@ -25,7 +25,7 @@ void print_stats(float iterations_per_second, uint64_t checksum) {
   int num_cars_jammed = 0;
   int num_cars_turning = 0;
   
-  for (int i = 0; i < num_cars; ++i) {
+  for (int i = 0; i < kNumCars; ++i) {
     if (instance->car(i)->is_active()) {
       num_cars_active++;
 
@@ -45,8 +45,10 @@ void print_stats(float iterations_per_second, uint64_t checksum) {
   fflush(stdout);
 }
 
-simulation::standard::Simulation* build_simulation(int argc, char** argv) {
+simulation::standard::Simulation* build_simulation(int argc, char** argv,
+                                                   unsigned int num_cars) {
   srand(42);
+  kNumCars = num_cars;
 
   string filename(argv[1]);
   GraphmlNetworkBuilder graph_builder(filename);
@@ -68,7 +70,7 @@ simulation::standard::Simulation* build_simulation(int argc, char** argv) {
   for (int i = 0; i < num_cars; ++i) {
     uint32_t state = (uint32_t) rand() + 1;
     instance->add_car(new Car(
-        i, 20, instance->random_free_cell(), state));
+        i, 10 + (rand() % 20), instance->random_free_cell(), state));
   }
 
   // Render initial state only.

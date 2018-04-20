@@ -30,11 +30,13 @@ class Cell {
   // Cell type according to OSM data.
   enum Type {
     // Sorted from smallest to largest.
+    kService,
     kResidential,
+    kUnclassified,
     kTertiary,
     kSecondary,
     kPrimary,
-    kMotorwayLink,
+    kTrunk,
     kMotorway,
 
     kMaxType
@@ -294,6 +296,10 @@ class TrafficLight : public TrafficController {
   SharedSignalGroup* signal_group(IndexType index) const {
     return signal_groups_[index];
   }
+
+  // Check if a car is coming from this group within the next iteration.
+  bool has_incoming_traffic(SharedSignalGroup* group) const;
+  bool has_incoming_traffic(Cell* cell, int lookahead) const;
 };
 
 
@@ -388,6 +394,8 @@ class Simulation {
 
   // Calculate a checksum for the state of this simulation.
   uint64_t checksum() const;
+
+  void print_velocity_histgram();
 
   // Accessor methods for cars.
   IndexType num_cars() const { return cars_.size(); }

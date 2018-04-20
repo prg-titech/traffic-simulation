@@ -10,6 +10,8 @@ using namespace simulation::standard;
 
 namespace builder {
 
+void print_stats();
+
 class SimpleNetworkBuilder;
 class Street;
 
@@ -17,16 +19,15 @@ class TwoWayStreet;
 
 class Intersection {
  public:
-  Intersection(SimpleNetworkBuilder* builder,
-               double max_velocity, double x, double y,
+  Intersection(SimpleNetworkBuilder* builder, double x, double y,
                double latitide = 0.0, double longitude = 0.0)
-      : builder_(builder), max_velocity_(max_velocity), x_(x), y_(y),
+      : builder_(builder), x_(x), y_(y),
         latitude_(latitide), longitude_(longitude) {}
 
-  Street* connect_one_way(Intersection* other, double max_velocity,
+  Street* connect_one_way(Intersection* other, int max_velocity,
                           Cell::Type type = Cell::kResidential);
 
-  TwoWayStreet* connect_two_way(Intersection* other, double max_velocity,
+  TwoWayStreet* connect_two_way(Intersection* other, int max_velocity,
                                 Cell::Type type = Cell::kResidential);
 
   void connect_incoming(Street* street);
@@ -63,14 +64,12 @@ class Intersection {
 
   // Incoming streets.
   std::vector<Street*> incoming_streets_;
-
-  double max_velocity_;
 };
 
 class Street {
  public:
   Street(SimpleNetworkBuilder* builder, Intersection* from, Intersection* to,
-         double max_velocity, Cell::Type type = Cell::kResidential);
+         int max_velocity, Cell::Type type = Cell::kResidential);
 
   Cell* first_cell() { return first_cell_; }
   Cell* last_cell() { return last_cell_; }
@@ -122,9 +121,9 @@ class SimpleNetworkBuilder {
   }
 
   Intersection* build_intersection(
-      double max_velocity, double x, double y,
+      double x, double y,
       double latitude = 0.0, double longitude = 0.0) {
-    auto* i = new Intersection(this, max_velocity, x, y, latitude, longitude);
+    auto* i = new Intersection(this, x, y, latitude, longitude);
     intersections_.push_back(i);
     return i;
   }
@@ -177,12 +176,12 @@ class SimpleNetworkBuilder {
   SimpleNetworkBuilder(Simulation* simulation, int cell_size)
       : cell_size_(cell_size), simulation_(simulation) {}
 
-  Cell* build_cell(double x, double y, double max_velocity,
+  Cell* build_cell(double x, double y, int max_velocity,
                    Cell::Type type = Cell::kResidential,
                    uint32_t tag = 0);
 
   Street* build_street(Intersection* from, Intersection* to,
-                       double max_velocity, Cell::Type type = Cell::kResidential);
+                       int max_velocity, Cell::Type type = Cell::kResidential);
 };
 
 }

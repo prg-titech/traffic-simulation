@@ -181,7 +181,6 @@ class SharedSignalGroup {
 
   __device__ IndexType id() const { return id_; }
 
- private:
   const IndexType id_;
   const IndexType num_cells_;
   const IndexType first_cell_idx_;
@@ -208,7 +207,6 @@ class TrafficLight : public TrafficController {
 
   __device__ IndexType id() const { return id_; }
 
- private:
   const IndexType id_;
 
   // This timer is increased with every step.
@@ -239,7 +237,6 @@ class PriorityYieldTrafficController : public TrafficController {
 
   __device__ IndexType id() const { return id_; }
 
- private:
   const IndexType id_;
 
   const IndexType num_groups_;
